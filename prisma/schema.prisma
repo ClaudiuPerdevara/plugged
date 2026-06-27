@@ -1,0 +1,115 @@
+// ============================================================================
+// PLUGGED. — Database schema
+// ----------------------------------------------------------------------------
+// Better Auth manages `User`, `Session`, `Account`, and `Verification`.
+// Their column shapes are dictated by the Better Auth Prisma adapter spec:
+// https://www.better-auth.com/docs/adapters/prisma
+//
+// IMPORTANT: Better Auth generates its own IDs, so `User`/`Session`/`Account`/
+// `Verification` intentionally have NO `@default(...)` on their `id` fields.
+//
+// `Purchase` is application-owned: it records which bundle a user has bought
+// and is the single source of truth for the dashboard "vault".
+//
+// NOTE: This sandbox runs SQLite. The exact same schema works against Neon
+// (Postgres) by flipping `provider = "sqlite"` → `"postgresql"` and pointing
+// `DATABASE_URL` at the Neon connection string — no model changes required.
+// ============================================================================
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+// ------------------------------------------------------------------- Better Auth
+model User {
+  id            String     @id
+  email         String     @unique
+  emailVerified Boolean    @default(false)
+  name          String
+  image         String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  purchases     Purchase[]
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+// ------------------------------------------------------------ Application: vault
+model Purchase {
+  id                      String   @id @default(cuid())
+  userId                  String
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Slug matching a Product id in lib/products.ts (y2k | opium | vintage | designer)
+  bundleId                String
+  bundleName              String?
+  /// Price paid in USD cents at time of purchase.
+  amount                  Int
+  /// Stripe checkout session id (when paid via Stripe). Null for demo grants.
+  stripeCheckoutSessionId String?
+  createdAt               DateTime @default(now())
+
+  /// A user can own a given bundle exactly once.
+  @@unique([userId, bundleId])
+  @@index([userId])
+}
+
+// ----------------------------------------------------------- Application: support
+model SupportTicket {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  userId    String?
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([createdAt])
+}

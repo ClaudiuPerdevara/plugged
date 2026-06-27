@@ -1,0 +1,15 @@
+packages:
+  - "."
+
+# pnpm 11 blocks packages published within 24h by default.
+minimumReleaseAge: 0
+
+overrides:
+  hono: 4.12.25
+
+# pnpm 11 blocks dependency lifecycle scripts unless allowlisted.
+allowBuilds:
+  "@prisma/client": true
+  "@prisma/engines": true
+  prisma: true
+  sharp: true
