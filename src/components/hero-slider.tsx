@@ -9,16 +9,27 @@ import {
 } from "framer-motion"
 import { ArrowDown, ArrowLeft, ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { FEATURED_PRODUCTS, CATALOG_IMAGES } from "@/lib/products"
+import { PRODUCTS, CATALOG_IMAGES } from "@/lib/products"
 
-const SLIDES = FEATURED_PRODUCTS.slice(0, 5).map((p, i) => ({
-  id: p.id,
-  tag: `${String(i + 1).padStart(2, "0")} — ${p.tag}`,
-  title: p.name.replace(" Bundle", "").replace(" & ", " · "),
-  subtitle: p.description,
-  image: CATALOG_IMAGES[p.id as keyof typeof CATALOG_IMAGES]?.hero ?? p.image,
-  href: `/bundle/${p.id}`,
-}))
+const HERO_BUNDLE_IDS = [
+  "opium",
+  "y2k",
+  "vintage",
+  "sneakers-footwear",
+  "vintage-windbreakers",
+] as const
+
+const SLIDES = HERO_BUNDLE_IDS.map((id, i) => {
+  const p = PRODUCTS.find((prod) => prod.id === id)!
+  return {
+    id: p.id,
+    tag: `${String(i + 1).padStart(2, "0")} — ${p.tag}`,
+    title: p.name.replace(" Bundle", "").replace(" & ", " · "),
+    subtitle: p.description,
+    image: CATALOG_IMAGES[p.id as keyof typeof CATALOG_IMAGES]?.hero ?? p.image,
+    href: `/bundle/${p.id}`,
+  }
+})
 
 const SWIPE_THRESHOLD = 70
 
@@ -86,21 +97,10 @@ export function HeroSlider() {
         >
           <img
             src={slide.image}
-            alt=""
-            aria-hidden
-            draggable={false}
-            className="pointer-events-none absolute inset-0 h-full w-full scale-110 object-cover opacity-45 blur-3xl"
-          />
-          <img
-            src={slide.image}
             alt={`${slide.title} — ${slide.tag}`}
             draggable={false}
-            className="pointer-events-none relative h-full w-full object-contain"
+            className="pointer-events-none h-full w-full object-cover"
           />
-          {/* Edge vignette — fades the 9:16 image into the dark background */}
-          <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_140px_50px_var(--background)]" />
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-[18%] bg-gradient-to-r from-background to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] bg-gradient-to-l from-background to-transparent" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/10" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-transparent" />
         </motion.div>

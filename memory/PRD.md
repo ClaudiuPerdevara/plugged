@@ -25,3 +25,10 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
 - (Pre-existing, not addressed) strict TS errors in `cart-provider.tsx` (STORAGE_KEY) and UI components.
+
+## Changes — 28 Jun 2026 (session 2)
+- **Hero slider** is now driven by an explicit `HERO_BUNDLE_IDS` list: `opium, y2k, vintage, sneakers-footwear, vintage-windbreakers`. Old Money removed from hero (bundle still in catalog); Windbreakers (jackets) added.
+- Reverted hero image rendering to clean full-bleed `object-cover` (removed blur backdrop + edge vignette).
+- **Outpainted** the two portrait hero images to 16:9 landscape (1264×848) via Gemini image edit, keeping subject/style and naturally extending the margins: `opium/hero.png` (corridor) and `vintage-windbreakers/hero.png` (concrete + jackets). The other hero images were already 1536×1024 landscape.
+- Added 4-jersey photo (`football-tshirts/jerseys.png`) to the Vintage & Football T-Shirts gallery (now 3 images: footballer cover, 3-tee, 4-jersey).
+- Verified locally: slide 1 H1 "Opium Archive" visible; last slide = "Vintage Windbreakers"; football gallery has 3 images.

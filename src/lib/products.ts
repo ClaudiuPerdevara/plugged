@@ -244,6 +244,7 @@ export const PRODUCTS: Product[] = [
       gallery: [
         "/catalog/football-tshirts/cover.png",
         "/catalog/football-tshirts/tshirts.png",
+        "/catalog/football-tshirts/jerseys.png",
       ],
     },
   ),
