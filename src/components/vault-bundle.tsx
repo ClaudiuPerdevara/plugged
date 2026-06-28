@@ -53,7 +53,7 @@ function SupplierTable({
 
   return (
     <div className="rounded-xl border border-border bg-background/40">
-      <div className="border-b border-border px-4 py-4 md:px-5">
+      <div className="border-b border-border px-5 py-5">
         <h4 className="font-heading text-sm font-bold tracking-tight text-foreground">
           {title}
         </h4>
@@ -62,14 +62,14 @@ function SupplierTable({
         </p>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[720px] border-collapse text-left text-sm">
+        <table className="w-full min-w-[820px] border-collapse text-left text-sm">
           <thead>
             <tr className="border-b border-border text-xs uppercase tracking-[0.15em] text-muted-foreground">
-              <th className="px-4 py-3 font-medium md:px-5">Supplier</th>
-              <th className="px-4 py-3 font-medium md:px-5">Platform</th>
-              <th className="px-4 py-3 font-medium md:px-5">Quality</th>
-              <th className="px-4 py-3 font-medium md:px-5">Search keyword</th>
-              <th className="px-4 py-3 font-medium md:px-5">Link</th>
+              <th className="px-5 py-4 font-medium">Supplier</th>
+              <th className="px-5 py-4 font-medium">Platform</th>
+              <th className="px-5 py-4 font-medium">Quality</th>
+              <th className="px-5 py-4 font-medium">Search keyword</th>
+              <th className="px-5 py-4 font-medium">Link</th>
             </tr>
           </thead>
           <tbody>
@@ -78,22 +78,22 @@ function SupplierTable({
                 key={s.name}
                 className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/40"
               >
-                <td className="px-4 py-4 font-medium text-foreground md:px-5">
+                <td className="px-5 py-5 font-medium text-foreground">
                   {s.name}
                   <span className="mt-0.5 block text-xs text-muted-foreground">
                     {s.category} · MOQ {s.moq}
                   </span>
                 </td>
-                <td className="px-4 py-4 text-muted-foreground md:px-5">
+                <td className="px-5 py-5 text-muted-foreground">
                   {s.platform}
                 </td>
-                <td className="px-4 py-4 md:px-5">
+                <td className="px-5 py-5">
                   <QualityStars rating={s.quality} />
                 </td>
-                <td className="px-4 py-4 font-mono text-xs text-muted-foreground md:px-5">
+                <td className="px-5 py-5 font-mono text-xs text-muted-foreground">
                   {s.searchKeyword}
                 </td>
-                <td className="px-4 py-4 md:px-5">
+                <td className="px-5 py-5">
                   <a
                     href={s.link}
                     target="_blank"
@@ -120,7 +120,7 @@ export function VaultBundle({ product }: { product: Product }) {
 
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-card/60 backdrop-blur-sm">
-      <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center">
+      <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center md:p-7">
         <div className="relative size-20 shrink-0 overflow-hidden rounded-xl">
           <img
             src={product.image || "/placeholder.svg"}
@@ -164,7 +164,7 @@ export function VaultBundle({ product }: { product: Product }) {
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden border-t border-border"
           >
-            <div className="flex flex-col gap-5 p-5">
+            <div className="flex flex-col gap-5 p-6 md:p-7">
               {product.id === "vintage-windbreakers" ? (
                 <VintageWindbreakersVault />
               ) : product.id === "football-tshirts" ? (

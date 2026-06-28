@@ -49,17 +49,17 @@ export function VintageWindbreakersVault() {
         description="11 packages from 8 suppliers — direct product links, MOQs and grade breakdowns."
       >
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[880px] border-collapse text-left text-sm">
+          <table className="w-full min-w-[980px] border-collapse text-left text-sm">
             <thead>
               <tr className="border-b border-border text-xs uppercase tracking-[0.15em] text-muted-foreground">
-                <th className="px-3 py-3 font-medium md:px-4">#</th>
-                <th className="px-3 py-3 font-medium md:px-4">Package</th>
-                <th className="px-3 py-3 font-medium md:px-4">Supplier</th>
-                <th className="px-3 py-3 font-medium md:px-4">MOQ</th>
-                <th className="px-3 py-3 font-medium md:px-4">Grade</th>
-                <th className="px-3 py-3 font-medium md:px-4">Brands</th>
-                <th className="px-3 py-3 font-medium md:px-4">Sizes</th>
-                <th className="px-3 py-3 font-medium md:px-4">Link</th>
+                <th className="px-5 py-4 font-medium">#</th>
+                <th className="px-5 py-4 font-medium">Package</th>
+                <th className="px-5 py-4 font-medium">Supplier</th>
+                <th className="px-5 py-4 font-medium">MOQ</th>
+                <th className="px-5 py-4 font-medium">Grade</th>
+                <th className="px-5 py-4 font-medium">Brands</th>
+                <th className="px-5 py-4 font-medium">Sizes</th>
+                <th className="px-5 py-4 font-medium">Link</th>
               </tr>
             </thead>
             <tbody>
@@ -68,35 +68,35 @@ export function VintageWindbreakersVault() {
                   key={pkg.id}
                   className="border-b border-border/60 align-top transition-colors last:border-0 hover:bg-secondary/40"
                 >
-                  <td className="px-3 py-4 font-mono text-xs text-muted-foreground md:px-4">
+                  <td className="px-5 py-5 font-mono text-xs text-muted-foreground">
                     {pkg.id}
                   </td>
-                  <td className="px-3 py-4 font-medium text-foreground md:px-4">
+                  <td className="whitespace-nowrap px-5 py-5 font-medium text-foreground">
                     {pkg.name}
                     {pkg.notes ? (
-                      <span className="mt-1 block text-xs font-normal text-muted-foreground">
+                      <span className="mt-1 block whitespace-normal text-xs font-normal text-muted-foreground">
                         {pkg.notes}
                       </span>
                     ) : null}
                   </td>
-                  <td className="px-3 py-4 text-muted-foreground md:px-4">
+                  <td className="px-5 py-5 text-muted-foreground">
                     {pkg.supplier}
                   </td>
-                  <td className="px-3 py-4 text-muted-foreground md:px-4">
+                  <td className="whitespace-nowrap px-5 py-5 text-muted-foreground">
                     {pkg.moq}
                   </td>
-                  <td className="px-3 py-4 md:px-4">
-                    <span className="inline-flex rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] uppercase tracking-wide text-accent">
+                  <td className="px-5 py-5">
+                    <span className="inline-flex whitespace-nowrap rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] uppercase tracking-wide text-accent">
                       {pkg.grade}
                     </span>
                   </td>
-                  <td className="max-w-[180px] px-3 py-4 text-xs leading-relaxed text-muted-foreground md:px-4">
+                  <td className="min-w-[220px] max-w-[280px] px-5 py-5 text-xs leading-relaxed text-muted-foreground">
                     {pkg.brands}
                   </td>
-                  <td className="px-3 py-4 text-xs text-muted-foreground md:px-4">
+                  <td className="whitespace-nowrap px-5 py-5 text-xs text-muted-foreground">
                     {pkg.sizes}
                   </td>
-                  <td className="px-3 py-4 md:px-4">
+                  <td className="px-5 py-5">
                     <a
                       href={pkg.link}
                       target="_blank"

@@ -44,6 +44,8 @@ type CartContextValue = {
   has: (id: string) => boolean
 }
 
+const STORAGE_KEY = "plugged.cart.v1"
+
 const CartContext = createContext<CartContextValue | null>(null)
 
 function syncWithCatalog(items: CartItem[]): CartItem[] {

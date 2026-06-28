@@ -26,7 +26,7 @@ export function Dashboard({
   const [tab, setTab] = useState<TabId>("bundles")
 
   return (
-    <section className="mx-auto max-w-7xl px-5 pb-28 pt-32 md:px-8 md:pt-40">
+    <section className="mx-auto max-w-[1600px] px-5 pb-28 pt-32 md:px-10 md:pt-40">
       {/* Header */}
       <div className="max-w-2xl">
         <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
@@ -48,7 +48,7 @@ export function Dashboard({
         </p>
       </div>
 
-      <div className="mt-12 grid gap-8 lg:grid-cols-[240px_1fr]">
+      <div className="mt-12 grid gap-8 lg:gap-10 xl:gap-14 lg:grid-cols-[220px_1fr]">
         {/* Sidebar nav */}
         <aside className="lg:sticky lg:top-28 lg:self-start">
           <nav className="flex gap-2 lg:flex-col">

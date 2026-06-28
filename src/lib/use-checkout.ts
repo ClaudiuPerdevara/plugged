@@ -13,8 +13,9 @@ export function useCheckout() {
   const { items } = useCart()
   const [pending, setPending] = useState(false)
 
-  async function checkout() {
-    if (items.length === 0) {
+  async function checkout(override?: { id: string }[]) {
+    const ids = (override ?? items).map((i) => i.id)
+    if (ids.length === 0) {
       toast.error("Your cart is empty")
       return
     }
@@ -24,7 +25,7 @@ export function useCheckout() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
-        body: JSON.stringify({ items: items.map((i) => i.id) }),
+        body: JSON.stringify({ items: ids }),
       })
       const data = (await res.json()) as {
         url?: string

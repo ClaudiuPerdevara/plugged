@@ -25,8 +25,7 @@ export function BundleDetails({ product }: { product: Product }) {
     product.gallery.length > 0 ? product.gallery : [product.image]
 
   function handleBuyNow() {
-    addItem(product)
-    void checkout()
+    void checkout([{ id: product.id }])
   }
 
   return (

@@ -24,6 +24,16 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
+
+## Changes — 28 Jun 2026 (session 3)
+**Bug fixes**
+- Cart "empty → added" double-toast bug: `useCheckout()` now accepts `checkout(override?: {id}[])`; `bundle-details.tsx` Buy Now passes the product directly so it no longer reads a stale empty closure → single correct notification (verified).
+- Cart persistence: added `STORAGE_KEY = "plugged.cart.v1"` in `cart-provider.tsx` (was referenced but undeclared; silent ReferenceError swallowed by try/catch). Cart now survives reload/navigation (verified: badge persists).
+
+**Dashboard / vault UI — airier & wider**
+- `dashboard.tsx`: container `max-w-7xl`→`max-w-[1600px]`, `md:px-10`, grid gap `lg:gap-10 xl:gap-14`, sidebar `240px`→`220px`.
+- `vault-bundle.tsx`: card padding `p-5`→`p-6 md:p-7`; generic supplier table rows `py-5`, `px-5`, `min-w-[820px]`.
+- `vintage-windbreakers-vault.tsx` & `football-tshirts-vault.tsx`: `min-w-[980px]`, rows `py-5` / header `py-4`, `px-5`; package name + MOQ/sizes/price `whitespace-nowrap`; Brands/Shipping `min-w`/`max-w` so text doesn't crush.
 - (Pre-existing, not addressed) strict TS errors in `cart-provider.tsx` (STORAGE_KEY) and UI components.
 
 ## Changes — 28 Jun 2026 (session 2)
