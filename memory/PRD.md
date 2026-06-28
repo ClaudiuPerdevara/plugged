@@ -24,6 +24,14 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
+- Note: y2k & football & windbreakers vaults are post-purchase (need auth/DB to view live; verified structurally + compile only here).
+
+## Changes — 28 Jun 2026 (session 4)
+- **Y2K photo**: outpainted the user's dusk-street digicam reference to 16:9 (`y2k/hero.png` + `cover.png`) — kept the grainy Y2K aesthetic.
+- **Y2K full bundle** (`products.ts` → `bundleWithSuppliers`): 12 packages / 7 suppliers from `date_produse_y2k.md`. New post-purchase vault `y2k-vault.tsx` (packages table + image-search platforms + supplier contacts) identical to Windbreakers; data file `src/lib/bundle-data/y2k.ts`. Gallery = `[cover, tshirts.png, jeans.png]` (the two reference photos beside the cover). Wired into `vault-bundle.tsx`.
+- **Windbreakers**: gallery reduced to `[cover.png, gallery-1.png, gallery-2.png]` (cover + photos 1 & 2 only).
+- **Hid free info**: removed the parenthetical "(KakoBuy, Joyagoo, Superbuy)" from the public `included` lists (windbreakers + y2k) so the agent platform names aren't given away before purchase; they remain inside the paid vault.
+- Verified: pages 200, y2k & windbreakers galleries = 3 imgs each, parenthetical count = 0, Y2K hero slide shows new image, no compile errors.
 
 ## Changes — 28 Jun 2026 (session 3)
 **Bug fixes**

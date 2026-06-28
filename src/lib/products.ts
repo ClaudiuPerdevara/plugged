@@ -1,6 +1,7 @@
 import { CATALOG_IMAGES, type CatalogImageKey } from "@/lib/catalog-images"
 import { VINTAGE_WINDBREAKERS_SUPPLIERS } from "@/lib/bundle-data/vintage-windbreakers"
 import { FOOTBALL_TSHIRTS_SUPPLIERS } from "@/lib/bundle-data/football-tshirts"
+import { Y2K_SUPPLIERS } from "@/lib/bundle-data/y2k"
 
 export type SourcingRoute = "agent" | "vintage"
 
@@ -157,26 +158,30 @@ export const PRODUCTS: Product[] = [
     ],
     { featured: true },
   ),
-  bundle(
+  bundleWithSuppliers(
     "y2k",
     "Y2K",
     "Y2K Supplier Bundle",
-    "Chrome-era plugs. Low-rise denim, baby tees, shield shades and the factories behind the revival.",
-    "The full Y2K rolodex — mesh layers, metallic everything and the exact suppliers feeding TikTok's 2000s wave.",
-    ["40+ vetted suppliers", "Pricing & MOQ sheets", "Lifetime updates"],
+    "12 wholesale Y2K packages from 7 vetted suppliers — Harley tees, low-rise denim, baby tees and mix boxes with direct links and grade breakdowns.",
+    "The full Y2K rolodex — low-rise denim, Harley graphics, baby tees and mix boxes from real wholesale suppliers with MOQs, grade breakdowns, EU/UK duty-free shipping notes and direct Shopify + Fleek links.",
+    ["12 wholesale packages", "Direct product links", "Grade & MOQ breakdowns"],
     [
-      "40+ Y2K suppliers",
-      "Pricing & MOQ spreadsheets",
-      "Sample-order playbook",
-      "Authenticity guides",
+      "12 vetted Y2K packages",
+      "Direct Shopify & Fleek product links",
+      "Grade & MOQ breakdowns per lot",
+      "Alternative image-search platforms",
+      "Supplier contact directory",
       "Lifetime updates",
     ],
-    [
-      ["Chrome District Mfg.", "Denim", "30 units", 5],
-      ["Y2 Optics Co.", "Eyewear", "50 units", 4],
-      ["Baby Tee Collective", "Tops", "100 units", 4],
-    ],
-    { featured: true },
+    Y2K_SUPPLIERS,
+    {
+      featured: true,
+      gallery: [
+        "/catalog/y2k/cover.png",
+        "/catalog/y2k/tshirts.png",
+        "/catalog/y2k/jeans.png",
+      ],
+    },
   ),
   bundle(
     "vintage",
@@ -386,16 +391,18 @@ export const PRODUCTS: Product[] = [
       "11 vetted windbreaker packages",
       "Direct Shopify & Fleek product links",
       "Grade A–C quality breakdowns per lot",
-      "Alternative image-search platforms (KakoBuy, Joyagoo, Superbuy)",
+      "Alternative image-search platforms",
       "Supplier contact directory",
       "Lifetime updates",
     ],
     VINTAGE_WINDBREAKERS_SUPPLIERS,
     {
       featured: true,
-      gallery: [1, 2, 3, 4, 5, 6].map((n) =>
-        `/catalog/vintage-windbreakers/gallery-${n}.png`,
-      ),
+      gallery: [
+        "/catalog/vintage-windbreakers/cover.png",
+        "/catalog/vintage-windbreakers/gallery-1.png",
+        "/catalog/vintage-windbreakers/gallery-2.png",
+      ],
     },
   ),
   bundle(
