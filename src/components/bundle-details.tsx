@@ -59,8 +59,8 @@ export function BundleDetails({ product }: { product: Product }) {
             </span>
           </div>
 
-          {/* Thumbnail masonry strip */}
-          <div className="mt-4 grid grid-cols-3 gap-4">
+          {/* Thumbnail strip */}
+          <div className="mt-4 grid grid-cols-3 gap-4 sm:grid-cols-3">
             {gallery.map((src, i) => (
               <button
                 key={src + i}

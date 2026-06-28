@@ -26,7 +26,11 @@ export function useCheckout() {
         credentials: "same-origin",
         body: JSON.stringify({ items: items.map((i) => i.id) }),
       })
-      const data = (await res.json()) as { url?: string; error?: string }
+      const data = (await res.json()) as {
+        url?: string
+        error?: string
+        mode?: string
+      }
       if (res.status === 401) {
         window.location.href = `/login?next=${encodeURIComponent("/cart")}`
         return
@@ -34,7 +38,11 @@ export function useCheckout() {
       if (!res.ok || !data.url) {
         throw new Error(data.error ?? "Checkout failed")
       }
-      toast.success("Redirecting to secure checkout…")
+      toast.success(
+        data.mode === "demo"
+          ? "Demo mode — unlocking your bundles…"
+          : "Redirecting to secure checkout…",
+      )
       window.location.href = data.url
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Checkout failed")

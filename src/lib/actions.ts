@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth"
 import { getSession } from "@/lib/session"
 import { grantBundleAccess } from "@/lib/purchases"
 import { getProduct } from "@/lib/products"
+import { isDemoCheckout } from "@/lib/checkout-mode"
 import { db } from "@/lib/db"
 import { sendEmail, siteUrl } from "@/lib/email"
 
@@ -125,7 +126,7 @@ export async function startCheckoutAction(
   if (!product) return { ok: false, message: "Bundle not found." }
 
   // Demo-only shortcut — the cart flow uses POST /api/checkout for real Stripe.
-  if (process.env.STRIPE_SECRET_KEY) {
+  if (!isDemoCheckout()) {
     return {
       ok: false,
       message: "Use the cart checkout for Stripe payments.",

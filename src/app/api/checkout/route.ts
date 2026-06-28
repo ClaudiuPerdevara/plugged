@@ -4,6 +4,7 @@ import Stripe from "stripe"
 import { getProduct } from "@/lib/products"
 import { getSession } from "@/lib/session"
 import { grantBundleAccess } from "@/lib/purchases"
+import { isDemoCheckout } from "@/lib/checkout-mode"
 
 /**
  * ============================================================================
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
   const bundleIds = products.map((p) => p.id)
 
   // 4. DEMO mode — grant immediately and bounce to /success.
-  if (!process.env.STRIPE_SECRET_KEY) {
+  if (isDemoCheckout()) {
     await Promise.all(
       products.map((p) =>
         grantBundleAccess({
@@ -97,6 +98,7 @@ export async function POST(req: Request) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
     const checkout = await stripe.checkout.sessions.create({
       mode: "payment",
+      allow_promotion_codes: true,
       line_items: products.map((p) => ({
         quantity: 1,
         price_data: {

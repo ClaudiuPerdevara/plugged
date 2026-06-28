@@ -425,11 +425,9 @@ export const PRODUCTS: Product[] = [
     VINTAGE_WINDBREAKERS_SUPPLIERS,
     {
       featured: true,
-      gallery: [
-        CATALOG_IMAGES["vintage-windbreakers"].cover,
-        CATALOG_IMAGES["vintage-windbreakers"].cover,
-        CATALOG_IMAGES["vintage-windbreakers"].cover,
-      ],
+      gallery: [1, 2, 3, 4, 5, 6].map((n) =>
+        `/catalog/vintage-windbreakers/gallery-${n}.png`,
+      ),
     },
   ),
   bundle(
