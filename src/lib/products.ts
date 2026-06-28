@@ -2,6 +2,7 @@ import { CATALOG_IMAGES, type CatalogImageKey } from "@/lib/catalog-images"
 import { VINTAGE_WINDBREAKERS_SUPPLIERS } from "@/lib/bundle-data/vintage-windbreakers"
 import { FOOTBALL_TSHIRTS_SUPPLIERS } from "@/lib/bundle-data/football-tshirts"
 import { Y2K_SUPPLIERS } from "@/lib/bundle-data/y2k"
+import { OPIUM_SUPPLIERS } from "@/lib/bundle-data/opium"
 
 export type SourcingRoute = "agent" | "vintage"
 
@@ -137,26 +138,34 @@ function bundleWithSuppliers(
 }
 
 export const PRODUCTS: Product[] = [
-  bundle(
+  bundleWithSuppliers(
     "opium",
     "Opium",
     "Opium Archive Bundle",
-    "All-black avant-garde. Distressed leather, layered fits and the ateliers behind the feed.",
-    "Pure opium-era darkness — draped silhouettes, washed black layers and underground factories that actually ship. The rolodex behind the most copied aesthetic right now.",
-    ["35+ vetted suppliers", "Quality tier ratings", "Lifetime updates"],
+    "Chinese REPS only — not originals. Rick Owens, Balenciaga, Chrome Hearts & Vetements via Taobao/Weidian agents, plus a 2,400+ source archive.",
+    "Pure opium-era darkness, sourced as Chinese reps (replicas) — NOT authentic originals. Curated Rick Owens, Balenciaga, Vetements & Chrome Hearts rep links via the Joyagoo agent, plus a downloadable 2,400+ source archive. Dead link? Just image-search the model's photo to find a live equivalent.",
     [
-      "35+ opium-style suppliers",
-      "Distressing & finishing guides",
-      "MOQ & lead-time sheets",
-      "Quality tier ratings",
+      "2,400+ sources archive (.xlsx)",
+      "15 curated rep links",
+      "Image-search fallback",
+    ],
+    [
+      "Downloadable 2,400+ source & product archive",
+      "15 curated rep product links (Joyagoo)",
+      "5 specialist Taobao/Weidian sellers",
+      "Image-search sourcing fallback",
+      "Agent, QC & tax-free shipping guidance",
       "Lifetime updates",
     ],
-    [
-      ["Noir Atelier", "Leather", "15 units", 5],
-      ["Distressed Lab", "Denim", "40 units", 4],
-      ["Layered Studio", "Outerwear", "20 units", 5],
-    ],
-    { featured: true },
+    OPIUM_SUPPLIERS,
+    {
+      featured: true,
+      gallery: [
+        "/catalog/opium/cover.png",
+        "/catalog/opium/look-1.png",
+        "/catalog/opium/look-2.png",
+      ],
+    },
   ),
   bundleWithSuppliers(
     "y2k",

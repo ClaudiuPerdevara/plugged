@@ -22,9 +22,17 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 - Local `next dev`: homepage hero renders new Opium photo with fit+fade; H1/CTA visible. `/drops` lists new bundle, deleted ones gone. `/bundle/football-tshirts` 200 with correct gallery + 10 plugs. Deleted bundle routes 404. `/icon.png` 200.
 - TS errors present are pre-existing (chart/calendar/auth/cart-provider) and ignored by `next.config.mjs` (`ignoreBuildErrors: true`).
 
+## Changes — 28 Jun 2026 (session 5)
+- **Opium → rich rep bundle** (`products.ts` → `bundleWithSuppliers`). Data file `src/lib/bundle-data/opium.ts` + vault `opium-vault.tsx` (wired into `vault-bundle.tsx`).
+- Vault sections: **REPS-only disclaimer** (Chinese replicas, NOT originals, via Joyagoo agent), **2,400+ sources archive download** (`/public/downloads/Opium_Vendor_List.xlsx`, ~43 MB) with note that dead links → image-search the model photo, 15 curated rep links, 5 specialist sellers, image-search platforms, agent/QC/shipping notes (from `date_produse_opium.md`).
+- Gallery = `[cover.png, look-1.png, look-2.png]` (added the 2 Opium outfit flatlays).
+- Public included list keeps platform names hidden ("Image-search sourcing fallback").
+- Verified: pages 200, gallery 3 imgs, reps + 2,400 text on public page, archive .xlsx downloads (200/43MB), no compile errors.
+- ⚠️ The 43 MB .xlsx lives in the repo/public — if Vercel deploy size becomes an issue, move it to object storage and link externally.
+
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
-- Note: y2k & football & windbreakers vaults are post-purchase (need auth/DB to view live; verified structurally + compile only here).
+- Vaults (opium/y2k/football/windbreakers) are post-purchase (need auth/DB to view live; verified structurally + compile here).
 
 ## Changes — 28 Jun 2026 (session 4)
 - **Y2K photo**: outpainted the user's dusk-street digicam reference to 16:9 (`y2k/hero.png` + `cover.png`) — kept the grainy Y2K aesthetic.

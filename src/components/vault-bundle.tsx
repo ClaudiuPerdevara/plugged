@@ -7,6 +7,7 @@ import type { Product, Supplier, SourcingRoute } from "@/lib/products"
 import { VintageWindbreakersVault } from "./vintage-windbreakers-vault"
 import { FootballTshirtsVault } from "./football-tshirts-vault"
 import { Y2kVault } from "./y2k-vault"
+import { OpiumVault } from "./opium-vault"
 
 function QualityStars({ rating }: { rating: number }) {
   return (
@@ -140,11 +141,13 @@ export function VaultBundle({ product }: { product: Product }) {
           <p className="mt-1 text-sm text-muted-foreground">
             {product.id === "vintage-windbreakers"
               ? "11 wholesale packages · 8 suppliers · image search tools"
-              : product.id === "y2k"
-                ? "12 wholesale packages · 7 suppliers · image search tools"
-                : product.id === "football-tshirts"
-                  ? "10 wholesale packages · 7 suppliers · per-piece pricing"
-                  : `${product.suppliers.length} suppliers · ${agentSuppliers.length} agent · ${vintageSuppliers.length} vintage`}
+              : product.id === "opium"
+                ? "2,400+ sources archive · 15 rep links · image search"
+                : product.id === "y2k"
+                  ? "12 wholesale packages · 7 suppliers · image search tools"
+                  : product.id === "football-tshirts"
+                    ? "10 wholesale packages · 7 suppliers · per-piece pricing"
+                    : `${product.suppliers.length} suppliers · ${agentSuppliers.length} agent · ${vintageSuppliers.length} vintage`}
           </p>
         </div>
 
@@ -170,6 +173,8 @@ export function VaultBundle({ product }: { product: Product }) {
             <div className="flex flex-col gap-5 p-6 md:p-7">
               {product.id === "vintage-windbreakers" ? (
                 <VintageWindbreakersVault />
+              ) : product.id === "opium" ? (
+                <OpiumVault />
               ) : product.id === "y2k" ? (
                 <Y2kVault />
               ) : product.id === "football-tshirts" ? (
