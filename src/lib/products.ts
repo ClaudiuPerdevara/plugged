@@ -1,5 +1,6 @@
 import { CATALOG_IMAGES, type CatalogImageKey } from "@/lib/catalog-images"
 import { VINTAGE_WINDBREAKERS_SUPPLIERS } from "@/lib/bundle-data/vintage-windbreakers"
+import { FOOTBALL_TSHIRTS_SUPPLIERS } from "@/lib/bundle-data/football-tshirts"
 
 export type SourcingRoute = "agent" | "vintage"
 
@@ -35,7 +36,6 @@ const VINTAGE_PLATFORMS = ["Fleek", "Syed Vintage", "B2B Wholesale", "Direct"] a
 
 const VINTAGE_ROUTE_BUNDLES = new Set<CatalogImageKey>([
   "vintage",
-  "archive-fashion",
   "vintage-windbreakers",
 ])
 
@@ -200,26 +200,6 @@ export const PRODUCTS: Product[] = [
     { featured: true },
   ),
   bundle(
-    "archive-fashion",
-    "Archive Fashion",
-    "Archive Fashion Bundle",
-    "Runway archives, deadstock and rare designer pieces from sources resellers actually use.",
-    "The deep-cut rolodex — Japanese archive dealers, EU deadstock hubs and suppliers that move grails, not reps.",
-    ["30+ archive sources", "Deadstock playbooks", "Lifetime updates"],
-    [
-      "30+ archive fashion suppliers",
-      "Deadstock sourcing playbook",
-      "Authentication checklists",
-      "Pricing comp sheets",
-      "Lifetime updates",
-    ],
-    [
-      ["Archive Tokyo Select", "Archive", "5 units", 5],
-      ["Deadstock Paris", "Deadstock", "20 units", 4],
-      ["Grail Index EU", "Designer Archive", "8 units", 5],
-    ],
-  ),
-  bundle(
     "old-money",
     "Old Money",
     "Old Money & Quiet Luxury",
@@ -240,25 +220,32 @@ export const PRODUCTS: Product[] = [
     ],
     { featured: true },
   ),
-  bundle(
-    "bloke-core",
-    "Bloke Core",
-    "Bloke Core & Football Shirts",
-    "Retro kits, terrace fits and bloke-core staples from wholesalers who know the culture.",
-    "Football shirts, trackies and pub-ready layers — the suppliers behind UK terrace culture and the global bloke-core wave.",
-    ["40+ kit & terrace sources", "Season & rarity guides", "Lifetime updates"],
+  bundleWithSuppliers(
+    "football-tshirts",
+    "Football Tees",
+    "Vintage & Football T-Shirts",
+    "10 wholesale football & sports tee packages from 7 vetted suppliers — Nike, Adidas, Carhartt and branded jersey lots with direct links and per-piece pricing.",
+    "Vintage football shirts, branded sport tees and jersey lots — real wholesale packages with grade breakdowns, per-piece costs, EU/UK shipping notes and direct Shopify + Fleek links.",
     [
-      "40+ football & bloke-core suppliers",
-      "Kit season & rarity guides",
-      "Bulk kit sourcing scripts",
-      "Terrace fit lookbook refs",
+      "10 wholesale packages",
+      "Direct product links",
+      "Per-piece pricing & grades",
+    ],
+    [
+      "10 vetted football & sport tee packages",
+      "Direct Shopify & Fleek product links",
+      "Per-piece pricing & grade breakdowns",
+      "EU vs UK shipping & customs guidance",
+      "By-the-kilo & buyer-protection routes",
       "Lifetime updates",
     ],
-    [
-      ["Terrace Threads UK", "Football Kits", "15 units", 5],
-      ["Retro Kit Warehouse", "Vintage Kits", "10 units", 4],
-      ["Trackside Supply", "Trackwear", "25 units", 4],
-    ],
+    FOOTBALL_TSHIRTS_SUPPLIERS,
+    {
+      gallery: [
+        "/catalog/football-tshirts/cover.png",
+        "/catalog/football-tshirts/tshirts.png",
+      ],
+    },
   ),
   bundle(
     "gorpcore",
@@ -318,26 +305,6 @@ export const PRODUCTS: Product[] = [
       ["Neutral Blank Co.", "Tees & Hoodies", "100 units", 5],
       ["Essential Cut Mfg.", "Basics", "75 units", 4],
       ["Clean Line Studio", "Loungewear", "40 units", 4],
-    ],
-  ),
-  bundle(
-    "jewelry-hardware",
-    "Jewelry",
-    "Jewelry & Hardware",
-    "Chains, rings, buckles and hardware from silversmiths and accessory factories.",
-    "Ice, chrome and hardware — vetted silversmiths and accessory plants with QC photos, weight specs and MOQ breakdowns.",
-    ["25+ jewelry suppliers", "Metal & plating guides", "Lifetime updates"],
-    [
-      "25+ jewelry & hardware suppliers",
-      "Metal purity & plating guides",
-      "Weight & QC photo standards",
-      "Custom mold MOQ sheets",
-      "Lifetime updates",
-    ],
-    [
-      ["Silver Chain Co.", "Chains", "25 units", 5],
-      ["Chrome Hardware Lab", "Buckles & Clips", "50 units", 4],
-      ["Signet Forge", "Rings", "20 units", 5],
     ],
   ),
   bundle(

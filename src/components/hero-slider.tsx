@@ -86,10 +86,21 @@ export function HeroSlider() {
         >
           <img
             src={slide.image}
+            alt=""
+            aria-hidden
+            draggable={false}
+            className="pointer-events-none absolute inset-0 h-full w-full scale-110 object-cover opacity-45 blur-3xl"
+          />
+          <img
+            src={slide.image}
             alt={`${slide.title} — ${slide.tag}`}
             draggable={false}
-            className="pointer-events-none h-full w-full object-cover"
+            className="pointer-events-none relative h-full w-full object-contain"
           />
+          {/* Edge vignette — fades the 9:16 image into the dark background */}
+          <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_140px_50px_var(--background)]" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-[18%] bg-gradient-to-r from-background to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] bg-gradient-to-l from-background to-transparent" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/10" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-transparent" />
         </motion.div>
