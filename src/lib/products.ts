@@ -1,4 +1,5 @@
 import { CATALOG_IMAGES, type CatalogImageKey } from "@/lib/catalog-images"
+import { VINTAGE_WINDBREAKERS_SUPPLIERS } from "@/lib/bundle-data/vintage-windbreakers"
 
 export type SourcingRoute = "agent" | "vintage"
 
@@ -35,6 +36,7 @@ const VINTAGE_PLATFORMS = ["Fleek", "Syed Vintage", "B2B Wholesale", "Direct"] a
 const VINTAGE_ROUTE_BUNDLES = new Set<CatalogImageKey>([
   "vintage",
   "archive-fashion",
+  "vintage-windbreakers",
 ])
 
 function inferRoute(
@@ -101,6 +103,34 @@ function bundle(
     perks,
     included,
     suppliers: suppliers(id, supplierEntries),
+    featured: opts?.featured,
+  }
+}
+
+function bundleWithSuppliers(
+  id: CatalogImageKey,
+  tag: string,
+  name: string,
+  description: string,
+  aesthetic: string,
+  perks: string[],
+  included: string[],
+  customSuppliers: Supplier[],
+  opts?: { featured?: boolean; gallery?: string[] },
+): Product {
+  const imgs = CATALOG_IMAGES[id]
+  return {
+    id,
+    tag,
+    name,
+    description,
+    aesthetic,
+    price: 20,
+    image: imgs.cover,
+    gallery: opts?.gallery ?? [...imgs.gallery],
+    perks,
+    included,
+    suppliers: customSuppliers,
     featured: opts?.featured,
   }
 }
@@ -372,6 +402,35 @@ export const PRODUCTS: Product[] = [
       ["Ends Streetwear Hub", "Layers", "25 units", 4],
     ],
     { featured: true },
+  ),
+  bundleWithSuppliers(
+    "vintage-windbreakers",
+    "Windbreakers",
+    "Vintage Windbreakers",
+    "11 wholesale windbreaker & track jacket packages from 8 vetted suppliers — Nike, Adidas and branded lots with direct links.",
+    "90s color-block windbreakers, branded track jackets and vintage outerwear lots — real wholesale packages with grade breakdowns, MOQs and direct Shopify + Fleek links.",
+    [
+      "11 wholesale packages",
+      "Direct product links",
+      "Image search platforms",
+    ],
+    [
+      "11 vetted windbreaker packages",
+      "Direct Shopify & Fleek product links",
+      "Grade A–C quality breakdowns per lot",
+      "Alternative image-search platforms (KakoBuy, Joyagoo, Superbuy)",
+      "Supplier contact directory",
+      "Lifetime updates",
+    ],
+    VINTAGE_WINDBREAKERS_SUPPLIERS,
+    {
+      featured: true,
+      gallery: [
+        CATALOG_IMAGES["vintage-windbreakers"].cover,
+        CATALOG_IMAGES["vintage-windbreakers"].cover,
+        CATALOG_IMAGES["vintage-windbreakers"].cover,
+      ],
+    },
   ),
   bundle(
     "gymwear",

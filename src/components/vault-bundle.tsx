@@ -4,6 +4,7 @@ import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ExternalLink, KeyRound, Star } from "lucide-react"
 import type { Product, Supplier, SourcingRoute } from "@/lib/products"
+import { VintageWindbreakersVault } from "./vintage-windbreakers-vault"
 
 function QualityStars({ rating }: { rating: number }) {
   return (
@@ -135,8 +136,9 @@ export function VaultBundle({ product }: { product: Product }) {
             {product.name}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            {product.suppliers.length} suppliers · {agentSuppliers.length} agent
-            · {vintageSuppliers.length} vintage
+            {product.id === "vintage-windbreakers"
+              ? "11 wholesale packages · 8 suppliers · image search tools"
+              : `${product.suppliers.length} suppliers · ${agentSuppliers.length} agent · ${vintageSuppliers.length} vintage`}
           </p>
         </div>
 
@@ -160,16 +162,22 @@ export function VaultBundle({ product }: { product: Product }) {
             className="overflow-hidden border-t border-border"
           >
             <div className="flex flex-col gap-5 p-5">
-              <SupplierTable
-                title={ROUTE_META.agent.title}
-                description={ROUTE_META.agent.description}
-                rows={agentSuppliers}
-              />
-              <SupplierTable
-                title={ROUTE_META.vintage.title}
-                description={ROUTE_META.vintage.description}
-                rows={vintageSuppliers}
-              />
+              {product.id === "vintage-windbreakers" ? (
+                <VintageWindbreakersVault />
+              ) : (
+                <>
+                  <SupplierTable
+                    title={ROUTE_META.agent.title}
+                    description={ROUTE_META.agent.description}
+                    rows={agentSuppliers}
+                  />
+                  <SupplierTable
+                    title={ROUTE_META.vintage.title}
+                    description={ROUTE_META.vintage.description}
+                    rows={vintageSuppliers}
+                  />
+                </>
+              )}
             </div>
           </motion.div>
         )}
