@@ -33,6 +33,15 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
 
+## Changes — 29 Jun 2026 (session 7)
+- **Jeans hero corrected**: re-outpainted the user's actual reference (5 baggy jeans on concrete, `i9bu6kwj`) to 16:9 → `/catalog/jeans/hero.png` (margins filled, same jeans).
+- **Old Money renamed** "Old Money & Quiet Luxury" → **"Old Money Premium Brands"**. Hero + cover = Amalfi-coast lifestyle image. Gallery = `[cover (Amalfi), gallery-1 (RL polos), gallery-2 (Lacoste/RL box)]`.
+- Added `gallery?` override support to the generic `bundle()` helper.
+- ⏳ PENDING: categorized "View Plugs" vault for Old Money from its `.md` — the Old Money `.md` did NOT arrive in the uploaded artifacts; asked user to re-upload.
+
+## Backlog / Next
+- Build categorized Old Money vault once the `.md` is re-shared.
+
 ## Changes — 29 Jun 2026 (session 6)
 - **Mobile responsive fix**: added `width=device-width, initial-scale=1` to the `viewport` export in `layout.tsx` (was missing → mobile rendered zoomed). Also fixed a flex `min-width:auto` overflow on `/drops` by adding `w-full min-w-0` to the catalog `<section>` (body was 1280px on a 390px screen → now 390, no horizontal scroll). DOM-verified.
 - **Opium reps warning moved to PUBLIC bundle page** (`bundle-details.tsx`, opium only) and removed the duplicate banner from the post-purchase vault.

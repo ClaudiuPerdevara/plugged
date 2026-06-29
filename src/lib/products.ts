@@ -91,7 +91,7 @@ function bundle(
   perks: string[],
   included: string[],
   supplierEntries: [string, string, string, number][],
-  opts?: { featured?: boolean },
+  opts?: { featured?: boolean; gallery?: string[] },
 ): Product {
   const imgs = CATALOG_IMAGES[id]
   return {
@@ -102,7 +102,7 @@ function bundle(
     aesthetic,
     price: 20,
     image: imgs.cover,
-    gallery: [...imgs.gallery],
+    gallery: opts?.gallery ?? [...imgs.gallery],
     perks,
     included,
     suppliers: suppliers(id, supplierEntries),
@@ -217,7 +217,7 @@ export const PRODUCTS: Product[] = [
   bundle(
     "old-money",
     "Old Money",
-    "Old Money & Quiet Luxury",
+    "Old Money Premium Brands",
     "Loro Piana energy without the markup. Knitwear, polos, loafers and quiet-lux factories.",
     "Clean silhouettes, neutral palettes and premium-grade sources for the old-money aesthetic — built for resellers who sell taste, not hype.",
     ["25+ quiet-lux suppliers", "Fabric tier guides", "Lifetime updates"],
@@ -233,7 +233,14 @@ export const PRODUCTS: Product[] = [
       ["Heritage Polo Mfg.", "Tops", "50 units", 4],
       ["Classic Sole House", "Footwear", "12 units", 5],
     ],
-    { featured: true },
+    {
+      featured: true,
+      gallery: [
+        "/catalog/old-money/cover.png",
+        "/catalog/old-money/gallery-1.png",
+        "/catalog/old-money/gallery-2.png",
+      ],
+    },
   ),
   bundleWithSuppliers(
     "football-tshirts",
