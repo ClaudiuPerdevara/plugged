@@ -467,7 +467,6 @@ export const PRODUCTS: Product[] = [
         "/catalog/sportswear/cover.png",
         "/catalog/sportswear/gallery-1.png",
         "/catalog/sportswear/gallery-2.png",
-        "/catalog/sportswear/gallery-3.png",
       ],
     },
   ),

@@ -37,6 +37,12 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 - **Vault**: `src/components/sportswear-vault.tsx` — categorized COMPACT tables (px-3 padding, min-w-[560px], no `#` col, wrapping) so it isn't too wide; includes the 3 China image-search pages + supplier contacts. Wired into `vault-bundle.tsx`.
 - ⚠️ COULD NOT RUN E2E (Vercel+Neon, no node_modules in sandbox). Built to match existing bundle patterns; applies on next Vercel deploy.
 
+## Changes — 30 Jun 2026 (session 12) — Sportswear cover + hero
+- **Corrected cover**: user wanted the navy/olive/grey Nike trackpants pile (high-res `jjuzewk9`) as the bundle cover → replaced `public/catalog/sportswear/cover.png` (confirmed via analysis). Gallery now [cover, gallery-1 sweaters, gallery-2 tees] (dropped the duplicate gallery-3, which was the same pile image).
+- **Hero image**: generated a 16:9 `hero.png` (1264×848) from the cover (Gemini centered the photo on the dark textured surface with dark margins — blends with the slider's dark gradient overlays).
+- **Homepage hero slider**: removed `vintage` (Vintage & Second-hand Bales) from `HERO_BUNDLE_IDS` and added `sportswear` in its place (`hero-slider.tsx`). Vintage bales bundle still exists in /drops, just not on the homepage hero.
+- ⚠️ COULD NOT RUN E2E (Vercel+Neon, no node_modules). Hero is a centered-on-dark composition, not a seamless outpaint — acceptable on the dark theme; can be regenerated if user wants edge-to-edge.
+
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
 

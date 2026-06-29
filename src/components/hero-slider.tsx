@@ -16,7 +16,7 @@ const HERO_BUNDLE_IDS = [
   "y2k",
   "vintage-windbreakers",
   "jeans",
-  "vintage",
+  "sportswear",
   "sneakers-footwear",
 ] as const
 
