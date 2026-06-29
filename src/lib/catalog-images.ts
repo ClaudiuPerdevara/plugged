@@ -25,7 +25,7 @@ export const CATALOG_IMAGES = {
   vintage: bundleAssets("vintage"),
   "old-money": bundleAssets("old-money"),
   "football-tshirts": bundleAssets("football-tshirts"),
-  gorpcore: bundleAssets("gorpcore"),
+  carhartt: bundleAssets("carhartt"),
   jeans: bundleAssets("jeans"),
   minimalist: bundleAssets("minimalist"),
   "sneakers-footwear": bundleAssets("sneakers-footwear"),

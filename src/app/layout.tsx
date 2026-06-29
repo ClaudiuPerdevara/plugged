@@ -23,14 +23,14 @@ export const metadata: Metadata = {
     template: '%s — PLUGGED',
   },
   description:
-    'Vetted supplier bundles for young fashion resellers — Opium, Y2K, UK drip, gorpcore, sneakers and 14+ aesthetics. $20 lifetime access.',
+    'Vetted supplier bundles for young fashion resellers — Opium, Y2K, UK drip, Carhartt workwear, sneakers and 14+ aesthetics. $20 lifetime access.',
   generator: 'v0.app',
   keywords: [
     'streetwear suppliers',
     'opium fashion',
     'y2k bundle',
     'uk drip',
-    'gorpcore',
+    'carhartt workwear',
     'gymwear reselling',
     'sneaker suppliers',
     'reseller plugs',

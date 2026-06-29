@@ -5,6 +5,7 @@ import { Y2K_SUPPLIERS } from "@/lib/bundle-data/y2k"
 import { OPIUM_SUPPLIERS } from "@/lib/bundle-data/opium"
 import { JEANS_SUPPLIERS } from "@/lib/bundle-data/jeans"
 import { OLD_MONEY_SUPPLIERS } from "@/lib/bundle-data/old-money"
+import { CARHARTT_SUPPLIERS } from "@/lib/bundle-data/carhartt"
 
 export type SourcingRoute = "agent" | "vintage"
 
@@ -269,25 +270,35 @@ export const PRODUCTS: Product[] = [
       ],
     },
   ),
-  bundle(
-    "gorpcore",
-    "Gorpcore",
-    "Gorpcore & Outdoor Tech",
-    "Shell jackets, Salomon-era trail shoes and tech fleece from outdoor-grade factories.",
-    "Functional fashion — Arc'teryx-adjacent shells, trail runners and gorpcore layers from factories that pass waterproof and stitch QC.",
-    ["30+ outdoor suppliers", "Tech spec sheets", "Lifetime updates"],
+  bundleWithSuppliers(
+    "carhartt",
+    "Carhartt",
+    "Carhartt & Dickies Workwear Bundle",
+    "14 hand-picked Carhartt & Dickies wholesale packages from 6 vetted suppliers — Detroit jackets, double-knee pants, heavy-weight hoodies and Dickies tees with direct links, grade breakdowns and supplier contacts.",
+    "The workwear rolodex built for the streetwear & skater audience — Carhartt Detroit jackets, double-knee pants, Carhartt & Dickies hoodies and graphic tees. 14 vetted wholesale packages across the UK, EU and US with grade breakdowns, MOQs, EU/UK/US customs notes and direct Shopify + Fleek links.",
     [
-      "30+ gorpcore suppliers",
-      "Fabric & waterproof spec sheets",
-      "Trail & shell sizing guides",
-      "Seasonal drop calendar",
+      "14 wholesale packages",
+      "Carhartt & Dickies focus",
+      "Grade-B distressed flip guide",
+    ],
+    [
+      "14 vetted Carhartt & Dickies packages",
+      "Direct Shopify, Fleek & B2B product links",
+      "Grade A/B & distressed Grade-B breakdowns",
+      "EU vs UK vs US shipping & customs guidance",
+      "Detroit jacket & double-knee resale tips",
+      "Supplier contact directory",
       "Lifetime updates",
     ],
-    [
-      ["Summit Shell Works", "Outerwear", "20 units", 5],
-      ["Trail Sole Factory", "Footwear", "15 units", 4],
-      ["Fleece Peak Mfg.", "Midlayers", "40 units", 4],
-    ],
+    CARHARTT_SUPPLIERS,
+    {
+      featured: true,
+      gallery: [
+        "/catalog/carhartt/cover.png",
+        "/catalog/carhartt/gallery-2.png",
+        "/catalog/carhartt/gallery-3.png",
+      ],
+    },
   ),
   bundleWithSuppliers(
     "jeans",
