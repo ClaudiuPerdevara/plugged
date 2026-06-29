@@ -33,6 +33,15 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
 
+## Changes — 29 Jun 2026 (session 8)
+- **Old Money fully built** from `date_produse_old_money.md`: converted to `bundleWithSuppliers` (22 plugs). New data file `src/lib/bundle-data/old-money.ts` (4 categories: Reseller Boxes, Polos/Knitwear, Shirts, Trousers) + categorized vault `old-money-vault.tsx` (each category = its own section/table + selling tips). Wired into `vault-bundle.tsx`.
+- **What's Included now names the brands** explicitly: "Brands: Ralph Lauren, Lacoste, Tommy Hilfiger & Burberry" (per user) + category breakdown. Public bundle page verified (DOM): brands line present, "22 vetted plugs", gallery = Amalfi cover + RL polos + Lacoste box.
+- **Jeans .md updated**: added 13th link "Y2K Jeans Mix" (Thrift Vintage Fashion) to `jeans.ts`.
+- Verified: routes 200, brands line in DOM, old-money 22 plugs, jeans 13, no compile errors.
+
+## Backlog / Next
+- Await next fixes/errors from user.
+
 ## Changes — 29 Jun 2026 (session 7)
 - **Jeans hero corrected**: re-outpainted the user's actual reference (5 baggy jeans on concrete, `i9bu6kwj`) to 16:9 → `/catalog/jeans/hero.png` (margins filled, same jeans).
 - **Old Money renamed** "Old Money & Quiet Luxury" → **"Old Money Premium Brands"**. Hero + cover = Amalfi-coast lifestyle image. Gallery = `[cover (Amalfi), gallery-1 (RL polos), gallery-2 (Lacoste/RL box)]`.

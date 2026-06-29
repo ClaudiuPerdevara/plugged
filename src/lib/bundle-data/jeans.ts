@@ -32,6 +32,7 @@ export const JEANS_PACKAGES: JeansPackage[] = [
   { id: 10, name: "50x Hip-Hop Baggy Jeans", supplier: "Fleek", packagePrice: "€1335.25", perPiece: "€26.70 / pc", grade: "Grade A", shipping: "Shipping included! · 20–27 days", link: "https://www.joinfleek.com/products/hip-hop-baggy-jeans-1" },
   { id: 11, name: "30x Hip-Hop Jeans", supplier: "Fleek", packagePrice: "€719.17", perPiece: "€23.97 / pc", grade: "A / B / C", shipping: "Shipping included! · 20–27 days", link: "https://www.joinfleek.com/products/hip-hop-jeans-65" },
   { id: 12, name: "Hip-Hop Baggy Jeans (per pc)", supplier: "The Vintage Wholesale Co.", packagePrice: "N/A", perPiece: "£10.00 / pc", grade: "Mix (90s & Y2K)", shipping: "Ships from UK · min. 10 pcs", link: "https://thevintagewholesalecompany.com/products/vintage-hip-hop-baggy-jeans" },
+  { id: 13, name: "Y2K Jeans Mix", supplier: "Thrift Vintage Fashion", packagePrice: "Varies", perPiece: "Varies", grade: "Y2K Mix", shipping: "Free over $200 · ships from USA", link: "https://thriftvintagefashion.com/products/w1-y2k-jeans" },
 ]
 
 export const JEANS_NOTES: SupplierNote[] = [

@@ -4,6 +4,7 @@ import { FOOTBALL_TSHIRTS_SUPPLIERS } from "@/lib/bundle-data/football-tshirts"
 import { Y2K_SUPPLIERS } from "@/lib/bundle-data/y2k"
 import { OPIUM_SUPPLIERS } from "@/lib/bundle-data/opium"
 import { JEANS_SUPPLIERS } from "@/lib/bundle-data/jeans"
+import { OLD_MONEY_SUPPLIERS } from "@/lib/bundle-data/old-money"
 
 export type SourcingRoute = "agent" | "vintage"
 
@@ -214,25 +215,23 @@ export const PRODUCTS: Product[] = [
     ],
     { featured: true },
   ),
-  bundle(
+  bundleWithSuppliers(
     "old-money",
     "Old Money",
     "Old Money Premium Brands",
-    "Loro Piana energy without the markup. Knitwear, polos, loafers and quiet-lux factories.",
-    "Clean silhouettes, neutral palettes and premium-grade sources for the old-money aesthetic — built for resellers who sell taste, not hype.",
-    ["25+ quiet-lux suppliers", "Fabric tier guides", "Lifetime updates"],
+    "Ralph Lauren, Lacoste, Tommy & Burberry — hand-picked premium wholesale packages across boxes, polos, knitwear, shirts & trousers.",
+    "Clean silhouettes and quiet-luxury staples from established premium brands (Ralph Lauren, Lacoste, Tommy Hilfiger, Burberry) — manually filtered wholesale links organised by category, with grades, EU/UK/US shipping notes and reseller tips.",
+    ["22 plugs across 4 categories", "Premium brands only", "Reseller tips"],
     [
-      "25+ old-money suppliers",
-      "Fabric & stitch quality guides",
-      "MOQ breakdowns by category",
-      "Margin calculator templates",
+      "Brands: Ralph Lauren, Lacoste, Tommy Hilfiger & Burberry",
+      "22 hand-picked premium-brand packages",
+      "Organised by category (boxes, polos, shirts, trousers)",
+      "Direct Shopify, Fleek & wholesale links",
+      "Grade & shipping/customs notes per source",
+      "Old-money reseller & care tips",
       "Lifetime updates",
     ],
-    [
-      ["Quiet Loom Co.", "Knitwear", "30 units", 5],
-      ["Heritage Polo Mfg.", "Tops", "50 units", 4],
-      ["Classic Sole House", "Footwear", "12 units", 5],
-    ],
+    OLD_MONEY_SUPPLIERS,
     {
       featured: true,
       gallery: [

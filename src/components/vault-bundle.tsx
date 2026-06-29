@@ -9,6 +9,7 @@ import { FootballTshirtsVault } from "./football-tshirts-vault"
 import { Y2kVault } from "./y2k-vault"
 import { OpiumVault } from "./opium-vault"
 import { JeansVault } from "./jeans-vault"
+import { OldMoneyVault } from "./old-money-vault"
 
 function QualityStars({ rating }: { rating: number }) {
   return (
@@ -150,7 +151,9 @@ export function VaultBundle({ product }: { product: Product }) {
                     ? "10 wholesale packages · 7 suppliers · per-piece pricing"
                     : product.id === "jeans"
                       ? "12 wholesale packages · 10 suppliers · per-piece pricing"
-                      : `${product.suppliers.length} suppliers · ${agentSuppliers.length} agent · ${vintageSuppliers.length} vintage`}
+                      : product.id === "old-money"
+                        ? "22 plugs · 4 categories · premium brands"
+                        : `${product.suppliers.length} suppliers · ${agentSuppliers.length} agent · ${vintageSuppliers.length} vintage`}
           </p>
         </div>
 
@@ -184,6 +187,8 @@ export function VaultBundle({ product }: { product: Product }) {
                 <FootballTshirtsVault />
               ) : product.id === "jeans" ? (
                 <JeansVault />
+              ) : product.id === "old-money" ? (
+                <OldMoneyVault />
               ) : (
                 <>
                   <SupplierTable
