@@ -18,7 +18,11 @@ export function useCheckout() {
     override?: { id: string }[],
     opts?: { voucherCode?: string | null },
   ) {
-    const ids = (override ?? items).map((i) => i.id)
+    // Guard: only honour `override` when it's a real array of items. This
+    // prevents a crash if a click handler accidentally passes the DOM event
+    // (e.g. onClick={checkout}) instead of calling checkout() with no args.
+    const source = Array.isArray(override) ? override : items
+    const ids = source.map((i) => i.id)
     if (ids.length === 0) {
       toast.error("Your cart is empty")
       return

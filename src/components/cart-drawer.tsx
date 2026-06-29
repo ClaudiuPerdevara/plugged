@@ -130,8 +130,9 @@ export function CartDrawer() {
                   </div>
                   <button
                     type="button"
-                    onClick={checkout}
+                    onClick={() => checkout()}
                     disabled={pending}
+                    data-testid="cart-drawer-checkout-button"
                     className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent px-6 py-4 text-base font-semibold text-accent-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-70 disabled:hover:scale-100"
                   >
                     {pending ? (

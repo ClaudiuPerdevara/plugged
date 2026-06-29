@@ -23,12 +23,6 @@ export function GoogleIcon(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-export function AppleIcon(_props: SVGProps<SVGSVGElement>) {
-  // Kept as a no-op so any lingering imports don't crash; Apple sign-in is
-  // intentionally not offered. Safe to delete once no callers remain.
-  return null
-}
-
 export function DiscordIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>

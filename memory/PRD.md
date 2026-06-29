@@ -33,6 +33,22 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
 
+## Changes — 30 Jun 2026 (session 10) — checkout fix + audit
+- **BUG FIX (cart checkout)**: `cart-drawer.tsx` had `onClick={checkout}`, passing the React MouseEvent into `checkout(override)` → `override.map` threw synchronously (outside try/catch) so the right-side cart drawer's "Secure Checkout" silently did nothing. Fixed to `onClick={() => checkout()}` + made `use-checkout.ts` defensive (`Array.isArray(override) ? override : items`). Cart page (`cart-view.tsx`) already called correctly; Buy Now on bundle page was fine.
+- **Apple login**: confirmed fully removed from UI (only Google remains); deleted the leftover no-op `AppleIcon` stub from `brand-icons.tsx`.
+- **DEMO_CHECKOUT**: confirmed not referenced anywhere in `src/`. Cleaned stale "DEMO mode" wording in `success/page.tsx` → "VOUCHER mode" (that query path is the 100%-voucher Stripe-bypass redirect).
+- **Audit notes (no code change needed)**:
+  - Stripe promo codes already enabled via `allow_promotion_codes: true` in `api/checkout/route.ts` (the "Add promotion code" button shows on Stripe's hosted page). User creates coupons + promotion codes in Stripe Dashboard.
+  - NOTE: app has TWO separate voucher systems — internal DB voucher (cart "Voucher code" field, `scripts/create-voucher.mjs`, 100% bypasses Stripe) vs Stripe-native promotion codes (entered on Stripe page). A Stripe code typed into the app's cart field will be rejected. Consider removing the in-cart voucher field if going Stripe-only (offered to user).
+  - Support email: code path is correct (saves SupportTicket + emails via Resend) but needs Vercel env: `RESEND_API_KEY`, `SUPPORT_INBOX`, `RESEND_FROM_EMAIL` (verified domain). Without a verified Resend domain, only `onboarding@resend.dev` works and can only send to the Resend account owner's address.
+  - DB encryption: Neon Postgres = AES-256 at rest + TLS in transit by default; passwords scrypt-hashed by better-auth; Session table is auth source of truth. OK.
+  - FAQ / Terms / Privacy reviewed — consistent ($20 lifetime, support email plugged.support@gmail.com, non-refundable, Google-only sign-in). OK.
+- **Could NOT run e2e here**: this is a Vercel+Neon Next.js app; sandbox lacks node_modules/Neon DB/env. Checkout fix verified by static analysis. Deploys via Vercel/GitHub.
+
+## Open / awaiting user
+- "View Plugs" table "too long" — need to know WHICH bundle's table to fix precisely.
+- Confirm whether to remove the in-cart voucher field (Stripe-only codes).
+
 ## Changes — 29 Jun 2026 (session 9)
 - **Jeans bundle photo = hero image**: copied the outpainted 16:9 hero to `jeans/cover.png` so the card + gallery main image is now the nice wide shot (gallery = hero + look-1 + look-2).
 - **Descriptions refined** (jeans→13 pkgs, football, old-money) to state precisely what's offered + that supplier contacts / shipping & customs notes are included.

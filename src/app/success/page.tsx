@@ -18,8 +18,9 @@ export const dynamic = "force-dynamic"
 /**
  * /success — shown after a completed checkout.
  *
- * DEMO mode: the checkout route redirects here with `?bundles=y2k,opium`, so
- * we read the bundle ids straight from the query string.
+ * VOUCHER mode: a 100%-off voucher bypasses Stripe, so /api/checkout redirects
+ * here with `?bundles=y2k,opium` and we read the unlocked bundle ids straight
+ * from the query string.
  *
  * STRIPE mode: Stripe redirects here with `?session_id=...`. We retrieve the
  * Checkout Session from Stripe and, if it's paid, grant the purchased bundles
@@ -34,7 +35,7 @@ export default async function SuccessPage({
 }) {
   const { bundles, session_id } = await searchParams
 
-  // 1. Demo mode: bundle ids are in the query string.
+  // 1. Voucher mode: bundle ids are in the query string.
   let bundleIds = (bundles?.split(",") ?? [])
     .map((id) => id.trim())
     .filter(Boolean)
