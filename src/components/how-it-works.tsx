@@ -14,7 +14,7 @@ const STEPS = [
   {
     icon: Search,
     title: "Pick your lane",
-    body: "Opium, Y2K, UK drip, gymwear, sneakers — 14 style bundles. Pick the aesthetic your audience actually buys.",
+    body: "Opium, Y2K, UK drip, vintage sportswear, sneakers — 14 style bundles. Pick the aesthetic your audience actually buys.",
   },
   {
     icon: Zap,

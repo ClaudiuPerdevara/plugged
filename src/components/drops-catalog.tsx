@@ -44,7 +44,7 @@ export function DropsCatalog() {
         </h1>
         <p className="mt-5 text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
           {PRODUCTS.length} vetted supplier bundles for young resellers — Opium,
-          Y2K, UK drip, gymwear, sneakers and more. Pick your scene, unlock the
+          Y2K, UK drip, vintage sportswear, sneakers and more. Pick your scene, unlock the
           links.
         </p>
       </motion.div>

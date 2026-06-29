@@ -31,7 +31,7 @@ export const CATALOG_IMAGES = {
   "sneakers-footwear": bundleAssets("sneakers-footwear"),
   designer: bundleAssets("designer"),
   "uk-drip": bundleAssets("uk-drip"),
-  gymwear: bundleAssets("gymwear"),
+  sportswear: bundleAssets("sportswear"),
   "vintage-windbreakers": bundleAssets("vintage-windbreakers"),
 } as const
 

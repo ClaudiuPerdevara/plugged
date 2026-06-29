@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     'y2k bundle',
     'uk drip',
     'carhartt workwear',
-    'gymwear reselling',
+    'vintage sportswear reselling',
     'sneaker suppliers',
     'reseller plugs',
   ],

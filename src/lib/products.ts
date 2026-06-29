@@ -6,6 +6,7 @@ import { OPIUM_SUPPLIERS } from "@/lib/bundle-data/opium"
 import { JEANS_SUPPLIERS } from "@/lib/bundle-data/jeans"
 import { OLD_MONEY_SUPPLIERS } from "@/lib/bundle-data/old-money"
 import { CARHARTT_SUPPLIERS } from "@/lib/bundle-data/carhartt"
+import { SPORTSWEAR_SUPPLIERS } from "@/lib/bundle-data/sportswear"
 
 export type SourcingRoute = "agent" | "vintage"
 
@@ -440,25 +441,35 @@ export const PRODUCTS: Product[] = [
       ],
     },
   ),
-  bundle(
-    "gymwear",
-    "Gymwear",
-    "Gymwear & Lifting Aesthetics",
-    "Stringers, compression and gym-core fits from performance fabric factories.",
-    "Gymshark-adjacent cuts, stringers and compression from factories that understand stretch, squat-proof QC and colorfast dyes.",
-    ["30+ gymwear suppliers", "Fabric stretch specs", "Lifetime updates"],
+  bundleWithSuppliers(
+    "sportswear",
+    "Sportswear",
+    "Vintage Sportswear — Trackpants, Sweaters & T-Shirts",
+    "18 wholesale Nike & Adidas sportswear packages from 7 vetted suppliers — vintage trackpants/joggers, sport tees and sweaters/hoodies with direct links, grades and EU/UK/US shipping notes.",
+    "One of the easiest, most profitable niches to flip on Vinted & Depop — baggy retro Nike trackpants, classic center-swoosh sport tees and heavy-weight vintage hoodies & sweaters (Nike & Adidas). 18 real wholesale packages across 3 categories with grade breakdowns, EU/UK/US shipping & customs notes, supplier contacts, direct Shopify + Fleek links and a photo-search China sourcing fallback.",
     [
-      "30+ gymwear suppliers",
-      "Stretch & squat-proof QC guide",
-      "Compression fabric spec sheets",
-      "Influencer collab MOQ tiers",
+      "18 wholesale packages",
+      "3 categories · Nike & Adidas",
+      "Image-search China fallback",
+    ],
+    [
+      "18 vetted Nike & Adidas sportswear packages",
+      "3 categories: trackpants, sport tees, sweaters & hoodies",
+      "Direct Shopify, Fleek & wholesale links",
+      "Grade & EU/UK/US shipping/customs notes per source",
+      "Alternative photo-search platforms (China sourcing)",
+      "Supplier contact directory",
       "Lifetime updates",
     ],
-    [
-      ["Flex Fabric Mfg.", "Compression", "40 units", 5],
-      ["Iron Stringer Co.", "Stringers & Tanks", "50 units", 4],
-      ["Lift Seam Works", "Shorts & Leggings", "35 units", 4],
-    ],
+    SPORTSWEAR_SUPPLIERS,
+    {
+      gallery: [
+        "/catalog/sportswear/cover.png",
+        "/catalog/sportswear/gallery-1.png",
+        "/catalog/sportswear/gallery-2.png",
+        "/catalog/sportswear/gallery-3.png",
+      ],
+    },
   ),
 ]
 

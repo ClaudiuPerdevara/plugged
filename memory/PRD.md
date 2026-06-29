@@ -30,6 +30,13 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 - Verified: pages 200, gallery 3 imgs, reps + 2,400 text on public page, archive .xlsx downloads (200/43MB), no compile errors.
 - ⚠️ The 43 MB .xlsx lives in the repo/public — if Vercel deploy size becomes an issue, move it to object storage and link externally.
 
+## Changes — 30 Jun 2026 (session 11) — Sportswear bundle
+- **Replaced `gymwear` ("Gymwear & Lifting Aesthetics")** with new bundle **`sportswear` — "Vintage Sportswear — Trackpants, Sweaters & T-Shirts"** (Nike & Adidas, 18 plugs across 3 categories). All `gymwear` refs removed (products, catalog-images, layout keywords, drops page/catalog, how-it-works).
+- **Images**: user-uploaded photos saved to `public/catalog/sportswear/` — `cover.png` (Nike trackpants flatlay, confirmed via analysis), gallery = cover + gallery-1 (sweaters/hoodies) + gallery-2 (tees) + gallery-3 (trackpants pile). 4-image gallery override in `products.ts`.
+- **Data**: `src/lib/bundle-data/sportswear.ts` — 3 categories (Trackpants & Joggers ×5, Sport T-Shirts ×6, Sweaters & Hoodies ×7) with supplier/type/grade/shipping/link; `SPORTSWEAR_IMAGE_SEARCH` (Joyagoo/KakoBuy/Superbuy China photo-search) + `SPORTSWEAR_CONTACTS` + `SPORTSWEAR_SUPPLIERS`.
+- **Vault**: `src/components/sportswear-vault.tsx` — categorized COMPACT tables (px-3 padding, min-w-[560px], no `#` col, wrapping) so it isn't too wide; includes the 3 China image-search pages + supplier contacts. Wired into `vault-bundle.tsx`.
+- ⚠️ COULD NOT RUN E2E (Vercel+Neon, no node_modules in sandbox). Built to match existing bundle patterns; applies on next Vercel deploy.
+
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
 

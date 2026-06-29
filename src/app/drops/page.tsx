@@ -5,7 +5,7 @@ import { DropsCatalog } from "@/components/drops-catalog"
 export const metadata = {
   title: "All Drops — PLUGGED",
   description:
-    "Browse 14 vetted supplier bundles — Opium, Y2K, UK drip, Carhartt workwear, sneakers, gymwear and more.",
+    "Browse 14 vetted supplier bundles — Opium, Y2K, UK drip, Carhartt workwear, sneakers, vintage sportswear and more.",
 }
 
 export default function DropsPage() {

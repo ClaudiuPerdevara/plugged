@@ -11,6 +11,7 @@ import { OpiumVault } from "./opium-vault"
 import { JeansVault } from "./jeans-vault"
 import { OldMoneyVault } from "./old-money-vault"
 import { CarharttVault } from "./carhartt-vault"
+import { SportswearVault } from "./sportswear-vault"
 
 function QualityStars({ rating }: { rating: number }) {
   return (
@@ -156,7 +157,9 @@ export function VaultBundle({ product }: { product: Product }) {
                         ? "22 plugs · 4 categories · premium brands"
                         : product.id === "carhartt"
                           ? "14 wholesale packages · 6 suppliers · Carhartt & Dickies"
-                          : `${product.suppliers.length} suppliers · ${agentSuppliers.length} agent · ${vintageSuppliers.length} vintage`}
+                          : product.id === "sportswear"
+                            ? "18 wholesale packages · 3 categories · Nike & Adidas"
+                            : `${product.suppliers.length} suppliers · ${agentSuppliers.length} agent · ${vintageSuppliers.length} vintage`}
           </p>
         </div>
 
@@ -194,6 +197,8 @@ export function VaultBundle({ product }: { product: Product }) {
                 <OldMoneyVault />
               ) : product.id === "carhartt" ? (
                 <CarharttVault />
+              ) : product.id === "sportswear" ? (
+                <SportswearVault />
               ) : (
                 <>
                   <SupplierTable
