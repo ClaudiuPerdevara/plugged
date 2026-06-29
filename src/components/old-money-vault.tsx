@@ -36,16 +36,15 @@ export function OldMoneyVault() {
           </div>
           <div className="p-5">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[820px] border-collapse text-left text-sm">
+              <table className="w-full min-w-[560px] border-collapse text-left text-sm">
                 <thead>
                   <tr className="border-b border-border text-xs uppercase tracking-[0.15em] text-muted-foreground">
-                    <th className="px-5 py-4 font-medium">#</th>
-                    <th className="px-5 py-4 font-medium">Package</th>
-                    <th className="px-5 py-4 font-medium">Supplier</th>
-                    <th className="px-5 py-4 font-medium">Type</th>
-                    <th className="px-5 py-4 font-medium">Grade</th>
-                    <th className="px-5 py-4 font-medium">Shipping</th>
-                    <th className="px-5 py-4 font-medium">Link</th>
+                    <th className="px-3 py-3 font-medium">Package</th>
+                    <th className="px-3 py-3 font-medium">Supplier</th>
+                    <th className="px-3 py-3 font-medium">Type</th>
+                    <th className="px-3 py-3 font-medium">Grade</th>
+                    <th className="px-3 py-3 font-medium">Shipping</th>
+                    <th className="px-3 py-3 font-medium">Link</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -54,27 +53,24 @@ export function OldMoneyVault() {
                       key={pkg.id}
                       className="border-b border-border/60 align-top transition-colors last:border-0 hover:bg-secondary/40"
                     >
-                      <td className="px-5 py-5 font-mono text-xs text-muted-foreground">
-                        {pkg.id}
-                      </td>
-                      <td className="whitespace-nowrap px-5 py-5 font-medium text-foreground">
+                      <td className="px-3 py-3.5 font-medium text-foreground">
                         {pkg.name}
                       </td>
-                      <td className="px-5 py-5 text-muted-foreground">
+                      <td className="px-3 py-3.5 text-muted-foreground">
                         {pkg.supplier}
                       </td>
-                      <td className="whitespace-nowrap px-5 py-5 text-muted-foreground">
+                      <td className="px-3 py-3.5 text-muted-foreground">
                         {pkg.sellType}
                       </td>
-                      <td className="px-5 py-5">
+                      <td className="px-3 py-3.5">
                         <span className="inline-flex whitespace-nowrap rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 font-mono text-[11px] uppercase tracking-wide text-accent">
                           {pkg.grade}
                         </span>
                       </td>
-                      <td className="min-w-[200px] max-w-[260px] px-5 py-5 text-xs leading-relaxed text-muted-foreground">
+                      <td className="max-w-[220px] px-3 py-3.5 text-xs leading-relaxed text-muted-foreground">
                         {pkg.shipping}
                       </td>
-                      <td className="px-5 py-5">
+                      <td className="px-3 py-3.5">
                         <a
                           href={pkg.link}
                           target="_blank"

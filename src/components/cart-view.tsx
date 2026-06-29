@@ -1,75 +1,24 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import {
   ArrowLeft,
-  BadgePercent,
-  CheckCircle2,
   Loader2,
   Lock,
   ShieldCheck,
   ShoppingBag,
   Trash2,
-  X,
 } from "lucide-react"
 import { useCart } from "./cart-provider"
 import { useCheckout } from "@/lib/use-checkout"
-
-type AppliedVoucher = {
-  code: string
-  discountPercent: number
-}
 
 export function CartView() {
   const { items, total, count, removeItem, clear } = useCart()
   const { checkout, pending } = useCheckout()
 
-  const [voucherInput, setVoucherInput] = useState("")
-  const [voucherPending, setVoucherPending] = useState(false)
-  const [voucherError, setVoucherError] = useState<string | null>(null)
-  const [applied, setApplied] = useState<AppliedVoucher | null>(null)
-
-  const discountUsd = applied ? (total * applied.discountPercent) / 100 : 0
-  const payableUsd = Math.max(0, total - discountUsd)
-  const isFreeUnlock = applied?.discountPercent === 100
-
-  async function applyVoucher() {
-    const code = voucherInput.trim()
-    if (!code) return
-    setVoucherPending(true)
-    setVoucherError(null)
-    try {
-      const res = await fetch(
-        `/api/voucher/validate?code=${encodeURIComponent(code)}`,
-      )
-      const data = (await res.json()) as {
-        ok: boolean
-        message?: string
-        voucher?: { code: string; discountPercent: number } | null
-      }
-      if (!res.ok || !data.ok || !data.voucher) {
-        setVoucherError(data.message ?? "We don't recognise that code.")
-        setApplied(null)
-        return
-      }
-      setApplied(data.voucher)
-      setVoucherInput("")
-    } catch {
-      setVoucherError("Could not check that code. Try again.")
-    } finally {
-      setVoucherPending(false)
-    }
-  }
-
-  function clearVoucher() {
-    setApplied(null)
-    setVoucherError(null)
-  }
-
   function handleCheckout() {
-    void checkout(undefined, { voucherCode: applied?.code ?? null })
+    void checkout()
   }
 
   return (
@@ -180,135 +129,34 @@ export function CartView() {
                   <dd className="text-accent">Free</dd>
                 </div>
 
-                {applied && (
-                  <div
-                    className="flex items-center justify-between"
-                    data-testid="cart-voucher-applied-row"
-                  >
-                    <dt className="flex items-center gap-1.5 text-accent">
-                      <BadgePercent className="size-3.5" />
-                      Voucher · {applied.code}
-                    </dt>
-                    <dd className="font-mono text-accent">
-                      −${discountUsd.toFixed(discountUsd % 1 === 0 ? 0 : 2)}
-                    </dd>
-                  </div>
-                )}
-
                 <div className="my-2 h-px bg-border" />
                 <div className="flex items-center justify-between">
                   <dt className="font-heading text-base font-bold text-foreground">
                     Total
                   </dt>
                   <dd className="font-heading text-2xl font-bold text-foreground">
-                    ${payableUsd % 1 === 0
-                      ? payableUsd
-                      : payableUsd.toFixed(2)}
+                    ${total}
                   </dd>
                 </div>
               </dl>
 
-              {/* Voucher input */}
-              <div className="mt-6 border-t border-border pt-5">
-                {applied ? (
-                  <div
-                    className="flex items-start justify-between gap-3 rounded-xl border border-accent/30 bg-accent/10 px-3 py-2.5"
-                    data-testid="cart-voucher-applied"
-                  >
-                    <div className="flex items-start gap-2 text-xs">
-                      <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-accent" />
-                      <div>
-                        <p className="font-semibold text-foreground">
-                          {applied.code} applied
-                        </p>
-                        <p className="mt-0.5 text-muted-foreground">
-                          {isFreeUnlock
-                            ? "100% off — no payment needed."
-                            : `${applied.discountPercent}% off at checkout.`}
-                        </p>
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={clearVoucher}
-                      aria-label="Remove voucher"
-                      data-testid="cart-voucher-remove"
-                      className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-background/50 hover:text-foreground"
-                    >
-                      <X className="size-3.5" />
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    <label
-                      htmlFor="voucher-code"
-                      className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted-foreground"
-                    >
-                      Voucher code
-                    </label>
-                    <div className="mt-2 flex gap-2">
-                      <input
-                        id="voucher-code"
-                        name="voucherCode"
-                        type="text"
-                        value={voucherInput}
-                        onChange={(e) =>
-                          setVoucherInput(e.target.value.toUpperCase())
-                        }
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault()
-                            void applyVoucher()
-                          }
-                        }}
-                        placeholder="WELCOME"
-                        autoComplete="off"
-                        spellCheck={false}
-                        data-testid="cart-voucher-input"
-                        className="w-full rounded-xl border border-border bg-background/60 px-3 py-2.5 font-mono text-sm uppercase tracking-wider text-foreground placeholder:font-sans placeholder:normal-case placeholder:tracking-normal placeholder:text-muted-foreground outline-none transition-colors duration-300 focus:border-accent/60 focus-visible:ring-2 focus-visible:ring-ring/40"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => void applyVoucher()}
-                        disabled={voucherPending || !voucherInput.trim()}
-                        data-testid="cart-voucher-apply"
-                        className="rounded-xl border border-border bg-background/60 px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-accent/60 hover:text-accent disabled:opacity-50"
-                      >
-                        {voucherPending ? (
-                          <Loader2 className="size-4 animate-spin" />
-                        ) : (
-                          "Apply"
-                        )}
-                      </button>
-                    </div>
-                    {voucherError && (
-                      <p
-                        className="mt-2 text-xs text-destructive"
-                        data-testid="cart-voucher-error"
-                      >
-                        {voucherError}
-                      </p>
-                    )}
-                  </>
-                )}
-              </div>
+              {/* Promo / discount codes are entered on the secure Stripe
+                  checkout page via "Add promotion code" — not here. */}
+              <p className="mt-5 border-t border-border pt-5 text-xs leading-relaxed text-muted-foreground">
+                Got a discount code? Add it on the next (secure Stripe) step.
+              </p>
 
               <button
                 type="button"
                 onClick={handleCheckout}
                 disabled={pending}
                 data-testid="cart-checkout-button"
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent px-6 py-4 text-base font-semibold text-accent-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-70 disabled:hover:scale-100"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent px-6 py-4 text-base font-semibold text-accent-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-70 disabled:hover:scale-100"
               >
                 {pending ? (
                   <>
                     <Loader2 className="size-5 animate-spin" />
                     Processing…
-                  </>
-                ) : isFreeUnlock ? (
-                  <>
-                    <ShieldCheck className="size-4" />
-                    Unlock for Free
                   </>
                 ) : (
                   <>
