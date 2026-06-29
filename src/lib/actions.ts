@@ -3,9 +3,6 @@
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 import { getSession } from "@/lib/session"
-import { grantBundleAccess } from "@/lib/purchases"
-import { getProduct } from "@/lib/products"
-import { isDemoCheckout } from "@/lib/checkout-mode"
 import { db } from "@/lib/db"
 import { sendEmail, siteUrl } from "@/lib/email"
 
@@ -100,49 +97,6 @@ export async function submitSupportAction(
   return {
     ok: true,
     message: "Message sent. We'll reply to your email shortly.",
-  }
-}
-
-/* -------------------------------------------------------------------------- */
-/* Checkout                                                                   */
-/* -------------------------------------------------------------------------- */
-
-/**
- * Single-bundle "Buy Now" entry point (currently unused by the UI — the cart
- * flow POSTs to /api/checkout — but kept for the bundle details button).
- * In demo mode it grants the bundle immediately for the signed-in user.
- */
-export async function startCheckoutAction(
-  bundleId: string,
-): Promise<ActionState> {
-  if (!bundleId) return { ok: false, message: "Missing bundle." }
-
-  const session = await getSession()
-  if (!session) {
-    return { ok: false, message: "Sign in to complete your purchase." }
-  }
-
-  const product = getProduct(bundleId)
-  if (!product) return { ok: false, message: "Bundle not found." }
-
-  // Demo-only shortcut — the cart flow uses POST /api/checkout for real Stripe.
-  if (!isDemoCheckout()) {
-    return {
-      ok: false,
-      message: "Use the cart checkout for Stripe payments.",
-    }
-  }
-
-  await grantBundleAccess({
-    userId: session.user.id,
-    bundleId,
-    amount: Math.round(product.price * 100),
-  })
-
-  return {
-    ok: true,
-    message: "Access granted. Opening your vault…",
-    redirectTo: `/success?bundles=${encodeURIComponent(bundleId)}`,
   }
 }
 

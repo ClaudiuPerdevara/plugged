@@ -91,7 +91,7 @@ model Purchase {
   bundleName              String?
   /// Price paid in USD cents at time of purchase.
   amount                  Int
-  /// Stripe checkout session id (when paid via Stripe). Null for demo grants.
+  /// Stripe checkout session id (when paid via Stripe). Null for voucher unlocks.
   stripeCheckoutSessionId String?
   createdAt               DateTime @default(now())
 
@@ -112,4 +112,44 @@ model SupportTicket {
 
   @@index([email])
   @@index([createdAt])
+}
+
+// ----------------------------------------------------------- Application: vouchers
+/// Promotional codes redeemable at checkout. A 100%-off voucher bypasses
+/// Stripe entirely (the bundle is granted directly). Partial discounts
+/// flow through Stripe via a dynamically created one-time coupon.
+model Voucher {
+  id              String              @id @default(cuid())
+  /// Case-insensitive code the user types in at checkout. Stored uppercase.
+  code            String              @unique
+  /// Whole-number percentage off, 1–100. 100 = full bypass / free unlock.
+  discountPercent Int
+  /// Optional cap on total uses across all users. Null = unlimited.
+  maxUses         Int?
+  /// How many times this voucher has been redeemed.
+  usedCount       Int                 @default(0)
+  /// Optional expiry. Null = never expires.
+  expiresAt       DateTime?
+  /// Optional human-friendly note (audit / admin).
+  note            String?
+  createdAt       DateTime            @default(now())
+  redemptions     VoucherRedemption[]
+
+  @@index([code])
+}
+
+/// Audit log of every voucher redemption — also enforces "one voucher per user per bundle"
+/// indirectly (the cart only allows one voucher and bundles are unique per user).
+model VoucherRedemption {
+  id        String   @id @default(cuid())
+  voucherId String
+  voucher   Voucher  @relation(fields: [voucherId], references: [id], onDelete: Cascade)
+  userId    String
+  bundleId  String
+  /// Percent applied at the time of redemption (snapshot in case the voucher changes later).
+  percent   Int
+  createdAt DateTime @default(now())
+
+  @@index([voucherId])
+  @@index([userId])
 }

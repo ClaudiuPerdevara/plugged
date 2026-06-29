@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import Stripe from "stripe"
 import { grantBundleAccess } from "@/lib/purchases"
 import { getProduct } from "@/lib/products"
+import { recordRedemption } from "@/lib/vouchers"
 import { db } from "@/lib/db"
 
 /**
@@ -89,6 +90,21 @@ export async function POST(req: Request) {
             })
           }),
         )
+
+        // Record voucher redemption (partial-discount path). 100%-off
+        // vouchers bypass Stripe so they're already recorded in /api/checkout.
+        const voucherId = session.metadata?.voucherId
+        const voucherPercent = Number(session.metadata?.voucherPercent ?? "")
+        if (voucherId && Number.isFinite(voucherPercent) && voucherPercent > 0) {
+          await recordRedemption({
+            voucherId,
+            userId,
+            bundleIds,
+            percent: voucherPercent,
+          }).catch((err) => {
+            console.error("[webhook] recordRedemption failed:", err)
+          })
+        }
         break
       }
       default:

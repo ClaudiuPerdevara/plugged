@@ -5,15 +5,19 @@ import { toast } from "sonner"
 import { useCart } from "@/components/cart-provider"
 
 /**
- * Client hook that hands the basket to the Stripe checkout API route.
- * On success the backend returns a hosted checkout URL; until Stripe is wired
- * in, the placeholder route returns a relative /success URL.
+ * Client hook that hands the basket (and optional voucher) to the Stripe
+ * checkout API route. On success the backend returns a hosted checkout URL
+ * — or, for a 100%-off voucher, a direct redirect to /success after the
+ * bundles were granted server-side.
  */
 export function useCheckout() {
   const { items } = useCart()
   const [pending, setPending] = useState(false)
 
-  async function checkout(override?: { id: string }[]) {
+  async function checkout(
+    override?: { id: string }[],
+    opts?: { voucherCode?: string | null },
+  ) {
     const ids = (override ?? items).map((i) => i.id)
     if (ids.length === 0) {
       toast.error("Your cart is empty")
@@ -25,7 +29,10 @@ export function useCheckout() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
-        body: JSON.stringify({ items: ids }),
+        body: JSON.stringify({
+          items: ids,
+          ...(opts?.voucherCode ? { voucherCode: opts.voucherCode } : {}),
+        }),
       })
       const data = (await res.json()) as {
         url?: string
@@ -40,8 +47,8 @@ export function useCheckout() {
         throw new Error(data.error ?? "Checkout failed")
       }
       toast.success(
-        data.mode === "demo"
-          ? "Demo mode — unlocking your bundles…"
+        data.mode === "voucher"
+          ? "Voucher applied — unlocking your bundles…"
           : "Redirecting to secure checkout…",
       )
       window.location.href = data.url

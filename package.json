@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "postinstall": "prisma generate",
     "db:push": "dotenv -e .env.local -- prisma db push",
-    "db:generate": "dotenv -e .env.local -- prisma generate"
+    "db:generate": "dotenv -e .env.local -- prisma generate",
+    "voucher:create": "dotenv -e .env.local -- node scripts/create-voucher.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

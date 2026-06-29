@@ -23,12 +23,10 @@ export function GoogleIcon(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-export function AppleIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
-      <path d="M16.36 12.78c.02 2.5 2.18 3.33 2.2 3.34-.02.06-.34 1.18-1.13 2.33-.68.99-1.39 1.98-2.5 2-1.1.02-1.45-.65-2.7-.65-1.26 0-1.65.63-2.69.67-1.08.04-1.9-1.07-2.59-2.06-1.41-2.04-2.48-5.75-1.04-8.26.72-1.24 2-2.03 3.39-2.05 1.06-.02 2.06.71 2.7.71.65 0 1.86-.88 3.14-.75.53.02 2.04.21 3 1.62-.08.05-1.79 1.05-1.78 3.15zM14.3 5.6c.57-.69.95-1.65.85-2.6-.82.03-1.81.55-2.4 1.23-.53.61-1 1.58-.87 2.51.91.07 1.85-.46 2.42-1.14z" />
-    </svg>
-  )
+export function AppleIcon(_props: SVGProps<SVGSVGElement>) {
+  // Kept as a no-op so any lingering imports don't crash; Apple sign-in is
+  // intentionally not offered. Safe to delete once no callers remain.
+  return null
 }
 
 export function DiscordIcon(props: SVGProps<SVGSVGElement>) {

@@ -4,17 +4,8 @@ import { useState, useTransition, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import {
-  AlertCircle,
-  ArrowRight,
-  Eye,
-  EyeOff,
-  Loader2,
-  Lock,
-  Mail,
-  User,
-} from "lucide-react"
-import { AppleIcon, GoogleIcon } from "./brand-icons"
+import { AlertCircle, ArrowRight, Eye, EyeOff, Loader2, Lock, Mail, User } from "lucide-react"
+import { GoogleIcon } from "./brand-icons"
 import { authClient } from "@/lib/auth-client"
 import { CATALOG_IMAGES } from "@/lib/catalog-images"
 
@@ -132,31 +123,27 @@ export function AuthForm({ mode }: { mode: Mode }) {
     })
   }
 
-  function handleSocial(provider: "google" | "apple") {
+  function handleSocial(provider: "google") {
     setSocialMsg(null)
     startSocial(async () => {
-      if (provider === "google") {
-        // Better Auth handles the full OAuth redirect: the browser is sent to
-        // Google, then back to /api/auth/callback/google, which sets the
-        // session cookie and redirects to /dashboard. Requires
-        // GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET in .env (see setup note).
-        const { error } = await authClient.signIn.social({
-          provider: "google",
-          callbackURL: nextUrl && nextUrl.startsWith("/") ? nextUrl : "/dashboard/",
-        })
-        if (error) {
-          const notConfigured =
-            error.code === "PROVIDER_NOT_FOUND" ||
-            error.code === "PROVIDER_NOT_ENABLED" ||
-            error.code === "PROVIDER_ID_NOT_FOUND"
-          setSocialMsg(
-            notConfigured
-              ? "GOOGLE_NOT_CONFIGURED"
-              : error.message || "Google sign-in failed.",
-          )
-        }
-      } else {
-        setSocialMsg("Apple sign-in isn't connected yet.")
+      // Better Auth handles the full OAuth redirect: the browser is sent to
+      // Google, then back to /api/auth/callback/google, which sets the
+      // session cookie and redirects to /dashboard. Requires
+      // GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET in .env (see setup note).
+      const { error } = await authClient.signIn.social({
+        provider,
+        callbackURL: nextUrl && nextUrl.startsWith("/") ? nextUrl : "/dashboard/",
+      })
+      if (error) {
+        const notConfigured =
+          error.code === "PROVIDER_NOT_FOUND" ||
+          error.code === "PROVIDER_NOT_ENABLED" ||
+          error.code === "PROVIDER_ID_NOT_FOUND"
+        setSocialMsg(
+          notConfigured
+            ? "GOOGLE_NOT_CONFIGURED"
+            : error.message || "Google sign-in failed.",
+        )
       }
     })
   }
@@ -205,6 +192,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
               type="button"
               onClick={() => handleSocial("google")}
               disabled={socialPending}
+              data-testid="auth-google-button"
               className="flex items-center justify-center gap-3 rounded-xl border border-border bg-background/60 px-4 py-3 text-sm font-semibold text-foreground transition-colors duration-300 hover:border-accent/50 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-60"
             >
               {socialPending ? (
@@ -213,15 +201,6 @@ export function AuthForm({ mode }: { mode: Mode }) {
                 <GoogleIcon className="size-5" />
               )}
               Continue with Google
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSocial("apple")}
-              disabled={socialPending}
-              className="flex items-center justify-center gap-3 rounded-xl border border-border bg-background/60 px-4 py-3 text-sm font-semibold text-foreground transition-colors duration-300 hover:border-accent/50 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-60"
-            >
-              <AppleIcon className="size-5" />
-              Continue with Apple
             </button>
           </div>
 
