@@ -16,6 +16,7 @@ export type SupplierNote = {
   region: string
   bestFor: string
   note: string
+  contact?: string
 }
 
 /** 12 vintage & hip-hop baggy denim packages — collected 29 Jun 2026. */
@@ -36,11 +37,11 @@ export const JEANS_PACKAGES: JeansPackage[] = [
 ]
 
 export const JEANS_NOTES: SupplierNote[] = [
-  { supplier: "US Suppliers (LA Vintage, Thrift Vintage Fashion)", region: "USA", bestFor: "Raw bulk (large bales, tens/hundreds of kg)", note: "Shipping USA→EU is expensive and you'll pay significant customs + VAT on arrival. Only worth it at industrial volume (pallets), not small packs." },
-  { supplier: "UK Suppliers (The Vintage Wholesale Co., Vintage Wholesale Supply)", region: "UK", bestFor: "Clear brands (Levi's 501, Wrangler) sorted by grade", note: "Even Grade C options at ~£2.20/pc (great for upcycling/repair). Post-Brexit, 19% VAT + customs apply — the courier (DHL/DPD) sends a payment link before delivery." },
-  { supplier: "EU Suppliers (Vintage Wholesale Spain, Best Vintage Wholesale)", region: "EU", bestFor: "Fast, no-surprise buys", note: "Ships from within the EU → straight to your door, no customs, no holds. Spain sells by the kilo, which can mean a very good per-pair price if styles aren't heavy." },
-  { supplier: "Fleek (Hip-Hop Baggy packs)", region: "Intl.", bestFor: "Sought-after Y2K/skate brands (Southpole, Rocawear, Ecko, Karl Kani)", note: "Higher per-pair prices (€14–€26) because baggy Y2K denim is rare & in demand. Shipping is included but takes 3–4 weeks; VAT may apply on arrival if shipped from Asia." },
-  { supplier: "B2B Platforms (Merkandi)", region: "EU/Intl.", bestFor: "Liquidated / bankrupt stock of Levi's", note: "Not a shop but a wholesale marketplace where wholesalers post offers. You'll need an account (sometimes a subscription) to see seller contact details." },
+  { supplier: "US Suppliers (LA Vintage, Thrift Vintage Fashion)", region: "USA", bestFor: "Raw bulk (large bales, tens/hundreds of kg)", note: "Shipping USA→EU is expensive and you'll pay significant customs + VAT on arrival. Only worth it at industrial volume (pallets), not small packs.", contact: "lavintage.com · thriftvintagefashion.com" },
+  { supplier: "UK Suppliers (The Vintage Wholesale Co., Vintage Wholesale Supply)", region: "UK", bestFor: "Clear brands (Levi's 501, Wrangler) sorted by grade", note: "Even Grade C options at ~£2.20/pc (great for upcycling/repair). Post-Brexit, 19% VAT + customs apply — the courier (DHL/DPD) sends a payment link before delivery.", contact: "thevintagewholesalecompany.com · IG @vwswholesale" },
+  { supplier: "EU Suppliers (Vintage Wholesale Spain, Best Vintage Wholesale)", region: "EU", bestFor: "Fast, no-surprise buys", note: "Ships from within the EU → straight to your door, no customs, no holds. Spain sells by the kilo, which can mean a very good per-pair price if styles aren't heavy.", contact: "vintagewholesalespain.com · bestvintagewholesale.com" },
+  { supplier: "Fleek (Hip-Hop Baggy packs)", region: "Intl.", bestFor: "Sought-after Y2K/skate brands (Southpole, Rocawear, Ecko, Karl Kani)", note: "Higher per-pair prices (€14–€26) because baggy Y2K denim is rare & in demand. Shipping is included but takes 3–4 weeks; VAT may apply on arrival if shipped from Asia.", contact: "Via Fleek platform chat" },
+  { supplier: "B2B Platforms (Merkandi)", region: "EU/Intl.", bestFor: "Liquidated / bankrupt stock of Levi's", note: "Not a shop but a wholesale marketplace where wholesalers post offers. You'll need an account (sometimes a subscription) to see seller contact details.", contact: "merkandi.us (account required)" },
 ]
 
 /** Maps packages onto the generic Supplier shape for catalog use. */

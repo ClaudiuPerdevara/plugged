@@ -16,6 +16,7 @@ export type SupplierNote = {
   region: string
   bestFor: string
   note: string
+  contact?: string
 }
 
 /** 10 wholesale packages from 7 suppliers — collected 28 June 2026. */
@@ -129,30 +130,35 @@ export const FOOTBALL_TSHIRTS_NOTES: SupplierNote[] = [
     region: "EU",
     bestFor: "High volume & low per-piece prices",
     note: "Based in the EU (no hidden customs for RO/EU). Free shipping over €500. The €2.17/pc sport tee pack is Grade B — expect minor stains/defects that need a wash or small repair.",
+    contact: "Contact form · vintagesuppliers1989.com",
   },
   {
     supplier: "SP Vintage Wholesale",
     region: "Spain",
     bestFor: "Premium quality (Adidas, Nike, Ralph Lauren)",
     note: "Fast EU delivery, no customs hassle (based in Spain). Shipping is calculated at the end based on parcel weight.",
+    contact: "spvintagewholesale.com/en/pages/contact",
   },
   {
     supplier: "Fleek (RAZIQ VINTAGE)",
     region: "Intl.",
     bestFor: "Best prices — shipping included",
     note: "Pack prices already include international shipping, but parcels ship from outside Europe (Pakistan, Dubai, etc.), so delivery takes 20–27 days and customs may apply on arrival. Fleek offers Buyer Protection (refund if goods are bad).",
+    contact: "Via Fleek platform chat",
   },
   {
-    supplier: "UK Suppliers (The Vintage Wholesale Co., That Vintage Football Shirt, Vintage Wholesale Supply Ltd)",
+    supplier: "UK Suppliers (Vintage Wholesale Supply, The Vintage Wholesale Co., That Vintage Football Shirt)",
     region: "UK",
     bestFor: "Rare, 100% original football shirts",
     note: "Since Brexit, any UK→EU order (incl. Romania) is subject to customs + VAT. On arrival the courier (DHL, DPD) will ask for ~19% VAT + duties. Always budget this extra cost.",
+    contact: "IG @vwswholesale · thatfootballshirt@outlook.com · 01482 765 437",
   },
   {
     supplier: "Vintagism",
     region: "EU",
     bestFor: "Buying by the kilo",
     note: "Sells by weight (€10/KG of football shirts). A shirt is ~200–250g, so roughly 4–5 shirts per kilo (≈€2–2.5/pc). Shipping is calculated only after you place the order, once they weigh the box.",
+    contact: "vintagism.eu/contact",
   },
 ]
 

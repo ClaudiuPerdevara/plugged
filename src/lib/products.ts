@@ -220,7 +220,7 @@ export const PRODUCTS: Product[] = [
     "Old Money",
     "Old Money Premium Brands",
     "Ralph Lauren, Lacoste, Tommy & Burberry — hand-picked premium wholesale packages across boxes, polos, knitwear, shirts & trousers.",
-    "Clean silhouettes and quiet-luxury staples from established premium brands (Ralph Lauren, Lacoste, Tommy Hilfiger, Burberry) — manually filtered wholesale links organised by category, with grades, EU/UK/US shipping notes and reseller tips.",
+    "Clean silhouettes and quiet-luxury staples from established premium brands (Ralph Lauren, Lacoste, Tommy Hilfiger, Burberry) — 22 manually filtered wholesale links organised by category, with grades, EU/UK/US shipping & customs notes, supplier contacts and reseller tips.",
     ["22 plugs across 4 categories", "Premium brands only", "Reseller tips"],
     [
       "Brands: Ralph Lauren, Lacoste, Tommy Hilfiger & Burberry",
@@ -245,8 +245,8 @@ export const PRODUCTS: Product[] = [
     "football-tshirts",
     "Football Tees",
     "Vintage & Football T-Shirts",
-    "10 wholesale football & sports tee packages from 7 vetted suppliers — Nike, Adidas, Carhartt and branded jersey lots with direct links and per-piece pricing.",
-    "Vintage football shirts, branded sport tees and jersey lots — real wholesale packages with grade breakdowns, per-piece costs, EU/UK shipping notes and direct Shopify + Fleek links.",
+    "10 wholesale football & sports tee packages from 7 vetted suppliers — Nike, Adidas, Carhartt and branded jersey lots with direct links, per-piece pricing and supplier contacts.",
+    "Vintage football shirts, branded sport tees and jersey lots — 10 real wholesale packages with grade breakdowns, per-piece costs, EU/UK shipping & customs notes, supplier contacts and direct Shopify + Fleek links.",
     [
       "10 wholesale packages",
       "Direct product links",
@@ -293,8 +293,8 @@ export const PRODUCTS: Product[] = [
     "jeans",
     "Jeans",
     "Vintage & Baggy Jeans",
-    "12 wholesale denim packages from 10 suppliers — vintage Levi's/Lee/Wrangler and Y2K hip-hop baggy jeans (Southpole, Ecko, Karl Kani) with direct links and per-piece pricing.",
-    "Vintage Levi's, Lee & Wrangler plus rare Y2K hip-hop baggy denim — real wholesale packages with grade breakdowns, per-piece costs, EU/UK/US shipping & customs notes and direct Shopify + Fleek links.",
+    "13 wholesale denim packages from 10 suppliers — vintage Levi's/Lee/Wrangler and Y2K hip-hop baggy jeans (Southpole, Ecko, Karl Kani) with direct links, per-piece pricing and supplier contacts.",
+    "Vintage Levi's, Lee & Wrangler plus rare Y2K hip-hop baggy denim — 13 real wholesale packages with grade breakdowns, per-piece costs, EU/UK/US shipping & customs notes, supplier contacts and direct Shopify + Fleek links.",
     [
       "12 wholesale packages",
       "Direct product links",

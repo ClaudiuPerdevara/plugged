@@ -1,7 +1,11 @@
 "use client"
 
-import { ExternalLink, Lightbulb, Package } from "lucide-react"
-import { OLD_MONEY_CATEGORIES, OLD_MONEY_TIPS } from "@/lib/bundle-data/old-money"
+import { ExternalLink, Lightbulb, Package, Truck } from "lucide-react"
+import {
+  OLD_MONEY_CATEGORIES,
+  OLD_MONEY_NOTES,
+  OLD_MONEY_TIPS,
+} from "@/lib/bundle-data/old-money"
 
 export function OldMoneyVault() {
   return (
@@ -89,6 +93,50 @@ export function OldMoneyVault() {
           </div>
         </div>
       ))}
+
+      <div className="rounded-xl border border-border bg-background/40">
+        <div className="flex items-start gap-3 border-b border-border px-5 py-5">
+          <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent/10">
+            <Truck className="size-4 text-accent" />
+          </div>
+          <div>
+            <h4 className="font-heading text-sm font-bold tracking-tight text-foreground">
+              Supplier & Shipping Notes
+            </h4>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              Where each source ships from, what it's best for and how to reach
+              them.
+            </p>
+          </div>
+        </div>
+        <div className="grid gap-3 p-5 md:grid-cols-2">
+          {OLD_MONEY_NOTES.map((row) => (
+            <div
+              key={row.supplier}
+              className="rounded-xl border border-border bg-card/50 p-4"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-heading text-sm font-bold text-foreground">
+                  {row.supplier}
+                </span>
+                <span className="shrink-0 rounded-full border border-border bg-background/60 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wide text-muted-foreground">
+                  {row.region}
+                </span>
+              </div>
+              <p className="mt-1 text-xs font-medium text-accent">
+                Best for: {row.bestFor}
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                {row.shipping}
+              </p>
+              <p className="mt-2 text-[11px] text-foreground/70">
+                <span className="text-muted-foreground">Contact: </span>
+                {row.contact}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <div className="rounded-xl border border-border bg-background/40">
         <div className="flex items-start gap-3 border-b border-border px-5 py-5">

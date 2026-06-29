@@ -133,6 +133,12 @@ export function FootballTshirtsVault() {
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
                 {row.note}
               </p>
+              {row.contact ? (
+                <p className="mt-2 text-[11px] text-foreground/70">
+                  <span className="text-muted-foreground">Contact: </span>
+                  {row.contact}
+                </p>
+              ) : null}
             </div>
           ))}
         </div>

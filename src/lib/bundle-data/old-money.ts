@@ -50,21 +50,14 @@ export const OLD_MONEY_CATEGORIES: OldMoneyCategory[] = [
     ],
   },
   {
-    title: "Shirts",
+    title: "Shirts & Trousers",
     description:
-      "Small-logo Oxford shirts — fast sellers on Vinted, Depop and Grailed.",
+      "Small-logo Oxford shirts plus chinos & tailored trousers to complete the Old Money fit.",
     packages: [
       { id: 18, name: "Premium Branded Shirts Mix", supplier: "SP Vintage", sellType: "Pack", grade: "Mix Premium", shipping: "Ships from Spain · no EU customs", link: "https://spvintagewholesale.com/en/products/mix-camisas-de-marca-premium" },
       { id: 19, name: "Pre-Order Tommy Hilfiger Shirts Mix", supplier: "SP Vintage", sellType: "Pack", grade: "Mix Premium", shipping: "Ships from Spain · no EU customs", link: "https://spvintagewholesale.com/en/products/pre-order-mix-camisas-tommy-hilfiger" },
       { id: 20, name: "Ralph Lauren Shirts Mix", supplier: "SP Vintage", sellType: "Pack", grade: "Mix Premium", shipping: "Ships from Spain · no EU customs", link: "https://spvintagewholesale.com/en/products/mix-camisas-ralph-lauren" },
       { id: 21, name: "Tommy Hilfiger Men's Shirts", supplier: "Fleek", sellType: "Pack", grade: "Grade A/B", shipping: "Shipping included! · 20–27 days", link: "https://www.joinfleek.com/products/zv1617-tommy-hilfiger-men-s-shirt-1" },
-    ],
-  },
-  {
-    title: "Trousers & Chinos",
-    description:
-      "Chinos and tailored trousers to complete the Old Money fit.",
-    packages: [
       { id: 22, name: "Lauren Ralph Lauren Men's Trousers", supplier: "Vintage Wh. Supply", sellType: "Pack", grade: "Mix Vintage", shipping: "Ships from UK · watch EU customs", link: "https://vintagewholesalesupplyltd.com/en-eu/products/laurenralphlaurenmenstrousers" },
     ],
   },
@@ -74,6 +67,23 @@ export const OLD_MONEY_TIPS: string[] = [
   "Presentation matters: iron every piece and shoot in bright (ideally styled / on-model) light to sell Ralph Lauren or Burberry at a high margin.",
   "Never machine-wash knitwear hot — RL wool/cashmere sweaters shrink. Always hand-wash or use a wool cycle.",
   "Authenticity: SP Vintage and the UK platforms vet their stock well — buying Old Money directly from them keeps you clear of the many 2000s fake Polo Ralph Lauren pieces.",
+]
+
+export type OldMoneyNote = {
+  supplier: string
+  region: string
+  bestFor: string
+  shipping: string
+  contact: string
+}
+
+export const OLD_MONEY_NOTES: OldMoneyNote[] = [
+  { supplier: "SP Vintage", region: "Spain (EU)", bestFor: "Premium mixes & ready-made reseller boxes", shipping: "No EU customs", contact: "spvintagewholesale.com/en/pages/contact" },
+  { supplier: "Vintage Supply EU", region: "Netherlands (EU)", bestFor: "Ralph Lauren polo shirts", shipping: "No RO customs", contact: "vintagesupplyeurope.com/pages/contact" },
+  { supplier: "Fleek", region: "Global platform", bestFor: "Brand mixes & variety", shipping: "Included in price (20–27 days)", contact: "Via Fleek platform chat" },
+  { supplier: "Vintagism", region: "EU", bestFor: "Buying by the kilo", shipping: "Shipping calculated after order", contact: "vintagism.eu/contact" },
+  { supplier: "Vintage Wh. Supply", region: "UK", bestFor: "Grade A/B polos, knitwear & trousers", shipping: "Watch EU customs + VAT", contact: "IG @vwswholesale" },
+  { supplier: "Thrift Vintage", region: "USA", bestFor: "Ralph Lauren polos", shipping: "High customs duties on EU arrival", contact: "thriftvintagefashion.com/pages/contact-us" },
 ]
 
 const ALL_PACKAGES = OLD_MONEY_CATEGORIES.flatMap((c) => c.packages)

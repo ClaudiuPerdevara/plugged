@@ -33,6 +33,17 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
 
+## Changes — 29 Jun 2026 (session 9)
+- **Jeans bundle photo = hero image**: copied the outpainted 16:9 hero to `jeans/cover.png` so the card + gallery main image is now the nice wide shot (gallery = hero + look-1 + look-2).
+- **Descriptions refined** (jeans→13 pkgs, football, old-money) to state precisely what's offered + that supplier contacts / shipping & customs notes are included.
+- **View Plugs supplier data**: added `contact` to football & jeans supplier notes (rendered in cards); added a full **Supplier & Shipping Notes** section to the Old Money vault (region · best-for · shipping · contact, from the .md).
+- **Old Money lone Trousers fixed**: merged the single trousers item into "Shirts" → renamed **"Shirts & Trousers"** (now 3 balanced categories, no ugly 1-item category).
+- Jeans `.md` 13th link already added earlier.
+- Verified: routes 200, jeans 13 plugs + cover=hero (2MB), old-money 3 categories, no compile errors.
+
+## Backlog / Next
+- Await next fixes/errors from user.
+
 ## Changes — 29 Jun 2026 (session 8)
 - **Old Money fully built** from `date_produse_old_money.md`: converted to `bundleWithSuppliers` (22 plugs). New data file `src/lib/bundle-data/old-money.ts` (4 categories: Reseller Boxes, Polos/Knitwear, Shirts, Trousers) + categorized vault `old-money-vault.tsx` (each category = its own section/table + selling tips). Wired into `vault-bundle.tsx`.
 - **What's Included now names the brands** explicitly: "Brands: Ralph Lauren, Lacoste, Tommy Hilfiger & Burberry" (per user) + category breakdown. Public bundle page verified (DOM): brands line present, "22 vetted plugs", gallery = Amalfi cover + RL polos + Lacoste box.
