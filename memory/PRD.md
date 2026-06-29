@@ -32,6 +32,13 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 
 ## Backlog / Next
 - User said more fixes/errors are coming — await next list.
+
+## Changes — 29 Jun 2026 (session 6)
+- **Mobile responsive fix**: added `width=device-width, initial-scale=1` to the `viewport` export in `layout.tsx` (was missing → mobile rendered zoomed). Also fixed a flex `min-width:auto` overflow on `/drops` by adding `w-full min-w-0` to the catalog `<section>` (body was 1280px on a 390px screen → now 390, no horizontal scroll). DOM-verified.
+- **Opium reps warning moved to PUBLIC bundle page** (`bundle-details.tsx`, opium only) and removed the duplicate banner from the post-purchase vault.
+- **Deleted `workwear-skate`**; created new **`jeans`** bundle ("Vintage & Baggy Jeans") via `bundleWithSuppliers`: data file `src/lib/bundle-data/jeans.ts` (12 packages / 10 suppliers from `date_produse_jeans.md`) + vault `jeans-vault.tsx`. Gallery = `[cover, look-1, look-2]`. Generated 16:9 hero `/catalog/jeans/hero.png`.
+- **Hero slideshow reordered**: opium, y2k, **windbreakers (3rd)**, **jeans (4th)**, vintage, sneakers. Verified.
+- Verified: routes 200, workwear-skate 404, jeans gallery 3 imgs, opium warning on public page, viewport meta correct, mobile no overflow, hero order correct, no compile errors.
 - Vaults (opium/y2k/football/windbreakers) are post-purchase (need auth/DB to view live; verified structurally + compile here).
 
 ## Changes — 28 Jun 2026 (session 4)

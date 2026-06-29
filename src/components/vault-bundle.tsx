@@ -8,6 +8,7 @@ import { VintageWindbreakersVault } from "./vintage-windbreakers-vault"
 import { FootballTshirtsVault } from "./football-tshirts-vault"
 import { Y2kVault } from "./y2k-vault"
 import { OpiumVault } from "./opium-vault"
+import { JeansVault } from "./jeans-vault"
 
 function QualityStars({ rating }: { rating: number }) {
   return (
@@ -147,7 +148,9 @@ export function VaultBundle({ product }: { product: Product }) {
                   ? "12 wholesale packages · 7 suppliers · image search tools"
                   : product.id === "football-tshirts"
                     ? "10 wholesale packages · 7 suppliers · per-piece pricing"
-                    : `${product.suppliers.length} suppliers · ${agentSuppliers.length} agent · ${vintageSuppliers.length} vintage`}
+                    : product.id === "jeans"
+                      ? "12 wholesale packages · 10 suppliers · per-piece pricing"
+                      : `${product.suppliers.length} suppliers · ${agentSuppliers.length} agent · ${vintageSuppliers.length} vintage`}
           </p>
         </div>
 
@@ -179,6 +182,8 @@ export function VaultBundle({ product }: { product: Product }) {
                 <Y2kVault />
               ) : product.id === "football-tshirts" ? (
                 <FootballTshirtsVault />
+              ) : product.id === "jeans" ? (
+                <JeansVault />
               ) : (
                 <>
                   <SupplierTable

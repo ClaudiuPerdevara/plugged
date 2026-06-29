@@ -1,7 +1,6 @@
 "use client"
 
 import {
-  AlertTriangle,
   Download,
   ExternalLink,
   ImageIcon,
@@ -53,24 +52,6 @@ function Section({
 export function OpiumVault() {
   return (
     <div className="flex flex-col gap-5">
-      {/* Reps-only disclaimer */}
-      <div
-        className="flex items-start gap-3 rounded-xl border border-amber-500/30 bg-amber-500/5 px-5 py-4"
-        data-testid="opium-reps-warning"
-      >
-        <AlertTriangle className="mt-0.5 size-5 shrink-0 text-amber-400" />
-        <p className="text-xs leading-relaxed text-amber-100/90">
-          <span className="font-bold text-amber-300">
-            These are Chinese REPS (replicas), not authentic originals.
-          </span>{" "}
-          Every link points to individual Chinese sellers, factories and reps on
-          domestic platforms (Taobao / Weidian / 1688), routed through the{" "}
-          <span className="font-semibold">Joyagoo</span> shopping agent that buys
-          in China and ships internationally. No brand is affiliated with this
-          bundle.
-        </p>
-      </div>
-
       {/* Archive download */}
       <Section
         icon={Download}

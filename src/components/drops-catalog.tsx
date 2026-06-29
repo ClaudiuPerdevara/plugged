@@ -29,7 +29,7 @@ export function DropsCatalog() {
   }, [query, active])
 
   return (
-    <section className="mx-auto max-w-7xl px-5 pb-28 pt-32 md:px-8 md:pt-40">
+    <section className="mx-auto w-full min-w-0 max-w-7xl px-5 pb-28 pt-32 md:px-8 md:pt-40">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}

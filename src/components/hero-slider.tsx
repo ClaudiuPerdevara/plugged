@@ -14,9 +14,10 @@ import { PRODUCTS, CATALOG_IMAGES } from "@/lib/products"
 const HERO_BUNDLE_IDS = [
   "opium",
   "y2k",
+  "vintage-windbreakers",
+  "jeans",
   "vintage",
   "sneakers-footwear",
-  "vintage-windbreakers",
 ] as const
 
 const SLIDES = HERO_BUNDLE_IDS.map((id, i) => {

@@ -3,6 +3,7 @@ import { VINTAGE_WINDBREAKERS_SUPPLIERS } from "@/lib/bundle-data/vintage-windbr
 import { FOOTBALL_TSHIRTS_SUPPLIERS } from "@/lib/bundle-data/football-tshirts"
 import { Y2K_SUPPLIERS } from "@/lib/bundle-data/y2k"
 import { OPIUM_SUPPLIERS } from "@/lib/bundle-data/opium"
+import { JEANS_SUPPLIERS } from "@/lib/bundle-data/jeans"
 
 export type SourcingRoute = "agent" | "vintage"
 
@@ -282,25 +283,33 @@ export const PRODUCTS: Product[] = [
       ["Fleece Peak Mfg.", "Midlayers", "40 units", 4],
     ],
   ),
-  bundle(
-    "workwear-skate",
-    "Workwear & Skate",
-    "Workwear & Skate Brands",
-    "Carhartt-adjacent work jackets, dickies and skate staples from factory-direct sources.",
-    "Double knees, canvas cuts and skate-brand adjacent blanks — the workwear/skate crossover every reseller needs in stock.",
-    ["35+ workwear sources", "Blank vs branded guides", "Lifetime updates"],
+  bundleWithSuppliers(
+    "jeans",
+    "Jeans",
+    "Vintage & Baggy Jeans",
+    "12 wholesale denim packages from 10 suppliers — vintage Levi's/Lee/Wrangler and Y2K hip-hop baggy jeans (Southpole, Ecko, Karl Kani) with direct links and per-piece pricing.",
+    "Vintage Levi's, Lee & Wrangler plus rare Y2K hip-hop baggy denim — real wholesale packages with grade breakdowns, per-piece costs, EU/UK/US shipping & customs notes and direct Shopify + Fleek links.",
     [
-      "35+ workwear & skate suppliers",
-      "Blank vs branded sourcing guide",
-      "Canvas & duck fabric tiers",
-      "Skate shop margin playbooks",
+      "12 wholesale packages",
+      "Direct product links",
+      "Per-piece pricing & grades",
+    ],
+    [
+      "12 vetted vintage & baggy denim packages",
+      "Direct Shopify, Fleek & B2B product links",
+      "Per-piece pricing & grade breakdowns",
+      "EU vs UK vs US shipping & customs guidance",
+      "By-the-kilo & Grade-C upcycling routes",
       "Lifetime updates",
     ],
-    [
-      ["Duck Canvas Co.", "Work Jackets", "30 units", 5],
-      ["Skate Blank Supply", "Hoodies & Tees", "50 units", 4],
-      ["Hardware Denim Works", "Pants", "25 units", 4],
-    ],
+    JEANS_SUPPLIERS,
+    {
+      gallery: [
+        "/catalog/jeans/cover.png",
+        "/catalog/jeans/look-1.png",
+        "/catalog/jeans/look-2.png",
+      ],
+    },
   ),
   bundle(
     "minimalist",

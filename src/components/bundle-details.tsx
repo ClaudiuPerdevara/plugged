@@ -5,6 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import {
   ArrowLeft,
+  AlertTriangle,
   Check,
   Loader2,
   Plus,
@@ -113,6 +114,25 @@ export function BundleDetails({ product }: { product: Product }) {
           <p className="mt-6 text-pretty leading-relaxed text-muted-foreground">
             {product.aesthetic}
           </p>
+
+          {product.id === "opium" ? (
+            <div
+              className="mt-6 flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/5 px-4 py-3.5"
+              data-testid="opium-reps-warning"
+            >
+              <AlertTriangle className="mt-0.5 size-5 shrink-0 text-amber-400" />
+              <p className="text-xs leading-relaxed text-amber-100/90">
+                <span className="font-bold text-amber-300">
+                  Heads up: these are Chinese REPS (replicas), not authentic
+                  originals.
+                </span>{" "}
+                Every source is an individual Chinese seller/factory on Taobao,
+                Weidian or 1688, ordered through a shopping agent. You get a
+                2,400+ source archive — if a link is dead, image-search the
+                model photo to find a live equivalent. No brand is affiliated.
+              </p>
+            </div>
+          ) : null}
 
           {/* What's included */}
           <div className="mt-8">
