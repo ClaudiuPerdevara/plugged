@@ -58,7 +58,7 @@ export function DropsCatalog() {
       {/* Search + pill filters */}
       <div className="mt-14 flex flex-col gap-5 border-t border-border pt-12">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="font-heading text-2xl font-bold text-foreground">
+          <h2 className="font-heading text-2xl font-bold text-foreground" data-testid="drops-heading">
             {active === "All" ? "All bundles" : active}
             <span className="ml-2 font-mono text-sm font-normal text-muted-foreground">
               ({results.length})

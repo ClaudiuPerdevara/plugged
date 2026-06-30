@@ -38,6 +38,7 @@ export function ProductCard({
     return (
       <motion.article
         {...motionProps}
+        data-testid={`product-card-${product.id}`}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         whileHover={{ y: -4 }}
         className="group relative aspect-[3/4] overflow-hidden rounded-2xl border border-border bg-card shadow-none transition-all duration-300 hover:border-accent/50 hover:shadow-xl hover:shadow-accent/10"
@@ -77,6 +78,7 @@ export function ProductCard({
   return (
     <motion.article
       {...motionProps}
+      data-testid={`product-card-${product.id}`}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -6 }}
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/40 shadow-none backdrop-blur-sm transition-all duration-300 hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/15"
