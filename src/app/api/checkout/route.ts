@@ -68,9 +68,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "No valid bundles" }, { status: 400 })
   }
 
-  // Block re-purchase: drop any bundle the signed-in user already owns.
+  // Block re-purchase + coming-soon: drop owned and not-yet-live bundles.
   const ownedIds = new Set(await getOwnedBundleIds(session.user.id))
-  const buyable = products.filter((p) => !ownedIds.has(p.id))
+  const buyable = products.filter((p) => !ownedIds.has(p.id) && !p.comingSoon)
   if (buyable.length === 0) {
     return NextResponse.json(
       { error: "You already own these — find them in your vault." },

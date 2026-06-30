@@ -12,12 +12,12 @@ import Link from "next/link"
 import { PRODUCTS, CATALOG_IMAGES } from "@/lib/products"
 
 const HERO_BUNDLE_IDS = [
+  "racing",
   "opium",
   "y2k",
   "vintage-windbreakers",
   "jeans",
   "sportswear",
-  "sneakers-footwear",
 ] as const
 
 const SLIDES = HERO_BUNDLE_IDS.map((id, i) => {

@@ -98,8 +98,16 @@ export function BundleDetails({
           className="lg:sticky lg:top-28 lg:self-start"
         >
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            Supplier Bundle
+            {product.miniBundle ? "Limited Mini Bundle" : "Supplier Bundle"}
           </span>
+          {product.limited ? (
+            <span
+              className="ml-3 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 align-middle font-mono text-[10px] uppercase tracking-[0.2em] text-accent"
+              data-testid="bundle-limited-tag"
+            >
+              ⏳ Limited time
+            </span>
+          ) : null}
           <h1 className="mt-3 text-balance font-heading text-4xl font-bold leading-[1.05] tracking-tight text-foreground md:text-5xl">
             {product.name}
           </h1>
@@ -160,8 +168,25 @@ export function BundleDetails({
             </ul>
           </div>
 
-          {/* CTAs — owned → vault link; otherwise Add to Cart + Buy Now */}
-          {owned ? (
+          {/* CTAs — coming soon → no purchase; owned → vault link; else buy */}
+          {product.comingSoon ? (
+            <div
+              className="mt-9 flex items-center gap-3 rounded-2xl border border-amber-400/40 bg-amber-400/10 p-5"
+              data-testid="bundle-coming-soon-panel"
+            >
+              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-amber-400/20 text-amber-300">
+                <Loader2 className="size-5" />
+              </span>
+              <div>
+                <p className="font-heading text-sm font-bold text-foreground">
+                  Coming Soon
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  This bundle is still being curated — check back shortly.
+                </p>
+              </div>
+            </div>
+          ) : owned ? (
             <div
               className="mt-9 flex flex-col gap-3 rounded-2xl border border-accent/40 bg-accent/10 p-5 sm:flex-row sm:items-center sm:justify-between"
               data-testid="bundle-owned-panel"

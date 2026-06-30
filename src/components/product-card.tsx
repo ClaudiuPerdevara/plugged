@@ -48,6 +48,15 @@ export function ProductCard({
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+        {product.comingSoon ? (
+          <span className="absolute right-3 top-3 z-[1] rounded-full border border-amber-400/30 bg-amber-400/15 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md">
+            Soon
+          </span>
+        ) : product.limited || product.miniBundle ? (
+          <span className="absolute right-3 top-3 z-[1] rounded-full border border-accent/40 bg-accent/15 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.2em] text-accent backdrop-blur-md">
+            Mini
+          </span>
+        ) : null}
         <div className="absolute inset-x-0 bottom-0 z-[1] p-4">
           <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent">
             ${product.price} · lifetime
@@ -83,6 +92,15 @@ export function ProductCard({
         <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-background/50 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground backdrop-blur-md">
           {product.tag}
         </span>
+        {product.comingSoon ? (
+          <span className="absolute right-4 top-4 rounded-full border border-amber-400/30 bg-amber-400/15 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md">
+            Coming Soon
+          </span>
+        ) : product.limited || product.miniBundle ? (
+          <span className="absolute right-4 top-4 rounded-full border border-accent/40 bg-accent/15 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-accent backdrop-blur-md">
+            {product.limited ? "Limited · Mini" : "Mini Bundle"}
+          </span>
+        ) : null}
         <div className="absolute inset-x-0 bottom-0 p-5">
           <h3 className="font-heading text-xl font-bold tracking-tight text-foreground md:text-2xl">
             {product.name}
@@ -108,41 +126,56 @@ export function ProductCard({
         </ul>
 
         <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4">
-          <div className="flex items-baseline gap-1">
-            <span className="font-heading text-2xl font-bold text-foreground">
-              ${product.price}
-            </span>
-            <span className="text-[11px] text-muted-foreground">/ lifetime</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => addItem(product)}
-              aria-label={
-                inCart
-                  ? `${product.name} in cart`
-                  : `Add ${product.name} to cart`
-              }
-              className={`relative z-20 grid size-10 place-items-center rounded-full border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-                inCart
-                  ? "border-accent/60 bg-accent/15 text-accent"
-                  : "border-border bg-background/60 text-foreground hover:border-accent/60 hover:text-accent"
-              }`}
-            >
-              {inCart ? (
-                <Check className="size-4" />
-              ) : (
-                <Plus className="size-4" />
-              )}
-            </button>
-            <Link
-              href={href}
-              className="relative z-20 flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition-all duration-300 hover:bg-accent hover:text-accent-foreground"
-            >
-              {ctaLabel}
-              <ArrowUpRight className="size-4" />
-            </Link>
-          </div>
+          {product.comingSoon ? (
+            <>
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                Dropping soon
+              </span>
+              <span className="relative z-20 flex items-center gap-1.5 rounded-full border border-border bg-background/60 px-4 py-2.5 text-sm font-semibold text-muted-foreground">
+                Coming Soon
+              </span>
+            </>
+          ) : (
+            <>
+              <div className="flex items-baseline gap-1">
+                <span className="font-heading text-2xl font-bold text-foreground">
+                  ${product.price}
+                </span>
+                <span className="text-[11px] text-muted-foreground">
+                  / lifetime
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => addItem(product)}
+                  aria-label={
+                    inCart
+                      ? `${product.name} in cart`
+                      : `Add ${product.name} to cart`
+                  }
+                  className={`relative z-20 grid size-10 place-items-center rounded-full border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                    inCart
+                      ? "border-accent/60 bg-accent/15 text-accent"
+                      : "border-border bg-background/60 text-foreground hover:border-accent/60 hover:text-accent"
+                  }`}
+                >
+                  {inCart ? (
+                    <Check className="size-4" />
+                  ) : (
+                    <Plus className="size-4" />
+                  )}
+                </button>
+                <Link
+                  href={href}
+                  className="relative z-20 flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition-all duration-300 hover:bg-accent hover:text-accent-foreground"
+                >
+                  {ctaLabel}
+                  <ArrowUpRight className="size-4" />
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </motion.article>

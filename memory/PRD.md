@@ -43,6 +43,14 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 - **Homepage hero slider**: removed `vintage` (Vintage & Second-hand Bales) from `HERO_BUNDLE_IDS` and added `sportswear` in its place (`hero-slider.tsx`). Vintage bales bundle still exists in /drops, just not on the homepage hero.
 - ⚠️ COULD NOT RUN E2E (Vercel+Neon, no node_modules). Hero is a centered-on-dark composition, not a seamless outpaint — acceptable on the dark theme; can be regenerated if user wants edge-to-edge.
 
+## Changes — 30 Jun 2026 (session 14) — Racing mini-bundle, sitemap, coming-soon, deletions
+1. **Jeans gallery**: added new flatlay → `public/catalog/jeans/flatlay.png`, gallery now [cover, flatlay, look-1, look-2].
+2. **sitemap.xml**: `src/app/sitemap.ts` (Next native /sitemap.xml; static + live bundle pages, excludes coming-soon). robots.txt references `Sitemap: https://plugged.market/sitemap.xml`. Base = `NEXT_PUBLIC_SITE_URL` env or `https://plugged.market`.
+3. **Deleted** `minimalist` & `uk-drip` bundles entirely. **Coming Soon**: `sneakers-footwear` + `designer` now `comingSoon: true` (badge on cards, panel on bundle page, blocked in /api/checkout).
+4. **New `racing`** = "Racing & Motorsports - Mini Bundle" (`miniBundle`+`limited`+`featured`): `bundle-data/racing.ts` (8 NASCAR/Ferrari/F1 packages, tips, contacts), `racing-vault.tsx`, images in `public/catalog/racing/` (cover=NASCAR pit-lane landscape confirmed; gallery=Ferrari jackets + tee box; hero=cover). Added to hero slider (replaced sneakers). Product type +`miniBundle`/`limited`/`comingSoon`; product-card shows badges/states.
+
+⚠️ COULD NOT RUN E2E (Vercel+Neon, no node_modules/DB). Verified statically. Applies on next Vercel deploy.
+
 ## Changes — 30 Jun 2026 (session 13) — security hardening + UX fixes
 **Security findings remediated (3,4,5,6):**
 - **F3 (43MB bulk download)**: moved `Opium_Vendor_List.xlsx` out of `/public` → `/private`; new auth+ownership-gated route `src/app/api/vault/opium-archive/route.ts` (only opium owners can stream it). `next.config.mjs` `outputFileTracingIncludes` bundles it on Vercel. `opium.ts` archive link → `/api/vault/opium-archive`.

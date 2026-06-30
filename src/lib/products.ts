@@ -7,6 +7,7 @@ import { JEANS_SUPPLIERS } from "@/lib/bundle-data/jeans"
 import { OLD_MONEY_SUPPLIERS } from "@/lib/bundle-data/old-money"
 import { CARHARTT_SUPPLIERS } from "@/lib/bundle-data/carhartt"
 import { SPORTSWEAR_SUPPLIERS } from "@/lib/bundle-data/sportswear"
+import { RACING_SUPPLIERS } from "@/lib/bundle-data/racing"
 
 export type SourcingRoute = "agent" | "vintage"
 
@@ -35,6 +36,12 @@ export type Product = {
   suppliers: Supplier[]
   /** Homepage / hero spotlight */
   featured?: boolean
+  /** Small, limited-time drop */
+  miniBundle?: boolean
+  /** Show a limited-time tag */
+  limited?: boolean
+  /** Not yet purchasable — shows "Coming Soon" and blocks checkout */
+  comingSoon?: boolean
 }
 
 const AGENT_PLATFORMS = ["Weidian", "Taobao", "Sugargoo", "Joyabuy"] as const
@@ -93,7 +100,13 @@ function bundle(
   perks: string[],
   included: string[],
   supplierEntries: [string, string, string, number][],
-  opts?: { featured?: boolean; gallery?: string[] },
+  opts?: {
+    featured?: boolean
+    gallery?: string[]
+    miniBundle?: boolean
+    limited?: boolean
+    comingSoon?: boolean
+  },
 ): Product {
   const imgs = CATALOG_IMAGES[id]
   return {
@@ -109,6 +122,9 @@ function bundle(
     included,
     suppliers: suppliers(id, supplierEntries),
     featured: opts?.featured,
+    miniBundle: opts?.miniBundle,
+    limited: opts?.limited,
+    comingSoon: opts?.comingSoon,
   }
 }
 
@@ -121,7 +137,13 @@ function bundleWithSuppliers(
   perks: string[],
   included: string[],
   customSuppliers: Supplier[],
-  opts?: { featured?: boolean; gallery?: string[] },
+  opts?: {
+    featured?: boolean
+    gallery?: string[]
+    miniBundle?: boolean
+    limited?: boolean
+    comingSoon?: boolean
+  },
 ): Product {
   const imgs = CATALOG_IMAGES[id]
   return {
@@ -137,6 +159,9 @@ function bundleWithSuppliers(
     included,
     suppliers: customSuppliers,
     featured: opts?.featured,
+    miniBundle: opts?.miniBundle,
+    limited: opts?.limited,
+    comingSoon: opts?.comingSoon,
   }
 }
 
@@ -302,30 +327,11 @@ export const PRODUCTS: Product[] = [
     {
       gallery: [
         "/catalog/jeans/cover.png",
+        "/catalog/jeans/flatlay.png",
         "/catalog/jeans/look-1.png",
         "/catalog/jeans/look-2.png",
       ],
     },
-  ),
-  bundle(
-    "minimalist",
-    "Minimalist",
-    "Minimalist & Essentials",
-    "Clean blanks, neutral palettes and everyday staples that move volume on any platform.",
-    "Less noise, more margin — premium blank tees, hoodies and essentials from factories built for DTC brands and resellers alike.",
-    ["30+ essentials suppliers", "Blank quality tiers", "Lifetime updates"],
-    [
-      "30+ minimalist suppliers",
-      "Blank quality tier breakdown",
-      "Colorway & GSM guides",
-      "Volume pricing sheets",
-      "Lifetime updates",
-    ],
-    [
-      ["Neutral Blank Co.", "Tees & Hoodies", "100 units", 5],
-      ["Essential Cut Mfg.", "Basics", "75 units", 4],
-      ["Clean Line Studio", "Loungewear", "40 units", 4],
-    ],
   ),
   bundle(
     "sneakers-footwear",
@@ -346,7 +352,7 @@ export const PRODUCTS: Product[] = [
       ["Runner Batch Co.", "Runners", "12 units", 4],
       ["Daily Tread Mfg.", "Casual", "20 units", 4],
     ],
-    { featured: true },
+    { comingSoon: true },
   ),
   bundle(
     "designer",
@@ -367,28 +373,7 @@ export const PRODUCTS: Product[] = [
       ["Heritage Belt Works", "Belts", "15 units", 4],
       ["Tech Case Factory", "Phone & Tech", "30 units", 4],
     ],
-    { featured: true },
-  ),
-  bundle(
-    "uk-drip",
-    "UK Drip",
-    "UK Drip & Drill Core",
-    "Roadman fits, drill-era layers and UK street suppliers that know the culture.",
-    "Tracksuits, puffers and road-ready layers — the UK drip rolodex built for resellers serving London, Manchester and the diaspora.",
-    ["35+ UK street sources", "Drill fit references", "Lifetime updates"],
-    [
-      "35+ UK drip suppliers",
-      "Drill & roadman fit lookbook",
-      "UK sizing & brand comp guide",
-      "Bulk tracksuit sourcing",
-      "Lifetime updates",
-    ],
-    [
-      ["Road Supply UK", "Tracksuits", "20 units", 5],
-      ["North Puffer Co.", "Outerwear", "15 units", 4],
-      ["Ends Streetwear Hub", "Layers", "25 units", 4],
-    ],
-    { featured: true },
+    { comingSoon: true },
   ),
   bundleWithSuppliers(
     "vintage-windbreakers",
@@ -445,6 +430,38 @@ export const PRODUCTS: Product[] = [
         "/catalog/sportswear/cover.png",
         "/catalog/sportswear/gallery-1.png",
         "/catalog/sportswear/gallery-2.png",
+      ],
+    },
+  ),
+  bundleWithSuppliers(
+    "racing",
+    "Racing",
+    "Racing & Motorsports - Mini Bundle",
+    "Limited-time mini drop — 8 premium NASCAR, Ferrari & F1 racing jacket, tee & sweat packages from 4 vetted suppliers. Single jackets resell for €100–€300.",
+    "One of the most hype, exclusive niches in vintage right now — NASCAR, Ferrari & F1 racing jackets plus graphic auto/moto tees and sweats. A curated MINI BUNDLE of 8 premium packages (Fleek, SP Vintage rework, Best Vintage & Thrift Vintage) with grades, EU/UK/US shipping notes, supplier contacts and resale tips. These pieces are rare and extremely sought-after — a single jacket flips for €100–€300 on Depop/Vinted.",
+    [
+      "Mini bundle · 8 premium packages",
+      "NASCAR · Ferrari · F1 jackets",
+      "€100–€300 per-jacket resale",
+    ],
+    [
+      "8 vetted racing jacket, tee & sweat packages",
+      "NASCAR, Ferrari & F1 + Harley graphic pieces",
+      "Premium “rework” patched-jacket lots (SP Vintage)",
+      "Grade & EU/UK/US shipping/customs notes per source",
+      "Racing-core selling tips & supplier contacts",
+      "Direct Shopify & Fleek links",
+      "Lifetime updates",
+    ],
+    RACING_SUPPLIERS,
+    {
+      featured: true,
+      miniBundle: true,
+      limited: true,
+      gallery: [
+        "/catalog/racing/cover.png",
+        "/catalog/racing/gallery-1.png",
+        "/catalog/racing/gallery-2.png",
       ],
     },
   ),
