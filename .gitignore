@@ -22,3 +22,9 @@ credentials.json
 *.pem
 *.key
 .credentials
+
+# Emergent preview-only supervisor runner (not part of the Next.js app)
+/frontend/
+
+# Yarn lockfile (preview install only — repo uses npm/pnpm lockfiles for Vercel)
+/yarn.lock

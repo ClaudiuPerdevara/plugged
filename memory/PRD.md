@@ -43,3 +43,16 @@ Better Auth, Stripe) e-commerce site selling curated fashion *supplier bundles*
 - P1: Resolve preview `/api` 502 if full auth/checkout flow needs preview testing
   (platform ingress config — currently works only on Vercel).
 - P2: Add data-testids to remaining interactive elements for future QA.
+
+## Session 2026-06-30 (b) — Carousel arrows + deploy-clean
+- **Products carousel arrows (main page "everyone's flipping" section,
+  `products-section.tsx`):** now ALWAYS visible (removed opacity-0/disabled at the
+  ends) and **cycle** — past the right end loops to start, before the left end loops
+  to end. (Hero edge arrows from session (a) kept as-is.)
+- **Deploy hygiene (for git → Vercel auto-deploy):** `.gitignore` now excludes the
+  preview-only `/frontend/` supervisor runner and the stray `/yarn.lock` (repo keeps
+  its original npm/pnpm lockfiles so Vercel's package-manager detection is unchanged).
+  Verified: `next build` passes; WebP images committed; original PNGs removed from git;
+  no secrets committed; Stripe route uses `process.env.STRIPE_SECRET_KEY` (works via
+  Vercel env). To ship: use the **"Save to Github"** button → Vercel auto-redeploys.
+

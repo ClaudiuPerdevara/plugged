@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useRef } from "react"
 import { motion } from "framer-motion"
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react"
 import Link from "next/link"
@@ -9,34 +9,23 @@ import { FEATURED_PRODUCTS } from "@/lib/products"
 
 export function ProductsSection() {
   const scrollerRef = useRef<HTMLDivElement>(null)
-  const [canLeft, setCanLeft] = useState(false)
-  const [canRight, setCanRight] = useState(true)
-
-  const updateArrows = useCallback(() => {
-    const el = scrollerRef.current
-    if (!el) return
-    setCanLeft(el.scrollLeft > 8)
-    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 8)
-  }, [])
-
-  useEffect(() => {
-    updateArrows()
-    const el = scrollerRef.current
-    if (!el) return
-    el.addEventListener("scroll", updateArrows, { passive: true })
-    window.addEventListener("resize", updateArrows)
-    return () => {
-      el.removeEventListener("scroll", updateArrows)
-      window.removeEventListener("resize", updateArrows)
-    }
-  }, [updateArrows])
 
   const scrollBy = (dir: "left" | "right") => {
     const el = scrollerRef.current
     if (!el) return
     const card = el.querySelector<HTMLElement>("[data-card]")
     const amount = card ? card.offsetWidth + 24 : el.clientWidth * 0.8
-    el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" })
+    const atStart = el.scrollLeft <= 8
+    const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 8
+    // Arrows always work and cycle: past the end loops back to the start and
+    // before the start loops to the end.
+    if (dir === "right") {
+      if (atEnd) el.scrollTo({ left: 0, behavior: "smooth" })
+      else el.scrollBy({ left: amount, behavior: "smooth" })
+    } else {
+      if (atStart) el.scrollTo({ left: el.scrollWidth, behavior: "smooth" })
+      else el.scrollBy({ left: -amount, behavior: "smooth" })
+    }
   }
 
   return (
@@ -67,12 +56,9 @@ export function ProductsSection() {
           <button
             type="button"
             onClick={() => scrollBy("left")}
-            disabled={!canLeft}
             aria-label="Previous bundles"
             data-testid="carousel-prev"
-            className={`absolute left-0 top-1/2 z-20 hidden size-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/70 text-foreground shadow-xl shadow-black/30 backdrop-blur-md transition-all duration-300 hover:border-accent/60 hover:bg-background/90 hover:text-accent md:flex ${
-              canLeft ? "opacity-100" : "pointer-events-none scale-90 opacity-0"
-            }`}
+            className="absolute left-0 top-1/2 z-20 hidden size-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/70 text-foreground shadow-xl shadow-black/30 backdrop-blur-md transition-all duration-300 hover:border-accent/60 hover:bg-background/90 hover:text-accent md:flex"
           >
             <ArrowLeft className="size-5" />
           </button>
@@ -80,12 +66,9 @@ export function ProductsSection() {
           <button
             type="button"
             onClick={() => scrollBy("right")}
-            disabled={!canRight}
             aria-label="Next bundles"
             data-testid="carousel-next"
-            className={`absolute right-0 top-1/2 z-20 hidden size-12 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border border-border bg-background/70 text-foreground shadow-xl shadow-black/30 backdrop-blur-md transition-all duration-300 hover:border-accent/60 hover:bg-background/90 hover:text-accent md:flex ${
-              canRight ? "opacity-100" : "pointer-events-none scale-90 opacity-0"
-            }`}
+            className="absolute right-0 top-1/2 z-20 hidden size-12 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border border-border bg-background/70 text-foreground shadow-xl shadow-black/30 backdrop-blur-md transition-all duration-300 hover:border-accent/60 hover:bg-background/90 hover:text-accent md:flex"
           >
             <ArrowRight className="size-5" />
           </button>
