@@ -43,6 +43,11 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 - **Homepage hero slider**: removed `vintage` (Vintage & Second-hand Bales) from `HERO_BUNDLE_IDS` and added `sportswear` in its place (`hero-slider.tsx`). Vintage bales bundle still exists in /drops, just not on the homepage hero.
 - ⚠️ COULD NOT RUN E2E (Vercel+Neon, no node_modules). Hero is a centered-on-dark composition, not a seamless outpaint — acceptable on the dark theme; can be regenerated if user wants edge-to-edge.
 
+## Changes — 30 Jun 2026 (session 16) — hero slide effect + mini badge
+- **Restored hero slide animation** (`hero-slider.tsx`): image + copy now slide together via `AnimatePresence` (default/sync mode, no `mode="wait"`) with x-spring `slideVariants`, keyed per slide so the title never sticks; added an image-preload effect so a slide-in is never a black frame (keeps both earlier bugs fixed).
+- **Removed** the green "⏳ Limited Mini Bundle" tag from the hero (looked bad).
+- **Mini bundle styling**: removed the green accent border/ring/glow from product cards; now just a **red corner "Mini" badge** (both default + tile variants).
+
 ## Changes — 30 Jun 2026 (session 15) — hero bugs, prices/EUR, UI polish
 1. **Hero slider bugs FIXED** (`hero-slider.tsx`): replaced dual `AnimatePresence` (mode="wait"/popLayout) with a crossfade stack — all slides stay mounted (no black "still-loading" first image) and the title/subtitle are a single keyed `motion.div` derived straight from `index` (never sticks on a previous slide, e.g. the "Y2K stuck on all" bug). Swipe kept via transparent drag layer. Added a "⏳ Limited Mini Bundle" tag on limited slides.
 2. **Football-tee broken links FIXED** (`football-tshirts.ts`): real Fleek handles 404 without the emoji — Nike → `%F0%9F%92%A5-rv3483-nike-sports-jerseys` (URL-encoded 💥), Adidas → `rv3306-adidas-trikots-tshirts`. Verified both render the product (titles fetched).

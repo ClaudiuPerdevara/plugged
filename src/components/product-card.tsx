@@ -53,7 +53,7 @@ export function ProductCard({
             Soon
           </span>
         ) : product.limited || product.miniBundle ? (
-          <span className="absolute right-3 top-3 z-[1] rounded-full border border-accent/40 bg-accent/15 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.2em] text-accent backdrop-blur-md">
+          <span className="absolute right-3 top-3 z-[1] rounded-full border border-red-500/50 bg-red-500/20 px-2.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-red-400 backdrop-blur-md">
             Mini
           </span>
         ) : null}
@@ -74,11 +74,7 @@ export function ProductCard({
       variants={animated ? cardVariants : undefined}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -6 }}
-      className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card/40 shadow-none backdrop-blur-sm transition-all duration-300 hover:shadow-2xl ${
-        product.limited || product.miniBundle
-          ? "border-accent/60 shadow-xl shadow-accent/20 ring-1 ring-accent/40 hover:border-accent hover:shadow-accent/30"
-          : "border-border hover:border-accent/50 hover:shadow-accent/15"
-      }`}
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/40 shadow-none backdrop-blur-sm transition-all duration-300 hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/15"
     >
       <Link
         href={href}
@@ -101,8 +97,8 @@ export function ProductCard({
             Coming Soon
           </span>
         ) : product.limited || product.miniBundle ? (
-          <span className="absolute right-4 top-4 rounded-full border border-accent/40 bg-accent/15 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-accent backdrop-blur-md">
-            {product.limited ? "Limited · Mini" : "Mini Bundle"}
+          <span className="absolute right-4 top-4 rounded-full border border-red-500/50 bg-red-500/20 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-red-400 backdrop-blur-md">
+            Mini
           </span>
         ) : null}
         <div className="absolute inset-x-0 bottom-0 p-5">
