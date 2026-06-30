@@ -56,6 +56,7 @@ const slideVariants = {
 export function HeroSlider() {
   const [[index, direction], setState] = useState<[number, number]>([0, 0])
   const [paused, setPaused] = useState(false)
+  const [showHint, setShowHint] = useState(false)
   const reduceMotion = useReducedMotion()
 
   const paginate = useCallback((dir: number) => {
@@ -75,9 +76,25 @@ export function HeroSlider() {
   }, [index, paginate, paused, reduceMotion])
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
+    setShowHint(false)
     if (info.offset.x < -SWIPE_THRESHOLD) paginate(1)
     else if (info.offset.x > SWIPE_THRESHOLD) paginate(-1)
   }
+
+  // One-time "swipe" hint on mobile so users know the hero is draggable.
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    try {
+      if (localStorage.getItem("plugged-swipe-hint")) return
+    } catch {}
+    if (!window.matchMedia("(max-width: 767px)").matches) return
+    setShowHint(true)
+    try {
+      localStorage.setItem("plugged-swipe-hint", "1")
+    } catch {}
+    const t = setTimeout(() => setShowHint(false), 4200)
+    return () => clearTimeout(t)
+  }, [])
 
   // Preload neighbouring slides so a swipe-in is never blank. Images are tiny
   // WebP now, so this is effectively free.
@@ -221,6 +238,35 @@ export function HeroSlider() {
           <ArrowRight className="size-4" />
         </button>
       </div>
+
+      {/* Mobile-only one-time swipe hint */}
+      <AnimatePresence>
+        {showHint && !reduceMotion && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.4 }}
+            data-testid="hero-swipe-hint"
+            className="pointer-events-none absolute left-1/2 top-[38%] z-30 -translate-x-1/2 md:hidden"
+          >
+            <div className="flex items-center gap-2 rounded-full border border-accent/40 bg-background/60 px-4 py-2.5 backdrop-blur-md">
+              <ArrowLeft className="size-3.5 text-accent" />
+              <motion.span
+                animate={{ x: [-7, 7, -7] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                className="grid size-6 place-items-center rounded-full bg-accent/20"
+              >
+                <span className="size-2 rounded-full bg-accent" />
+              </motion.span>
+              <ArrowRight className="size-3.5 text-accent" />
+              <span className="ml-1 text-xs font-medium uppercase tracking-[0.15em] text-foreground">
+                Swipe
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <a
         href="#products"
