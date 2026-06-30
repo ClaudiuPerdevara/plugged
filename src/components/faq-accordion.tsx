@@ -39,7 +39,7 @@ export function FaqAccordion() {
           <AccordionItem
             key={faq.q}
             value={`item-${i}`}
-            className="overflow-hidden rounded-2xl border border-border bg-card/50 transition-colors hover:border-accent/40 data-[state=open]:border-accent/40"
+            className="overflow-hidden rounded-2xl border border-border bg-card/50 transition-colors last:border-b hover:border-accent/40 data-[state=open]:border-accent/40"
           >
             <AccordionTrigger className="px-6 py-5 hover:no-underline [&>svg]:size-5 [&>svg]:text-accent">
               <span className="font-heading text-base font-bold text-foreground">

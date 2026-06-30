@@ -1,13 +1,43 @@
 "use client"
 
-import { useTransition } from "react"
+import { useEffect, useState, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { Lock, ShieldCheck, KeyRound, Loader2 } from "lucide-react"
+import { Lock, ShieldCheck, KeyRound, Loader2, Check, Save } from "lucide-react"
 import { resetPasswordAction } from "@/lib/actions"
+import { authClient } from "@/lib/auth-client"
 import type { AccountInfo } from "@/lib/data"
 
 export function AccountSettings({ account }: { account: AccountInfo }) {
+  const router = useRouter()
   const [resetting, startReset] = useTransition()
+
+  const [name, setName] = useState(account.name)
+  const [savingName, setSavingName] = useState(false)
+  const dirty = name.trim() !== account.name && name.trim().length > 0
+
+  useEffect(() => {
+    setName(account.name)
+  }, [account.name])
+
+  async function handleSaveName() {
+    const next = name.trim()
+    if (!next || next === account.name) return
+    setSavingName(true)
+    await authClient.updateUser(
+      { name: next },
+      {
+        onSuccess() {
+          toast.success("Name updated")
+          router.refresh()
+        },
+        onError(ctx) {
+          toast.error(ctx.error.message || "Couldn't update your name.")
+        },
+      },
+    )
+    setSavingName(false)
+  }
 
   function handleResetPassword() {
     startReset(async () => {
@@ -26,15 +56,43 @@ export function AccountSettings({ account }: { account: AccountInfo }) {
         </h3>
         <div className="mt-5 flex flex-col gap-5">
           <div className="flex flex-col gap-2">
-            <label className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
-              Name
+            <label
+              htmlFor="account-name"
+              className="text-xs uppercase tracking-[0.15em] text-muted-foreground"
+            >
+              Display name
             </label>
-            <input
-              type="text"
-              readOnly
-              value={account.name}
-              className="w-full rounded-xl border border-border bg-background/60 px-4 py-3 text-sm text-foreground outline-none"
-            />
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <input
+                id="account-name"
+                type="text"
+                value={name}
+                maxLength={60}
+                onChange={(e) => setName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && dirty) handleSaveName()
+                }}
+                placeholder="Your name"
+                data-testid="account-name-input"
+                className="w-full rounded-xl border border-border bg-background/60 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-accent/60 focus-visible:ring-2 focus-visible:ring-ring/40"
+              />
+              <button
+                type="button"
+                onClick={handleSaveName}
+                disabled={!dirty || savingName}
+                data-testid="account-name-save"
+                className="flex shrink-0 items-center justify-center gap-2 rounded-xl bg-foreground px-4 py-3 text-sm font-semibold text-background transition-all duration-300 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {savingName ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : dirty ? (
+                  <Save className="size-4" />
+                ) : (
+                  <Check className="size-4" />
+                )}
+                {savingName ? "Saving…" : dirty ? "Save" : "Saved"}
+              </button>
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             <label className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
@@ -46,6 +104,16 @@ export function AccountSettings({ account }: { account: AccountInfo }) {
               value={account.email}
               className="w-full rounded-xl border border-border bg-background/60 px-4 py-3 text-sm text-foreground outline-none"
             />
+            <p className="text-xs text-muted-foreground">
+              To change your email, reach out via{" "}
+              <a
+                href="/support"
+                className="text-accent underline-offset-2 hover:underline"
+              >
+                Support
+              </a>{" "}
+              — we verify email changes manually for your account&apos;s security.
+            </p>
           </div>
           {account.hasPassword ? (
             <div className="flex flex-col gap-2">

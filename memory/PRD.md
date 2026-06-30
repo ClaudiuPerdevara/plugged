@@ -54,5 +54,20 @@ Better Auth, Stripe) e-commerce site selling curated fashion *supplier bundles*
   its original npm/pnpm lockfiles so Vercel's package-manager detection is unchanged).
   Verified: `next build` passes; WebP images committed; original PNGs removed from git;
   no secrets committed; Stripe route uses `process.env.STRIPE_SECRET_KEY` (works via
-  Vercel env). To ship: use the **"Save to Github"** button → Vercel auto-redeploys.
+## Session 2026-06-30 (c) — Quality, profile, FAQ fix
+- **Image quality bump:** re-exported WebP at q88–92 (heroes ~200–325KB, was ~80–140KB
+  at q74). Recovered original PNGs from commit c35c547, reconverted via
+  `scripts/optimize-images.mjs`, re-deleted PNGs (kept unstaged). `public/` ~15MB.
+- **FAQ last-item border (bug):** shared `AccordionItem` adds `last:border-b-0` which
+  stripped the bottom border of the last card; overridden with `last:border-b` in
+  `faq-accordion.tsx`.
+- **Editable profile (account-settings.tsx):** Display name is now editable via
+  `authClient.updateUser({ name })` (Better Auth — no extra server config needed),
+  with Save button + toast + router.refresh(). Email kept read-only (changing it needs
+  a verification-email flow / Resend, deferred). NOTE: cannot be tested in the preview
+  because `/api/*` returns 502 here; works on Vercel.
+- Future-ideas brainstorm delivered to user (subscription vault, plug-drop calendar,
+  AI image-search sourcing, community/leaderboards, referral engine, profit calculator,
+  link health bounty). Not implemented — backlog.
+
 

@@ -4,13 +4,14 @@ import sharp from "sharp"
 
 const ROOT = "public/catalog"
 
-// Hero images render full-bleed → allow more width. Everything else is shown
-// in cards / galleries at far smaller sizes.
-function maxWidthFor(file) {
+// Higher-quality pass: heroes render full-bleed so keep them large + crisp;
+// covers/galleries are shown smaller. We never upscale (withoutEnlargement),
+// so source detail is preserved; only compression quality changed (74 -> 90/88).
+function settingsFor(file) {
   const name = basename(file).toLowerCase()
-  if (name.startsWith("hero")) return 1600
-  if (name.startsWith("cover")) return 1100
-  return 1080
+  if (name.startsWith("hero")) return { width: 2000, quality: 92 }
+  if (name.startsWith("cover")) return { width: 1600, quality: 90 }
+  return { width: 1500, quality: 88 }
 }
 
 async function walk(dir) {
@@ -30,20 +31,17 @@ let after = 0
 
 for (const src of pngs) {
   const out = src.replace(/\.png$/i, ".webp")
-  const maxW = maxWidthFor(src)
+  const { width, quality } = settingsFor(src)
   const orig = (await stat(src)).size
   before += orig
   await sharp(src)
-    .resize({ width: maxW, withoutEnlargement: true })
-    .webp({ quality: 74, effort: 5 })
+    .resize({ width, withoutEnlargement: true })
+    .webp({ quality, effort: 6, smartSubsample: true })
     .toFile(out)
   const size = (await stat(out)).size
   after += size
-  console.log(
-    `${src}  ${(orig / 1024).toFixed(0)}KB -> ${(size / 1024).toFixed(0)}KB`,
-  )
 }
 
 console.log(
-  `\nTOTAL ${pngs.length} files: ${(before / 1024 / 1024).toFixed(1)}MB -> ${(after / 1024 / 1024).toFixed(1)}MB`,
+  `TOTAL ${pngs.length} files: ${(before / 1024 / 1024).toFixed(1)}MB -> ${(after / 1024 / 1024).toFixed(1)}MB`,
 )
