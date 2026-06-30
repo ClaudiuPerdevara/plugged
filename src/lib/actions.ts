@@ -34,6 +34,21 @@ export type ActionState = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+/** Escape user-supplied text before interpolating into outbound email HTML. */
+function escapeHtml(s: string): string {
+  return s.replace(
+    /[&<>"']/g,
+    (c) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[c] as string,
+  )
+}
+
 function str(formData: FormData, key: string) {
   return (formData.get(key) ?? "").toString().trim()
 }
@@ -79,10 +94,10 @@ export async function submitSupportAction(
       subject: `[Support] ${subject}`,
       replyTo: email,
       html: `
-        <p><strong>From:</strong> ${name} &lt;${email}&gt;</p>
-        <p><strong>Subject:</strong> ${subject}</p>
+        <p><strong>From:</strong> ${escapeHtml(name)} &lt;${escapeHtml(email)}&gt;</p>
+        <p><strong>Subject:</strong> ${escapeHtml(subject)}</p>
         <hr />
-        <p>${message.replace(/\n/g, "<br />")}</p>
+        <p>${escapeHtml(message).replace(/\n/g, "<br />")}</p>
       `,
       text: `From: ${name} <${email}>\nSubject: ${subject}\n\n${message}`,
     })

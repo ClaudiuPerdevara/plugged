@@ -21,7 +21,7 @@ export type ImageSearchPlatform = {
 
 /** Full downloadable archive served as a static asset. */
 export const OPIUM_ARCHIVE = {
-  file: "/downloads/Opium_Vendor_List.xlsx",
+  file: "/api/vault/opium-archive",
   label: "Opium_Vendor_List.xlsx",
   sources: "2,400+",
 }

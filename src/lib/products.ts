@@ -41,7 +41,6 @@ const AGENT_PLATFORMS = ["Weidian", "Taobao", "Sugargoo", "Joyabuy"] as const
 const VINTAGE_PLATFORMS = ["Fleek", "Syed Vintage", "B2B Wholesale", "Direct"] as const
 
 const VINTAGE_ROUTE_BUNDLES = new Set<CatalogImageKey>([
-  "vintage",
   "vintage-windbreakers",
 ])
 
@@ -195,27 +194,6 @@ export const PRODUCTS: Product[] = [
         "/catalog/y2k/jeans.png",
       ],
     },
-  ),
-  bundle(
-    "vintage",
-    "Vintage / Bales",
-    "Vintage & Second-hand Bales",
-    "Thrift bales, archive dealers and bulk vintage sources with real stock and grading sheets.",
-    "European and US bale wholesalers plus hand-picked archive dealers — authenticity checks, condition grades and flip-ready margins built in.",
-    ["50+ vetted sources", "Bale grading guides", "Lifetime updates"],
-    [
-      "50+ vintage & bale suppliers",
-      "Condition grading sheets",
-      "Bulk-buy negotiation scripts",
-      "Authenticity verification guides",
-      "Lifetime updates",
-    ],
-    [
-      ["Archive Vault EU", "Band Tees", "10 units", 5],
-      ["Bale Brokers UK", "Wholesale Bales", "1 bale MOQ", 4],
-      ["Faded Goods Co.", "Tops", "60 units", 4],
-    ],
-    { featured: true },
   ),
   bundleWithSuppliers(
     "old-money",

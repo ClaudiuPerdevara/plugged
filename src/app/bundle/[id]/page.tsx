@@ -4,6 +4,8 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { BundleDetails } from "@/components/bundle-details"
 import { PRODUCTS, getProduct } from "@/lib/products"
+import { getSession } from "@/lib/session"
+import { getOwnedBundleIds } from "@/lib/purchases"
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ id: p.id }))
@@ -32,10 +34,15 @@ export default async function BundlePage({
   const product = getProduct(id)
   if (!product) notFound()
 
+  const session = await getSession()
+  const owned = session
+    ? (await getOwnedBundleIds(session.user.id)).includes(product.id)
+    : false
+
   return (
     <main className="relative flex min-h-screen flex-col bg-background text-foreground">
       <SiteHeader />
-      <BundleDetails product={product} />
+      <BundleDetails product={product} owned={owned} />
       <SiteFooter />
     </main>
   )

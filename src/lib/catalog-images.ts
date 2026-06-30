@@ -22,7 +22,6 @@ function bundleAssets(id: string) {
 export const CATALOG_IMAGES = {
   opium: bundleAssets("opium"),
   y2k: bundleAssets("y2k"),
-  vintage: bundleAssets("vintage"),
   "old-money": bundleAssets("old-money"),
   "football-tshirts": bundleAssets("football-tshirts"),
   carhartt: bundleAssets("carhartt"),

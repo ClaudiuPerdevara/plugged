@@ -17,7 +17,13 @@ import type { Product } from "@/lib/products"
 import { useCart } from "./cart-provider"
 import { useCheckout } from "@/lib/use-checkout"
 
-export function BundleDetails({ product }: { product: Product }) {
+export function BundleDetails({
+  product,
+  owned = false,
+}: {
+  product: Product
+  owned?: boolean
+}) {
   const [active, setActive] = useState(0)
   const { addItem, has } = useCart()
   const { checkout, pending } = useCheckout()
@@ -154,44 +160,75 @@ export function BundleDetails({ product }: { product: Product }) {
             </ul>
           </div>
 
-          {/* CTAs — Add to Cart + Buy Now */}
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <button
-              type="button"
-              onClick={() => addItem(product)}
-              className="group flex flex-1 items-center justify-center gap-2.5 rounded-2xl border border-border bg-background/60 px-6 py-4 text-base font-semibold text-foreground transition-all duration-300 hover:border-accent/60 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          {/* CTAs — owned → vault link; otherwise Add to Cart + Buy Now */}
+          {owned ? (
+            <div
+              className="mt-9 flex flex-col gap-3 rounded-2xl border border-accent/40 bg-accent/10 p-5 sm:flex-row sm:items-center sm:justify-between"
+              data-testid="bundle-owned-panel"
             >
-              {inCart ? (
-                <>
-                  <Check className="size-5 text-accent" />
-                  In Basket
-                </>
-              ) : (
-                <>
-                  <Plus className="size-5" />
-                  Add to Cart
-                </>
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={handleBuyNow}
-              disabled={pending}
-              className="group flex flex-1 items-center justify-center gap-2.5 rounded-2xl bg-accent px-6 py-4 text-base font-semibold text-accent-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-70 disabled:hover:scale-100"
-            >
-              {pending ? (
-                <>
-                  <Loader2 className="size-5 animate-spin" />
-                  Processing…
-                </>
-              ) : (
-                <>
-                  <ShoppingBag className="size-5" />
-                  Buy Now — ${product.price}
-                </>
-              )}
-            </button>
-          </div>
+              <div className="flex items-center gap-3">
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-accent/20 text-accent">
+                  <Check className="size-5" />
+                </span>
+                <div>
+                  <p className="font-heading text-sm font-bold text-foreground">
+                    You own this bundle
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Lifetime access — open it in your vault.
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/dashboard"
+                data-testid="bundle-view-vault"
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-foreground px-6 py-3 text-sm font-semibold text-background transition-all duration-300 hover:scale-[1.02] hover:bg-accent hover:text-accent-foreground"
+              >
+                View in Vault
+                <ShieldCheck className="size-4" />
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => addItem(product)}
+                data-testid="bundle-add-to-cart"
+                className="group flex flex-1 items-center justify-center gap-2.5 rounded-2xl border border-border bg-background/60 px-6 py-4 text-base font-semibold text-foreground transition-all duration-300 hover:border-accent/60 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                {inCart ? (
+                  <>
+                    <Check className="size-5 text-accent" />
+                    In Basket
+                  </>
+                ) : (
+                  <>
+                    <Plus className="size-5" />
+                    Add to Cart
+                  </>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={handleBuyNow}
+                disabled={pending}
+                data-testid="bundle-buy-now"
+                className="group flex flex-1 items-center justify-center gap-2.5 rounded-2xl bg-accent px-6 py-4 text-base font-semibold text-accent-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-70 disabled:hover:scale-100"
+              >
+                {pending ? (
+                  <>
+                    <Loader2 className="size-5 animate-spin" />
+                    Processing…
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag className="size-5" />
+                    Buy Now — ${product.price}
+                  </>
+                )}
+              </button>
+            </div>
+          )}
 
           <p className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground">
             <ShieldCheck className="size-4 text-accent" />

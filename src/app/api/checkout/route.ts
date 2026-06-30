@@ -3,7 +3,7 @@ import { z } from "zod"
 import Stripe from "stripe"
 import { getProduct } from "@/lib/products"
 import { getSession } from "@/lib/session"
-import { grantBundleAccess } from "@/lib/purchases"
+import { grantBundleAccess, getOwnedBundleIds } from "@/lib/purchases"
 import { lookupVoucher, recordRedemption } from "@/lib/vouchers"
 
 /**
@@ -68,9 +68,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "No valid bundles" }, { status: 400 })
   }
 
-  const totalUsd = products.reduce((sum, p) => sum + p.price, 0)
+  // Block re-purchase: drop any bundle the signed-in user already owns.
+  const ownedIds = new Set(await getOwnedBundleIds(session.user.id))
+  const buyable = products.filter((p) => !ownedIds.has(p.id))
+  if (buyable.length === 0) {
+    return NextResponse.json(
+      { error: "You already own these — find them in your vault." },
+      { status: 400 },
+    )
+  }
+
+  const totalUsd = buyable.reduce((sum, p) => sum + p.price, 0)
   const origin = new URL(req.url).origin
-  const bundleIds = products.map((p) => p.id)
+  const bundleIds = buyable.map((p) => p.id)
 
   // 4. Re-validate voucher server-side (the client check is just UX).
   let voucherId: string | null = null
@@ -90,7 +100,7 @@ export async function POST(req: Request) {
   // 5. 100%-off voucher → bypass Stripe entirely.
   if (voucherId && voucherPercent === 100) {
     await Promise.all(
-      products.map((p) =>
+      buyable.map((p) =>
         grantBundleAccess({
           userId: session.user.id,
           bundleId: p.id,
@@ -141,7 +151,7 @@ export async function POST(req: Request) {
       ...(discounts.length === 0
         ? { allow_promotion_codes: true }
         : { discounts }),
-      line_items: products.map((p) => ({
+      line_items: buyable.map((p) => ({
         quantity: 1,
         price_data: {
           currency: "usd",

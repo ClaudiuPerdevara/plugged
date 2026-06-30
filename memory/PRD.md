@@ -43,8 +43,23 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 - **Homepage hero slider**: removed `vintage` (Vintage & Second-hand Bales) from `HERO_BUNDLE_IDS` and added `sportswear` in its place (`hero-slider.tsx`). Vintage bales bundle still exists in /drops, just not on the homepage hero.
 - ⚠️ COULD NOT RUN E2E (Vercel+Neon, no node_modules). Hero is a centered-on-dark composition, not a seamless outpaint — acceptable on the dark theme; can be regenerated if user wants edge-to-edge.
 
+## Changes — 30 Jun 2026 (session 13) — security hardening + UX fixes
+**Security findings remediated (3,4,5,6):**
+- **F3 (43MB bulk download)**: moved `Opium_Vendor_List.xlsx` out of `/public` → `/private`; new auth+ownership-gated route `src/app/api/vault/opium-archive/route.ts` (only opium owners can stream it). `next.config.mjs` `outputFileTracingIncludes` bundles it on Vercel. `opium.ts` archive link → `/api/vault/opium-archive`.
+- **F4 (dead `dangerouslySetInnerHTML`)**: deleted unused `src/components/ui/chart.tsx` (no importers, recharts only used there).
+- **F5 (email HTML injection)**: added `escapeHtml()` in `actions.ts`, escape name/email/subject/message in support email.
+- **F6 (missing headers)**: `next.config.mjs` now sets CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy (CSP allows Stripe frames + self; intentionally permissive on script-src to not break Next hydration).
+
+**UX/logic fixes:**
+- **View Plugs glitch (dashboard)**: `vault-bundle.tsx` expand animation changed from `height: 0→auto` (which mis-measured tall tables → empty space + late/glitchy sibling bundles) to a simple opacity fade in normal flow. Bundles now always stay in place.
+- **No double-buy**: `/api/checkout` now filters out bundles the user already owns (`getOwnedBundleIds` added to `purchases.ts`); if all owned → 400 "already own". Bundle page (`bundle/[id]/page.tsx`) fetches ownership and `bundle-details.tsx` shows an "In your vault → View in Vault" panel instead of Add/Buy for owned bundles.
+- **Removed "Vintage & Second-hand Bales"** bundle entirely (products.ts entry, catalog-images key, VINTAGE_ROUTE_BUNDLES set). Was already off the hero.
+
+⚠️ COULD NOT RUN E2E (Vercel+Neon, no node_modules/DB in sandbox). Verified statically: no broken refs to vintage/chart/downloads. Applies on next Vercel deploy.
+NOTE: Primary AV/EDR block (Finding 1 — replica/counterfeit content) is unchanged per user; still a business decision.
+
 ## Backlog / Next
-- User said more fixes/errors are coming — await next list.
+- Await next fixes from user.
 
 ## Changes — 30 Jun 2026 (session 10) — checkout fix + audit
 - **BUG FIX (cart checkout)**: `cart-drawer.tsx` had `onClick={checkout}`, passing the React MouseEvent into `checkout(override)` → `override.map` threw synchronously (outside try/catch) so the right-side cart drawer's "Secure Checkout" silently did nothing. Fixed to `onClick={() => checkout()}` + made `use-checkout.ts` defensive (`Array.isArray(override) ? override : items`). Cart page (`cart-view.tsx`) already called correctly; Buy Now on bundle page was fine.

@@ -1,6 +1,14 @@
 import { db } from "@/lib/db"
 import { getProduct } from "@/lib/products"
 
+export async function getOwnedBundleIds(userId: string): Promise<string[]> {
+  const rows = await db.purchase.findMany({
+    where: { userId },
+    select: { bundleId: true },
+  })
+  return rows.map((r) => r.bundleId)
+}
+
 /**
  * Grant a user access to a bundle by inserting into the `purchases` table.
  *
