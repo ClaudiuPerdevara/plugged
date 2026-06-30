@@ -192,9 +192,9 @@ export const PRODUCTS: Product[] = [
       featured: true,
       price: 10,
       gallery: [
-        "/catalog/opium/cover.png",
-        "/catalog/opium/look-1.png",
-        "/catalog/opium/look-2.png",
+        "/catalog/opium/cover.webp",
+        "/catalog/opium/look-1.webp",
+        "/catalog/opium/look-2.webp",
       ],
     },
   ),
@@ -218,9 +218,9 @@ export const PRODUCTS: Product[] = [
       featured: true,
       price: 12,
       gallery: [
-        "/catalog/y2k/cover.png",
-        "/catalog/y2k/tshirts.png",
-        "/catalog/y2k/jeans.png",
+        "/catalog/y2k/cover.webp",
+        "/catalog/y2k/tshirts.webp",
+        "/catalog/y2k/jeans.webp",
       ],
     },
   ),
@@ -245,9 +245,9 @@ export const PRODUCTS: Product[] = [
       featured: true,
       price: 15,
       gallery: [
-        "/catalog/old-money/cover.png",
-        "/catalog/old-money/gallery-1.png",
-        "/catalog/old-money/gallery-2.png",
+        "/catalog/old-money/cover.webp",
+        "/catalog/old-money/gallery-1.webp",
+        "/catalog/old-money/gallery-2.webp",
       ],
     },
   ),
@@ -274,9 +274,9 @@ export const PRODUCTS: Product[] = [
     {
       price: 10,
       gallery: [
-        "/catalog/football-tshirts/cover.png",
-        "/catalog/football-tshirts/tshirts.png",
-        "/catalog/football-tshirts/jerseys.png",
+        "/catalog/football-tshirts/cover.webp",
+        "/catalog/football-tshirts/tshirts.webp",
+        "/catalog/football-tshirts/jerseys.webp",
       ],
     },
   ),
@@ -305,9 +305,9 @@ export const PRODUCTS: Product[] = [
       featured: true,
       price: 12,
       gallery: [
-        "/catalog/carhartt/cover.png",
-        "/catalog/carhartt/gallery-2.png",
-        "/catalog/carhartt/gallery-3.png",
+        "/catalog/carhartt/cover.webp",
+        "/catalog/carhartt/gallery-2.webp",
+        "/catalog/carhartt/gallery-3.webp",
       ],
     },
   ),
@@ -334,10 +334,10 @@ export const PRODUCTS: Product[] = [
     {
       price: 12,
       gallery: [
-        "/catalog/jeans/cover.png",
-        "/catalog/jeans/flatlay.png",
-        "/catalog/jeans/look-1.png",
-        "/catalog/jeans/look-2.png",
+        "/catalog/jeans/cover.webp",
+        "/catalog/jeans/flatlay.webp",
+        "/catalog/jeans/look-1.webp",
+        "/catalog/jeans/look-2.webp",
       ],
     },
   ),
@@ -407,9 +407,9 @@ export const PRODUCTS: Product[] = [
       featured: true,
       price: 12,
       gallery: [
-        "/catalog/vintage-windbreakers/cover.png",
-        "/catalog/vintage-windbreakers/gallery-1.png",
-        "/catalog/vintage-windbreakers/gallery-2.png",
+        "/catalog/vintage-windbreakers/cover.webp",
+        "/catalog/vintage-windbreakers/gallery-1.webp",
+        "/catalog/vintage-windbreakers/gallery-2.webp",
       ],
     },
   ),
@@ -437,9 +437,9 @@ export const PRODUCTS: Product[] = [
     {
       price: 15,
       gallery: [
-        "/catalog/sportswear/cover.png",
-        "/catalog/sportswear/gallery-1.png",
-        "/catalog/sportswear/gallery-2.png",
+        "/catalog/sportswear/cover.webp",
+        "/catalog/sportswear/gallery-1.webp",
+        "/catalog/sportswear/gallery-2.webp",
       ],
     },
   ),
@@ -470,9 +470,9 @@ export const PRODUCTS: Product[] = [
       limited: true,
       price: 7,
       gallery: [
-        "/catalog/racing/cover.png",
-        "/catalog/racing/gallery-1.png",
-        "/catalog/racing/gallery-2.png",
+        "/catalog/racing/cover.webp",
+        "/catalog/racing/gallery-1.webp",
+        "/catalog/racing/gallery-2.webp",
       ],
     },
   ),
@@ -518,6 +518,14 @@ export const FAQS: Faq[] = [
   {
     q: "Can I resell the items from these suppliers?",
     a: "That's the whole point. These are wholesale and factory-direct sources built for resellers, with MOQ sheets and margin playbooks included.",
+  },
+  {
+    q: "What if a supplier link is dead or won't open?",
+    a: "It happens — suppliers rotate stock and listings expire. Every link opens in a new tab, so first just refresh and retry it once. If it's still down, use the image-search fallback included with each bundle: drop the product photo into the listed platform's search to find a live equivalent in seconds. Stuck on a specific link? Message us via Support with the bundle name and we'll send a working replacement, usually within 24 hours.",
+  },
+  {
+    q: "Are the supplier links safe to click?",
+    a: "Yes. Every link opens in a separate, isolated browser tab with strict security attributes (no access back to your session), and points only to the vetted third-party platforms we list — Taobao, Weidian, Shopify, Fleek and similar. We never ask you to install anything.",
   },
   {
     q: "Do you offer refunds?",

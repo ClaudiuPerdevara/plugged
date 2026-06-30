@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import {
   AnimatePresence,
   motion,
@@ -20,13 +20,24 @@ const HERO_BUNDLE_IDS = [
   "sportswear",
 ] as const
 
+// Short, mobile-first hero copy — one punchy line per slide instead of the
+// long product description, so it never overflows on a phone.
+const HERO_TAGLINES: Record<string, string> = {
+  racing: "Rare racing jackets — €100–€300 flips.",
+  opium: "Rick Owens & Chrome Hearts reps + 2,400 sources.",
+  y2k: "Low-rise denim, baby tees & Harley graphics.",
+  "vintage-windbreakers": "90s color-block & branded track jackets.",
+  jeans: "Vintage Levi's & baggy Y2K denim.",
+  sportswear: "Retro Nike & Adidas — easy Vinted flips.",
+}
+
 const SLIDES = HERO_BUNDLE_IDS.map((id, i) => {
   const p = PRODUCTS.find((prod) => prod.id === id)!
   return {
     id: p.id,
     tag: `${String(i + 1).padStart(2, "0")} — ${p.tag}`,
     title: p.name.replace(" Bundle", "").replace(" & ", " · "),
-    subtitle: p.description,
+    subtitle: HERO_TAGLINES[p.id] ?? p.description,
     image: CATALOG_IMAGES[p.id as keyof typeof CATALOG_IMAGES]?.hero ?? p.image,
     href: `/bundle/${p.id}`,
     limited: Boolean(p.limited || p.miniBundle),
@@ -34,6 +45,7 @@ const SLIDES = HERO_BUNDLE_IDS.map((id, i) => {
 })
 
 const SWIPE_THRESHOLD = 70
+const AUTOPLAY_MS = 5000
 
 const slideVariants = {
   enter: (dir: number) => ({ x: dir >= 0 ? "100%" : "-100%", opacity: 0 }),
@@ -47,34 +59,36 @@ export function HeroSlider() {
   const reduceMotion = useReducedMotion()
 
   const paginate = useCallback((dir: number) => {
-    setState(([prev]) => [
-      (prev + dir + SLIDES.length) % SLIDES.length,
-      dir,
-    ])
+    setState(([prev]) => [(prev + dir + SLIDES.length) % SLIDES.length, dir])
   }, [])
 
   const goTo = useCallback((next: number) => {
     setState(([prev]) => [next, next > prev ? 1 : -1])
   }, [])
 
+  // Auto-advance every 5s. Depending on `index` means the timer is fully reset
+  // to 0 whenever the slide changes — including manual swipes / arrows / dots.
   useEffect(() => {
     if (paused || reduceMotion) return
-    const timer = setInterval(() => paginate(1), 6000)
-    return () => clearInterval(timer)
-  }, [paginate, paused, reduceMotion])
+    const timer = setTimeout(() => paginate(1), AUTOPLAY_MS)
+    return () => clearTimeout(timer)
+  }, [index, paginate, paused, reduceMotion])
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
     if (info.offset.x < -SWIPE_THRESHOLD) paginate(1)
     else if (info.offset.x > SWIPE_THRESHOLD) paginate(-1)
   }
 
-  // Preload every hero image up-front so a sliding-in slide is never blank.
+  // Preload neighbouring slides so a swipe-in is never blank. Images are tiny
+  // WebP now, so this is effectively free.
   useEffect(() => {
-    SLIDES.forEach((s) => {
+    const next = (index + 1) % SLIDES.length
+    const prev = (index - 1 + SLIDES.length) % SLIDES.length
+    ;[next, prev].forEach((i) => {
       const img = new window.Image()
-      img.src = s.image
+      img.src = SLIDES[i].image
     })
-  }, [])
+  }, [index])
 
   const slide = SLIDES[index]
 
@@ -87,10 +101,9 @@ export function HeroSlider() {
       aria-roledescription="carousel"
       aria-label="Featured fashion styles"
     >
-      {/* Sliding layer — image + copy slide together. Default (sync) mode +
-          a unique key per slide means the old slide is fully removed after it
-          exits, so the title can never get stuck on a previous slide; all
-          images are preloaded above so a slide-in is never a black frame. */}
+      {/* Preload the first hero image (LCP) as early as possible. */}
+      <link rel="preload" as="image" href={SLIDES[0].image} fetchPriority="high" />
+
       <AnimatePresence custom={direction} initial={false}>
         <motion.div
           key={slide.id}
@@ -113,6 +126,8 @@ export function HeroSlider() {
             src={slide.image}
             alt={`${slide.title} — ${slide.tag}`}
             draggable={false}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            decoding="async"
             className="pointer-events-none h-full w-full object-cover"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/10" />
@@ -126,7 +141,7 @@ export function HeroSlider() {
               <h1 className="mt-4 text-balance font-heading text-5xl font-bold leading-[0.95] tracking-tight text-foreground text-glow md:text-7xl">
                 {slide.title}
               </h1>
-              <p className="mt-5 max-w-md text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+              <p className="mt-4 max-w-md text-pretty text-base leading-relaxed text-muted-foreground md:mt-5 md:text-lg">
                 {slide.subtitle}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -148,24 +163,26 @@ export function HeroSlider() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute right-5 top-1/2 z-20 hidden -translate-y-1/2 flex-col gap-3 md:flex md:right-8">
-        <button
-          type="button"
-          onClick={() => paginate(-1)}
-          aria-label="Previous slide"
-          className="grid size-11 place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-md transition-colors hover:border-accent hover:text-accent"
-        >
-          <ArrowLeft className="size-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => paginate(1)}
-          aria-label="Next slide"
-          className="grid size-11 place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-md transition-colors hover:border-accent hover:text-accent"
-        >
-          <ArrowRight className="size-4" />
-        </button>
-      </div>
+      {/* Edge arrows — always visible (mobile + desktop), pinned to the
+          left/right edges, and cycle infinitely through the slides. */}
+      <button
+        type="button"
+        onClick={() => paginate(-1)}
+        aria-label="Previous slide"
+        data-testid="hero-prev"
+        className="absolute left-3 top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-md transition-colors hover:border-accent hover:text-accent md:left-5 md:size-11"
+      >
+        <ArrowLeft className="size-4" />
+      </button>
+      <button
+        type="button"
+        onClick={() => paginate(1)}
+        aria-label="Next slide"
+        data-testid="hero-next"
+        className="absolute right-3 top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-md transition-colors hover:border-accent hover:text-accent md:right-5 md:size-11"
+      >
+        <ArrowRight className="size-4" />
+      </button>
 
       <div className="absolute bottom-9 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2.5">
         {SLIDES.map((s, i) => (
@@ -175,6 +192,7 @@ export function HeroSlider() {
             onClick={() => goTo(i)}
             aria-label={`Go to ${s.tag}`}
             aria-current={i === index}
+            data-testid={`hero-dot-${i}`}
             className={`h-1.5 rounded-full transition-all duration-500 ${
               i === index
                 ? "w-8 bg-accent"
@@ -186,7 +204,7 @@ export function HeroSlider() {
 
       <a
         href="#products"
-        className="absolute bottom-7 right-5 z-20 hidden items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground md:flex md:right-8"
+        className="absolute bottom-7 right-5 z-20 hidden items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground md:flex md:right-20"
       >
         Scroll
         <motion.span

@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
-import { ExternalLink, KeyRound, Star } from "lucide-react"
+import { ExternalLink, KeyRound, LifeBuoy, Star } from "lucide-react"
 import type { Product, Supplier, SourcingRoute } from "@/lib/products"
 import { VintageWindbreakersVault } from "./vintage-windbreakers-vault"
 import { FootballTshirtsVault } from "./football-tshirts-vault"
@@ -186,6 +187,31 @@ export function VaultBundle({ product }: { product: Product }) {
             className="border-t border-border"
           >
             <div className="flex flex-col gap-5 p-6 md:p-7">
+              <div
+                className="flex items-start gap-3 rounded-xl border border-border bg-background/40 px-4 py-3.5"
+                data-testid="broken-link-help"
+              >
+                <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-accent/15 text-accent">
+                  <LifeBuoy className="size-4" />
+                </span>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  <span className="font-semibold text-foreground">
+                    Link not working?
+                  </span>{" "}
+                  Every plug opens in a new tab — if it doesn&apos;t load, refresh
+                  and retry it once. Still down? Use the image-search keyword to
+                  find a live equivalent, or{" "}
+                  <Link
+                    href="/support"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-accent underline-offset-2 hover:underline"
+                  >
+                    message Support
+                  </Link>{" "}
+                  and we&apos;ll send a working replacement within 24h.
+                </p>
+              </div>
               {product.id === "vintage-windbreakers" ? (
                 <VintageWindbreakersVault />
               ) : product.id === "opium" ? (

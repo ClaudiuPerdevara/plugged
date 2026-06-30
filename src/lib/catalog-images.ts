@@ -7,14 +7,14 @@ function asset(id: string, file: string) {
 }
 
 function bundleAssets(id: string) {
-  const cover = asset(id, "cover.png")
+  const cover = asset(id, "cover.webp")
   return {
     cover,
-    hero: asset(id, "hero.png"),
+    hero: asset(id, "hero.webp"),
     gallery: [
-      asset(id, "gallery-1.png"),
-      asset(id, "gallery-2.png"),
-      asset(id, "gallery-3.png"),
+      asset(id, "gallery-1.webp"),
+      asset(id, "gallery-2.webp"),
+      asset(id, "gallery-3.webp"),
     ],
   }
 }

@@ -20,23 +20,27 @@ const SECTIONS = [
     body: "You are responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. Bundle access is licensed to you personally and may not be shared, resold, redistributed or published in whole or in part.",
   },
   {
-    title: "4. Payments & Refunds",
-    body: "All bundles are one-time purchases. Because bundles are digital and grant immediate access to private supplier data, all sales are final and non-refundable. If you experience an issue with your access, contact Support and we will work to resolve it.",
+    title: "4. Payments, Refunds & Right of Withdrawal",
+    body: "All bundles are one-time purchases processed securely by Stripe. Our products are digital content supplied instantly. By completing your purchase you expressly request immediate access and acknowledge that you therefore lose the statutory 14-day right of withdrawal for digital content under EU consumer law (Consumer Rights Directive 2011/83/EU). As a result, all sales are final and non-refundable once access is granted. If you experience a genuine access or technical issue, contact Support and we will resolve it — including a refund where we are unable to deliver what you paid for.",
   },
   {
-    title: "5. Third-Party Suppliers",
-    body: "PLUGGED vets suppliers for stock, communication and product quality at the time of listing, but we do not control third parties. We are not liable for the actions, pricing, shipping, product quality or availability of any supplier. Any transaction you make with a supplier is solely between you and that supplier.",
+    title: "5. Third-Party Suppliers & Link Availability",
+    body: "We vet every supplier for stock, communication and product quality at the time of listing, but we do not control third parties. Suppliers rotate stock and individual listings can change or expire over time, so an occasional link may be temporarily or permanently unavailable. Every supplier link opens in a new, isolated browser tab. If a link does not load, refresh and retry it, then use the image-search fallback included with each bundle to find a live equivalent; if you are still stuck, contact Support and we will provide a working replacement. We are not liable for the actions, pricing, shipping, product quality or availability of any supplier, and any transaction you make with a supplier is solely between you and that supplier.",
   },
   {
     title: "6. Acceptable Use",
     body: "You agree not to use the platform for any unlawful purpose, to scrape or duplicate our supplier data, or to misrepresent your affiliation with PLUGGED. We reserve the right to suspend or terminate accounts that violate these terms.",
   },
   {
-    title: "7. Changes to These Terms",
+    title: "7. Limitation of Liability",
+    body: "PLUGGED provides curated information on an \"as is\" basis. To the maximum extent permitted by law, we are not liable for any indirect or consequential loss, lost profits, or losses arising from your reliance on supplier listings or from any dealings with third-party suppliers. Nothing in these terms limits liability that cannot be excluded under applicable law.",
+  },
+  {
+    title: "8. Changes to These Terms",
     body: "We may update these Terms & Conditions from time to time. Continued use of the platform after changes are posted constitutes acceptance of the revised terms.",
   },
   {
-    title: "8. Contact",
+    title: "9. Contact",
     body: "Questions about these terms? Reach us any time at plugged.support@gmail.com.",
   },
 ]

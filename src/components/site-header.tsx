@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { AnimatePresence, motion } from "framer-motion"
 import { LayoutDashboard, LogIn, LogOut, Menu, ShoppingBag, User, X } from "lucide-react"
 import { useCart } from "./cart-provider"
@@ -26,6 +27,17 @@ export function SiteHeader() {
   const menuRef = useRef<HTMLDivElement>(null)
   const { count, openCart } = useCart()
   const { isAuthenticated, signOut } = useAuth()
+  const pathname = usePathname()
+
+  // On the home page the logo scrolls smoothly to the top instead of doing a
+  // no-op navigation; elsewhere it links home as usual.
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (pathname === "/") {
+      e.preventDefault()
+      setMobileNavOpen(false)
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -62,6 +74,8 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
         <Link
           href="/"
+          onClick={handleLogoClick}
+          data-testid="site-logo"
           className="font-heading text-lg font-bold tracking-tight text-foreground"
         >
           PLUGGED<span className="text-accent">.</span>

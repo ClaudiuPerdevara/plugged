@@ -1,0 +1,33 @@
+{
+  "summary": "Frontend-only review of the PLUGGED Next.js homepage polish + content pages. Tested hero slider (auto-advance, manual reset, infinite cycle, edge arrows desktop+mobile, 6 dots, short subtitle), navbar logo smooth scroll-to-top, /drops grid + filter, /faq new dead-link & safety entries, /terms EU withdrawal + supplier-link sections. All 9 requested behaviours pass on the public preview URL.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "(Optional, nice-to-have) Add data-testid='product-card-{id}' to product cards in /src/components/product-card.tsx — currently absent so tests had to fall back to a[href^='/bundle/']. Functionality is fine, this is purely a testability improvement.",
+    "(Optional) Add data-testid='drops-heading' to the H1 on /drops and data-testid='hero-tag' / 'hero-subtitle' on the hero copy elements for more robust future testing.",
+    "(Info — NOT a bug) Console shows a Cloudflare beacon script blocked by CSP, and /api/auth/get-session returns 502 in the preview. Both are expected per the review-request notes and do not affect any tested feature."
+  ],
+  "critical_code_review_comments": [
+    "hero-slider.tsx pause-on-hover (onMouseEnter/onMouseLeave) interacts with the autoplay-reset timer correctly because the timer effect depends on [index, paused], so any manual click that changes index restarts the 5s window. Verified passive autoplay fires after ~5s and a manual click resets to a fresh ~5s window (measured 5.56s in test).",
+    "hero-slider.tsx paginate() uses modulo arithmetic — confirmed prev from slide 0 wraps to slide 5 (06 — Sportswear) and next from slide 5 wraps to slide 0 (01 — Racing).",
+    "site-header.tsx handleLogoClick correctly preventDefaults on '/' and calls window.scrollTo({top:0,behavior:'smooth'}) — verified scrollY 1721 -> 0 with no URL change.",
+    "Hero image is /catalog/racing/hero.webp with intrinsic 1408x768 — confirmed served as WebP (perf optimisation goal met).",
+    "Terms wording for section 4 uses 'EU consumer law (Consumer Rights Directive 2011/83/EU)' and '14-day right of withdrawal for digital content' — substantively meets the EU standards requirement. Section 5 mentions new isolated tab, retry, image-search fallback and contact Support — all covered."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (skipped per request)", "frontend": "100% (9/9 features)"},
+  "test_credentials": "None required — all tested surfaces are public.",
+  "seed_data_creation": "None.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Public preview base URL is https://689bf96b-e4b7-4aee-b32a-a652a4e49e26.preview.emergentagent.com . Notes: (1) Hero slider pauses on mouse hover — when testing autoplay timing with Playwright, move the mouse to (1,1) BEFORE polling, otherwise the hero stays paused and no auto-advance fires. (2) The hero has 6 slides in this fixed order: 01 Racing, 02 Opium, 03 Y2K, 04 Windbreakers, 05 Jeans, 06 Sportswear — identify the active slide via the only dot with offsetWidth > 16 (the active dot is w-8, inactive ones are w-2.5). (3) Product cards on /drops do NOT carry data-testid yet — use a[href^='/bundle/'] and walk up to the nearest ancestor that contains an <img>. (4) /api/* on the preview returns 502 (legacy backend), this is expected and unrelated to anything tested here.",
+  "rca of the issue": "No bugs found. Initial false-positive in my first autoplay test was caused by the Playwright mouse cursor sitting on the slider after the click, which legitimately pauses the carousel via onMouseEnter (designed behaviour). After moving the mouse to (1,1) the autoplay reset behaviour was confirmed working — fresh 5s timer after each manual click, modulo wrap-around in both directions."
+}

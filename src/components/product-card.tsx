@@ -8,11 +8,6 @@ import { useCart } from "./cart-provider"
 
 export type { Product }
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0 },
-}
-
 export function ProductCard({
   product,
   ctaLabel = "View Bundle",
@@ -29,10 +24,20 @@ export function ProductCard({
   const { addItem, has } = useCart()
   const inCart = has(product.id)
 
+  // Direct entrance animation (not variant-inheritance) so cards reliably
+  // become visible on mount across SSR/hydration, without depending on a
+  // parent container's variant propagation.
+  const motionProps = animated
+    ? {
+        initial: { opacity: 0, y: 24 },
+        animate: { opacity: 1, y: 0 },
+      }
+    : {}
+
   if (variant === "tile") {
     return (
       <motion.article
-        variants={animated ? cardVariants : undefined}
+        {...motionProps}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         whileHover={{ y: -4 }}
         className="group relative aspect-[3/4] overflow-hidden rounded-2xl border border-border bg-card shadow-none transition-all duration-300 hover:border-accent/50 hover:shadow-xl hover:shadow-accent/10"
@@ -71,7 +76,7 @@ export function ProductCard({
 
   return (
     <motion.article
-      variants={animated ? cardVariants : undefined}
+      {...motionProps}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -6 }}
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/40 shadow-none backdrop-blur-sm transition-all duration-300 hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/15"
