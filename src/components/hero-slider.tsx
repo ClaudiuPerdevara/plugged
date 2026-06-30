@@ -170,7 +170,7 @@ export function HeroSlider() {
         onClick={() => paginate(-1)}
         aria-label="Previous slide"
         data-testid="hero-prev"
-        className="absolute left-3 top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-md transition-colors hover:border-accent hover:text-accent md:left-5 md:size-11"
+        className="absolute left-3 top-1/2 z-20 hidden size-11 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-md transition-colors hover:border-accent hover:text-accent md:left-5 md:grid"
       >
         <ArrowLeft className="size-4" />
       </button>
@@ -179,27 +179,47 @@ export function HeroSlider() {
         onClick={() => paginate(1)}
         aria-label="Next slide"
         data-testid="hero-next"
-        className="absolute right-3 top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-md transition-colors hover:border-accent hover:text-accent md:right-5 md:size-11"
+        className="absolute right-3 top-1/2 z-20 hidden size-11 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-md transition-colors hover:border-accent hover:text-accent md:right-5 md:grid"
       >
         <ArrowRight className="size-4" />
       </button>
 
-      <div className="absolute bottom-9 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2.5">
-        {SLIDES.map((s, i) => (
-          <button
-            key={s.id}
-            type="button"
-            onClick={() => goTo(i)}
-            aria-label={`Go to ${s.tag}`}
-            aria-current={i === index}
-            data-testid={`hero-dot-${i}`}
-            className={`h-1.5 rounded-full transition-all duration-500 ${
-              i === index
-                ? "w-8 bg-accent"
-                : "w-2.5 bg-foreground/30 hover:bg-foreground/60"
-            }`}
-          />
-        ))}
+      <div className="absolute bottom-9 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
+        <button
+          type="button"
+          onClick={() => paginate(-1)}
+          aria-label="Previous slide"
+          data-testid="hero-prev-mobile"
+          className="grid size-8 place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-md transition-colors active:border-accent active:text-accent md:hidden"
+        >
+          <ArrowLeft className="size-4" />
+        </button>
+        <div className="flex items-center gap-2.5">
+          {SLIDES.map((s, i) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-label={`Go to ${s.tag}`}
+              aria-current={i === index}
+              data-testid={`hero-dot-${i}`}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                i === index
+                  ? "w-8 bg-accent"
+                  : "w-2.5 bg-foreground/30 hover:bg-foreground/60"
+              }`}
+            />
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => paginate(1)}
+          aria-label="Next slide"
+          data-testid="hero-next-mobile"
+          className="grid size-8 place-items-center rounded-full border border-border bg-background/40 text-foreground backdrop-blur-md transition-colors active:border-accent active:text-accent md:hidden"
+        >
+          <ArrowRight className="size-4" />
+        </button>
       </div>
 
       <a

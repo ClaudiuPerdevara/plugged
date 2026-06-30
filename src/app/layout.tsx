@@ -51,13 +51,6 @@ export const metadata: Metadata = {
       '14 style bundles for young resellers. Vetted supplier links, instant vault access.',
     images: ['/logo.svg'],
   },
-  icons: {
-    icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
-      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
-    ],
-    apple: '/apple-icon.png',
-  },
 }
 
 export const viewport: Viewport = {

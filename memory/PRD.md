@@ -66,8 +66,16 @@ Better Auth, Stripe) e-commerce site selling curated fashion *supplier bundles*
   with Save button + toast + router.refresh(). Email kept read-only (changing it needs
   a verification-email flow / Resend, deferred). NOTE: cannot be tested in the preview
   because `/api/*` returns 502 here; works on Vercel.
-- Future-ideas brainstorm delivered to user (subscription vault, plug-drop calendar,
-  AI image-search sourcing, community/leaderboards, referral engine, profit calculator,
-  link health bounty). Not implemented — backlog.
+## Session 2026-06-30 (d) — Favicon + mobile hero arrows
+- **Favicon was missing in the browser tab** (I'd removed `/icon.png` and relied on a
+  metadata `icons` ref that wasn't reliable). Fixed using Next App Router file
+  convention: added `src/app/icon.svg` (the legible "P" glyph mark) + `src/app/apple-icon.png`
+  (the PLUGGED wordmark, 180×180, from the user's logo) and removed the manual `icons`
+  metadata block in `layout.tsx`. `<link rel="icon" href="/icon.svg">` now emitted.
+- **Mobile hero arrows overlapped the title:** edge arrows are now `hidden md:grid`
+  (desktop only); on mobile, prev/next arrows (`md:hidden`, testids hero-prev-mobile /
+  hero-next-mobile) sit in the bottom control bar flanking the pagination dots, so they
+  never overlap text on any phone width. Desktop UX unchanged.
+
 
 
