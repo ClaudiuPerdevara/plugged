@@ -43,6 +43,18 @@ Next.js (App Router) storefront selling curated underground-fashion **supplier b
 - **Homepage hero slider**: removed `vintage` (Vintage & Second-hand Bales) from `HERO_BUNDLE_IDS` and added `sportswear` in its place (`hero-slider.tsx`). Vintage bales bundle still exists in /drops, just not on the homepage hero.
 - ⚠️ COULD NOT RUN E2E (Vercel+Neon, no node_modules). Hero is a centered-on-dark composition, not a seamless outpaint — acceptable on the dark theme; can be regenerated if user wants edge-to-edge.
 
+## Changes — 30 Jun 2026 (session 15) — hero bugs, prices/EUR, UI polish
+1. **Hero slider bugs FIXED** (`hero-slider.tsx`): replaced dual `AnimatePresence` (mode="wait"/popLayout) with a crossfade stack — all slides stay mounted (no black "still-loading" first image) and the title/subtitle are a single keyed `motion.div` derived straight from `index` (never sticks on a previous slide, e.g. the "Y2K stuck on all" bug). Swipe kept via transparent drag layer. Added a "⏳ Limited Mini Bundle" tag on limited slides.
+2. **Football-tee broken links FIXED** (`football-tshirts.ts`): real Fleek handles 404 without the emoji — Nike → `%F0%9F%92%A5-rv3483-nike-sports-jerseys` (URL-encoded 💥), Adidas → `rv3306-adidas-trikots-tshirts`. Verified both render the product (titles fetched).
+3. **Support/Resend**: code is correct (saves ticket, emails via Resend when `SUPPORT_INBOX` set). "saved but couldn't notify" = Resend API returned an error → almost always the onboarding@resend.dev sender can only deliver to the Resend account-owner's email, OR an unverified `RESEND_FROM_EMAIL` domain. Explained both fixes to user (no code change).
+4. **Prices + EUR**: per-bundle prices via new `price` opt — opium €10, y2k €12, old-money €15, football €10, carhartt €12, jeans €12, windbreakers €12, sportswear €15, racing €7. Stripe currency `usd→eur`; all `$` price displays → `€` (product-card, cart-drawer, bundle-details, cart-view); FAQ + layout copy updated.
+5. **Crisper fonts** (`globals.css`): softened `.text-glow` (removed the 24px white bloom that haloed big headings) + added `-webkit-font-smoothing/optimizeLegibility` on body.
+6. **Carousel arrows** (`products-section.tsx`): moved from top-right to left/right edges overlaying the cards, vertically centered, glassy, auto fade-in/out on scroll bounds.
+7. **Mini bundles stand out**: hero limited tag + accent ring/glow on limited/mini product cards.
+8. **Drops**: coming-soon bundles now sorted to the end (`drops-catalog.tsx`).
+
+⚠️ COULD NOT RUN E2E (Vercel+Neon, no node_modules/DB). Verified statically + link HTTP checks. Applies on next Vercel deploy.
+
 ## Changes — 30 Jun 2026 (session 14) — Racing mini-bundle, sitemap, coming-soon, deletions
 1. **Jeans gallery**: added new flatlay → `public/catalog/jeans/flatlay.png`, gallery now [cover, flatlay, look-1, look-2].
 2. **sitemap.xml**: `src/app/sitemap.ts` (Next native /sitemap.xml; static + live bundle pages, excludes coming-soon). robots.txt references `Sitemap: https://plugged.market/sitemap.xml`. Base = `NEXT_PUBLIC_SITE_URL` env or `https://plugged.market`.

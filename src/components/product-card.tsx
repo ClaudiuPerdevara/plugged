@@ -59,7 +59,7 @@ export function ProductCard({
         ) : null}
         <div className="absolute inset-x-0 bottom-0 z-[1] p-4">
           <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent">
-            ${product.price} · lifetime
+            €{product.price} · lifetime
           </span>
           <h3 className="mt-1 font-heading text-lg font-bold leading-tight tracking-tight text-foreground">
             {product.tag}
@@ -74,7 +74,11 @@ export function ProductCard({
       variants={animated ? cardVariants : undefined}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -6 }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/40 shadow-none backdrop-blur-sm transition-all duration-300 hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/15"
+      className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card/40 shadow-none backdrop-blur-sm transition-all duration-300 hover:shadow-2xl ${
+        product.limited || product.miniBundle
+          ? "border-accent/60 shadow-xl shadow-accent/20 ring-1 ring-accent/40 hover:border-accent hover:shadow-accent/30"
+          : "border-border hover:border-accent/50 hover:shadow-accent/15"
+      }`}
     >
       <Link
         href={href}
@@ -139,7 +143,7 @@ export function ProductCard({
             <>
               <div className="flex items-baseline gap-1">
                 <span className="font-heading text-2xl font-bold text-foreground">
-                  ${product.price}
+                  €{product.price}
                 </span>
                 <span className="text-[11px] text-muted-foreground">
                   / lifetime

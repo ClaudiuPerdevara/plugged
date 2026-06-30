@@ -25,6 +25,12 @@ export function DropsCatalog() {
         p.description.toLowerCase().includes(q) ||
         p.tag.toLowerCase().includes(q)
       return matchesCategory && matchesQuery
+    }).sort((a, b) => {
+      // Coming-soon bundles always sink to the bottom; everything else keeps
+      // its catalog order.
+      const aSoon = a.comingSoon ? 1 : 0
+      const bSoon = b.comingSoon ? 1 : 0
+      return aSoon - bSoon
     })
   }, [query, active])
 
@@ -44,7 +50,7 @@ export function DropsCatalog() {
         </h1>
         <p className="mt-5 text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
           {PRODUCTS.length} vetted supplier bundles for young resellers — Opium,
-          Y2K, UK drip, vintage sportswear, sneakers and more. Pick your scene, unlock the
+          Y2K, racing, vintage sportswear and more. Pick your scene, unlock the
           links.
         </p>
       </motion.div>

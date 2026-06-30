@@ -154,7 +154,7 @@ export async function POST(req: Request) {
       line_items: buyable.map((p) => ({
         quantity: 1,
         price_data: {
-          currency: "usd",
+          currency: "eur",
           unit_amount: Math.round(p.price * 100),
           product_data: {
             name: p.name,

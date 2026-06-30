@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import {
-  AnimatePresence,
   motion,
   type PanInfo,
   useReducedMotion,
@@ -29,16 +28,11 @@ const SLIDES = HERO_BUNDLE_IDS.map((id, i) => {
     subtitle: p.description,
     image: CATALOG_IMAGES[p.id as keyof typeof CATALOG_IMAGES]?.hero ?? p.image,
     href: `/bundle/${p.id}`,
+    limited: Boolean(p.limited || p.miniBundle),
   }
 })
 
 const SWIPE_THRESHOLD = 70
-
-const variants = {
-  enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0.4 }),
-  center: { x: 0, opacity: 1 },
-  exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0.4 }),
-}
 
 export function HeroSlider() {
   const [[index, direction], setState] = useState<[number, number]>([0, 0])
@@ -78,70 +72,80 @@ export function HeroSlider() {
       aria-roledescription="carousel"
       aria-label="Featured fashion styles"
     >
-      <AnimatePresence custom={direction} initial={false} mode="popLayout">
-        <motion.div
-          key={slide.id}
-          custom={direction}
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{
-            x: { type: "spring", stiffness: 120, damping: 26, mass: 0.9 },
-            opacity: { duration: 0.5 },
-          }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.16}
-          onDragEnd={onDragEnd}
-          className="absolute inset-0 cursor-grab active:cursor-grabbing"
+      {/* Crossfade image stack — every slide stays mounted so there's never a
+          black "still loading" flash, and the visible layer always matches the
+          active index. */}
+      {SLIDES.map((s, i) => (
+        <div
+          key={s.id}
+          aria-hidden={i !== index}
+          className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+            i === index ? "opacity-100" : "opacity-0"
+          }`}
         >
           <img
-            src={slide.image}
-            alt={`${slide.title} — ${slide.tag}`}
+            src={s.image}
+            alt={`${s.title} — ${s.tag}`}
             draggable={false}
+            loading={i === 0 ? "eager" : "lazy"}
+            fetchPriority={i === 0 ? "high" : "auto"}
             className="pointer-events-none h-full w-full object-cover"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/10" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-transparent" />
-        </motion.div>
-      </AnimatePresence>
+        </div>
+      ))}
+
+      {/* Transparent swipe/drag layer (below text & controls). */}
+      <motion.div
+        className="absolute inset-0 z-[5] cursor-grab active:cursor-grabbing"
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.16}
+        onDragEnd={onDragEnd}
+      />
 
       <div className="pointer-events-none absolute inset-0 z-10 mx-auto flex max-w-7xl flex-col justify-end px-5 pb-24 md:px-8 md:pb-28">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={slide.id}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-2xl"
-          >
+        {/* Keyed on the active id → React remounts on every change, so the
+            title/subtitle can never get stuck on a previous slide. */}
+        <motion.div
+          key={slide.id}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-2xl"
+        >
+          <div className="flex flex-wrap items-center gap-3">
             <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
               {slide.tag}
             </span>
-            <h1 className="mt-4 text-balance font-heading text-5xl font-bold leading-[0.95] tracking-tight text-foreground text-glow md:text-7xl">
-              {slide.title}
-            </h1>
-            <p className="mt-5 max-w-md text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-              {slide.subtitle}
-            </p>
-            <div className="pointer-events-auto mt-8 flex flex-wrap items-center gap-4">
-              <Link
-                href="/drops"
-                className="rounded-full bg-foreground px-7 py-3 text-sm font-semibold text-background transition-transform duration-300 hover:scale-[1.03]"
-              >
-                Browse All Styles
-              </Link>
-              <Link
-                href={slide.href}
-                className="rounded-full border border-border px-7 py-3 text-sm font-semibold text-foreground transition-colors hover:border-accent/60 hover:text-accent"
-              >
-                View This Bundle
-              </Link>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+            {slide.limited ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/50 bg-accent/15 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-accent shadow-lg shadow-accent/20">
+                ⏳ Limited Mini Bundle
+              </span>
+            ) : null}
+          </div>
+          <h1 className="mt-4 text-balance font-heading text-5xl font-bold leading-[0.95] tracking-tight text-foreground text-glow md:text-7xl">
+            {slide.title}
+          </h1>
+          <p className="mt-5 max-w-md text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+            {slide.subtitle}
+          </p>
+          <div className="pointer-events-auto mt-8 flex flex-wrap items-center gap-4">
+            <Link
+              href="/drops"
+              className="rounded-full bg-foreground px-7 py-3 text-sm font-semibold text-background transition-transform duration-300 hover:scale-[1.03]"
+            >
+              Browse All Styles
+            </Link>
+            <Link
+              href={slide.href}
+              className="rounded-full border border-border px-7 py-3 text-sm font-semibold text-foreground transition-colors hover:border-accent/60 hover:text-accent"
+            >
+              View This Bundle
+            </Link>
+          </div>
+        </motion.div>
       </div>
 
       <div className="absolute right-5 top-1/2 z-20 hidden -translate-y-1/2 flex-col gap-3 md:flex md:right-8">

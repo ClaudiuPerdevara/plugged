@@ -102,7 +102,7 @@ export function CartDrawer() {
                             {item.name}
                           </p>
                           <p className="text-sm text-muted-foreground">
-                            ${item.price} / lifetime
+                            €{item.price} / lifetime
                           </p>
                         </div>
                         <button
@@ -125,7 +125,7 @@ export function CartDrawer() {
                       Total
                     </span>
                     <span className="font-heading text-2xl font-bold text-foreground">
-                      ${total}
+                      €{total}
                     </span>
                   </div>
                   <button

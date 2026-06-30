@@ -115,7 +115,7 @@ export function BundleDetails({
           <div className="mt-5 flex items-center gap-4">
             <div className="flex items-baseline gap-1">
               <span className="font-heading text-3xl font-bold text-foreground">
-                ${product.price}
+                €{product.price}
               </span>
               <span className="text-sm text-muted-foreground">/ lifetime</span>
             </div>
@@ -248,7 +248,7 @@ export function BundleDetails({
                 ) : (
                   <>
                     <ShoppingBag className="size-5" />
-                    Buy Now — ${product.price}
+                    Buy Now — €{product.price}
                   </>
                 )}
               </button>

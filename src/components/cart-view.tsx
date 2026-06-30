@@ -81,7 +81,7 @@ export function CartView() {
                 </div>
                 <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end">
                   <span className="font-heading text-xl font-bold text-foreground">
-                    ${item.price}
+                    €{item.price}
                   </span>
                   <button
                     type="button"
@@ -122,7 +122,7 @@ export function CartView() {
                   <dt className="text-muted-foreground">
                     Bundles ({count})
                   </dt>
-                  <dd className="text-foreground">${total}</dd>
+                  <dd className="text-foreground">€{total}</dd>
                 </div>
                 <div className="flex items-center justify-between">
                   <dt className="text-muted-foreground">Processing</dt>
@@ -135,7 +135,7 @@ export function CartView() {
                     Total
                   </dt>
                   <dd className="font-heading text-2xl font-bold text-foreground">
-                    ${total}
+                    €{total}
                   </dd>
                 </div>
               </dl>

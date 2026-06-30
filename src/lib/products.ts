@@ -106,6 +106,7 @@ function bundle(
     miniBundle?: boolean
     limited?: boolean
     comingSoon?: boolean
+    price?: number
   },
 ): Product {
   const imgs = CATALOG_IMAGES[id]
@@ -115,7 +116,7 @@ function bundle(
     name,
     description,
     aesthetic,
-    price: 20,
+    price: opts?.price ?? 20,
     image: imgs.cover,
     gallery: opts?.gallery ?? [...imgs.gallery],
     perks,
@@ -143,6 +144,7 @@ function bundleWithSuppliers(
     miniBundle?: boolean
     limited?: boolean
     comingSoon?: boolean
+    price?: number
   },
 ): Product {
   const imgs = CATALOG_IMAGES[id]
@@ -152,7 +154,7 @@ function bundleWithSuppliers(
     name,
     description,
     aesthetic,
-    price: 20,
+    price: opts?.price ?? 20,
     image: imgs.cover,
     gallery: opts?.gallery ?? [...imgs.gallery],
     perks,
@@ -188,6 +190,7 @@ export const PRODUCTS: Product[] = [
     OPIUM_SUPPLIERS,
     {
       featured: true,
+      price: 10,
       gallery: [
         "/catalog/opium/cover.png",
         "/catalog/opium/look-1.png",
@@ -213,6 +216,7 @@ export const PRODUCTS: Product[] = [
     Y2K_SUPPLIERS,
     {
       featured: true,
+      price: 12,
       gallery: [
         "/catalog/y2k/cover.png",
         "/catalog/y2k/tshirts.png",
@@ -239,6 +243,7 @@ export const PRODUCTS: Product[] = [
     OLD_MONEY_SUPPLIERS,
     {
       featured: true,
+      price: 15,
       gallery: [
         "/catalog/old-money/cover.png",
         "/catalog/old-money/gallery-1.png",
@@ -267,6 +272,7 @@ export const PRODUCTS: Product[] = [
     ],
     FOOTBALL_TSHIRTS_SUPPLIERS,
     {
+      price: 10,
       gallery: [
         "/catalog/football-tshirts/cover.png",
         "/catalog/football-tshirts/tshirts.png",
@@ -297,6 +303,7 @@ export const PRODUCTS: Product[] = [
     CARHARTT_SUPPLIERS,
     {
       featured: true,
+      price: 12,
       gallery: [
         "/catalog/carhartt/cover.png",
         "/catalog/carhartt/gallery-2.png",
@@ -325,6 +332,7 @@ export const PRODUCTS: Product[] = [
     ],
     JEANS_SUPPLIERS,
     {
+      price: 12,
       gallery: [
         "/catalog/jeans/cover.png",
         "/catalog/jeans/flatlay.png",
@@ -397,6 +405,7 @@ export const PRODUCTS: Product[] = [
     VINTAGE_WINDBREAKERS_SUPPLIERS,
     {
       featured: true,
+      price: 12,
       gallery: [
         "/catalog/vintage-windbreakers/cover.png",
         "/catalog/vintage-windbreakers/gallery-1.png",
@@ -426,6 +435,7 @@ export const PRODUCTS: Product[] = [
     ],
     SPORTSWEAR_SUPPLIERS,
     {
+      price: 15,
       gallery: [
         "/catalog/sportswear/cover.png",
         "/catalog/sportswear/gallery-1.png",
@@ -458,6 +468,7 @@ export const PRODUCTS: Product[] = [
       featured: true,
       miniBundle: true,
       limited: true,
+      price: 7,
       gallery: [
         "/catalog/racing/cover.png",
         "/catalog/racing/gallery-1.png",
@@ -502,7 +513,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "Is this a one-time payment or a subscription?",
-    a: "One time. $20 per bundle gets you lifetime access plus every future update — no recurring fees.",
+    a: "One time. A single low price per bundle (starting at €7) gets you lifetime access plus every future update — no recurring fees.",
   },
   {
     q: "Can I resell the items from these suppliers?",

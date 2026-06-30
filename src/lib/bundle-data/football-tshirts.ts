@@ -49,7 +49,7 @@ export const FOOTBALL_TSHIRTS_PACKAGES: FootballTshirtPackage[] = [
     perPiece: "€5.51 / pc",
     grade: "A / B",
     shipping: "Shipping included! · 20–27 days",
-    link: "https://www.joinfleek.com/products/rv3483-nike-sports-jerseys",
+    link: "https://www.joinfleek.com/products/%F0%9F%92%A5-rv3483-nike-sports-jerseys",
   },
   {
     id: 4,
@@ -59,7 +59,7 @@ export const FOOTBALL_TSHIRTS_PACKAGES: FootballTshirtPackage[] = [
     perPiece: "€4.96 / pc",
     grade: "A / B",
     shipping: "Shipping included! · 20–27 days",
-    link: "https://www.joinfleek.com/products/rv3306-adidas-jersey-tshirts",
+    link: "https://www.joinfleek.com/products/rv3306-adidas-trikots-tshirts",
   },
   {
     id: 5,
