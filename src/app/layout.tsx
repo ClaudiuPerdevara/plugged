@@ -4,6 +4,7 @@ import { Toaster } from 'sonner'
 import { Analytics } from '@vercel/analytics/next'
 import { CartProvider } from '@/components/cart-provider'
 import { CartDrawer } from '@/components/cart-drawer'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -91,6 +92,7 @@ export default function RootLayout({
             }}
           />
         </CartProvider>
+        <SpeedInsights />
         <Analytics />
       </body>
     </html>
