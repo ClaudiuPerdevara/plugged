@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Inter } from 'next/font/google'
 import { Toaster } from 'sonner'
+import { Analytics } from '@vercel/analytics/next'
 import { CartProvider } from '@/components/cart-provider'
 import { CartDrawer } from '@/components/cart-drawer'
 import './globals.css'
@@ -90,6 +91,7 @@ export default function RootLayout({
             }}
           />
         </CartProvider>
+        <Analytics />
       </body>
     </html>
   )
