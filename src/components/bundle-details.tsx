@@ -20,6 +20,7 @@ import { useCart } from "./cart-provider"
 import { useCheckout } from "@/lib/use-checkout"
 import { useAuth } from "@/lib/use-auth"
 import { VaultPreview } from "./vault-preview"
+import { VaultBundle } from "./vault-bundle"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -319,14 +320,32 @@ export function BundleDetails({
       </div>
 
       {!product.comingSoon ? (
-        <VaultPreview
-          product={product}
-          onUnlock={() =>
-            document
-              .getElementById("buy")
-              ?.scrollIntoView({ behavior: "smooth", block: "center" })
-          }
-        />
+        owned ? (
+          <div className="mt-16 md:mt-24" data-testid="vault-owned">
+            <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
+              Inside The Vault
+            </span>
+            <h2 className="mt-3 font-heading text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+              Your supplier list.
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
+              Full access — every direct link, platform, MOQ, quality rating and
+              image-search keyword. Tap “Access Plugs” to open the list.
+            </p>
+            <div className="mt-6">
+              <VaultBundle product={product} />
+            </div>
+          </div>
+        ) : (
+          <VaultPreview
+            product={product}
+            onUnlock={() =>
+              document
+                .getElementById("buy")
+                ?.scrollIntoView({ behavior: "smooth", block: "center" })
+            }
+          />
+        )
       ) : null}
     </section>
   )
