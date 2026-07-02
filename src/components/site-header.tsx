@@ -76,16 +76,9 @@ export function SiteHeader() {
           href="/"
           onClick={handleLogoClick}
           data-testid="site-logo"
-          className="group flex items-center gap-2.5 font-heading text-lg font-bold tracking-tight text-foreground"
+          className="font-heading text-lg font-bold tracking-tight text-foreground"
         >
-          <img
-            src="/logo.svg"
-            alt="PLUGGED logo"
-            width={30}
-            height={30}
-            className="size-7 shrink-0 rounded-[7px] transition-transform duration-300 group-hover:scale-105 md:size-8"
-          />
-          <span>PLUGGED<span className="text-accent">.</span></span>
+          PLUGGED<span className="text-accent">.</span>
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">

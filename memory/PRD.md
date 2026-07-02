@@ -79,3 +79,15 @@ Better Auth, Stripe) e-commerce site selling curated fashion *supplier bundles*
 
 
 
+
+## Update — 2026-07-02 (UX / conversion pass)
+Stack: Next.js 16 (App Router) + Prisma (Postgres) + Better Auth + Stripe, deployed on Vercel via git push. Runs locally with `next build && next start` on :3000 (dev mode blocks cross-origin hydration — use prod build to test). Dummy DB creds in `.env.local` (gitignored) for local preview only.
+
+Done:
+- Featured bundles carousel (`products-section.tsx`) now auto-advances every 5s, resets countdown on manual swipe/arrow, pauses on hover/touch. Mobile cards sized 76vw so the next bundle always peeks (no lonely-bundle-in-void feel); reduced top padding.
+- Favicon: replaced v0 monogram with user's PLUGGED logo (`src/app/icon.png` 512, `apple-icon.png` 180). Deleted `src/app/icon.svg`. Removed `generator: v0.app`. Navbar kept as plain "PLUGGED." text (no logo mark, per user).
+- Images: all 80 `public/catalog/**` webp upscaled ~2x (LANCZOS, q90) so retina downscales → crisp.
+- Homepage (`page.tsx`) after bundles: rewrote `how-it-works.tsx` to premium 3-step (Pick → Secure checkout → Instant access); added `faq-preview.tsx` (top 5 FAQs + link to /faq).
+- Added `allowedDevOrigins` to `next.config.mjs` (dev-only).
+
+Backlog / not done (user declined for now): trust badges, testimonials, social-proof counter, purchase-notification popups, announcement bar, guarantee badge; Meta/TikTok pixel. Promotion = advice only (TikTok/Reels, Discord, referral, retargeting, SEO).

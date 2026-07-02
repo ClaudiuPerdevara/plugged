@@ -15,6 +15,7 @@ prisma/.env
 # Common ignores
 node_modules
 .next/
+.pnpm-store/
 .DS_Store
 .env.*
 *.env
