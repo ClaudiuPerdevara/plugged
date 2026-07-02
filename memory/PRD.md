@@ -104,3 +104,8 @@ Backlog: lead magnet + email funnel (#3), "All Access" bundle discount (#4), rea
 - Root cause of /bundle & /dashboard horizontal overflow: `<main>` is a flex column, so the inner `<section>` (flex item, default `min-width:auto`) expanded to its widest child (the min-w tables / large images) instead of clamping to viewport.
 - Fixes: added `w-full min-w-0` to the bundle-details & dashboard sections; `grid-cols-1` + `min-w-0` on their grids/children; global `html { overflow-x: clip }` in globals.css (safety net that preserves position:sticky). Verified 0 overflow on /, /drops, /cart, /bundle/*, /faq, /sourcing-guide, /login, /dashboard, /success at 390px. Vault tables now scroll internally via their overflow-x-auto wrappers.
 - Mobile menu bug fixed in site-header.tsx: account dropdown (`menuOpen`) and hamburger nav (`mobileNavOpen`) are now mutually exclusive, and a `usePathname` effect closes both on navigation (no more overlap / stuck-open menu).
+
+## Update — 2026-07-02 (vault tables → mobile cards)
+- Complaint: vault tables showed one column on phones with left/right scroll (min-w tables inside overflow-x-auto).
+- Fix: VaultPreview (teaser) & VaultBundle generic SupplierTable rewritten as responsive — stacked cards on mobile (<md), full table on md+. The 9 bespoke owner vaults (opium/y2k/jeans/old-money/carhartt/sportswear/racing/football-tshirts/vintage-windbreakers, 13 tables) tagged with a shared `.vault-table` class; globals.css `@media (max-width:767px)` collapses their rows into stacked cards (thead hidden, td block, min-width:0). Desktop tables unchanged.
+- Verified teaser cards render with 0 page overflow at 390px. NOTE: owner bespoke vaults use CSS pattern (couldn't be e2e-tested locally without a DB purchase) — validate on Vercel.

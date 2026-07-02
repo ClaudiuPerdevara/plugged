@@ -36,7 +36,7 @@ export function CarharttVault() {
           </div>
           <div className="p-5">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[820px] border-collapse text-left text-sm">
+              <table className="vault-table w-full min-w-[820px] border-collapse text-left text-sm">
                 <thead>
                   <tr className="border-b border-border text-xs uppercase tracking-[0.15em] text-muted-foreground">
                     <th className="px-5 py-4 font-medium">#</th>

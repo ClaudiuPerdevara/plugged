@@ -45,7 +45,7 @@ export function JeansVault() {
         description="12 packages from 10 suppliers — vintage Levi's/Lee/Wrangler & Y2K hip-hop baggy denim with direct links, per-piece pricing and grades. Updated 29 Jun 2026."
       >
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[980px] border-collapse text-left text-sm">
+          <table className="vault-table w-full min-w-[980px] border-collapse text-left text-sm">
             <thead>
               <tr className="border-b border-border text-xs uppercase tracking-[0.15em] text-muted-foreground">
                 <th className="px-5 py-4 font-medium">#</th>

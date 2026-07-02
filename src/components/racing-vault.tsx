@@ -49,7 +49,7 @@ export function RacingVault() {
         description="NASCAR, Ferrari & F1 racing jackets, graphic auto/moto tees and racing sweats — one of the most hype vintage niches. Single jackets resell for €100–€300."
       >
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[560px] border-collapse text-left text-sm">
+          <table className="vault-table w-full min-w-[560px] border-collapse text-left text-sm">
             <thead>
               <tr className="border-b border-border text-xs uppercase tracking-[0.15em] text-muted-foreground">
                 <th className="px-3 py-3 font-medium">Package</th>
@@ -125,7 +125,7 @@ export function RacingVault() {
         description="Direct contact routes for each wholesale source in this bundle."
       >
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[560px] border-collapse text-left text-sm">
+          <table className="vault-table w-full min-w-[560px] border-collapse text-left text-sm">
             <thead>
               <tr className="border-b border-border text-xs uppercase tracking-[0.15em] text-muted-foreground">
                 <th className="px-3 py-3 font-medium">Supplier</th>

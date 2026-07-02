@@ -171,3 +171,36 @@
     text-shadow: 0 2px 18px oklch(0 0 0 / 0.55);
   }
 }
+
+/* Responsive vault tables: on phones, collapse each row into a stacked card so
+   users never have to scroll a table left/right. Desktop keeps the full table. */
+@media (max-width: 767px) {
+  table.vault-table,
+  table.vault-table tbody,
+  table.vault-table tr,
+  table.vault-table td {
+    display: block;
+    width: 100%;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+  table.vault-table thead {
+    display: none;
+  }
+  table.vault-table tr {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  table.vault-table tr:last-child {
+    border-bottom: 0;
+  }
+  table.vault-table td {
+    padding: 0.2rem 0 !important;
+    white-space: normal !important;
+  }
+  table.vault-table td:first-child {
+    margin-bottom: 0.35rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+}

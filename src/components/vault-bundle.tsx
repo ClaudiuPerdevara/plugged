@@ -69,15 +69,55 @@ function SupplierTable({
           {description}
         </p>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[820px] border-collapse text-left text-sm">
+
+      {/* Mobile: stacked cards — no horizontal scrolling */}
+      <ul className="divide-y divide-border/60 md:hidden">
+        {rows.map((s) => (
+          <li key={s.name} className="p-5">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <span className="block truncate font-medium text-foreground">
+                  {s.name}
+                </span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">
+                  {s.category} · MOQ {s.moq}
+                </span>
+              </div>
+              <QualityStars rating={s.quality} />
+            </div>
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <span className="text-xs text-muted-foreground">
+                {s.platform}
+              </span>
+              <a
+                href={s.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-accent transition-colors hover:border-accent"
+              >
+                Open
+                <ExternalLink className="size-3.5" />
+              </a>
+            </div>
+            <p className="mt-2.5 truncate font-mono text-[11px] text-muted-foreground">
+              🔍 {s.searchKeyword}
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      {/* Desktop: full table (fits at md+; keyword column hidden below lg) */}
+      <div className="hidden md:block">
+        <table className="w-full border-collapse text-left text-sm">
           <thead>
             <tr className="border-b border-border text-xs uppercase tracking-[0.15em] text-muted-foreground">
               <th className="px-5 py-4 font-medium">Supplier</th>
               <th className="px-5 py-4 font-medium">Platform</th>
               <th className="px-5 py-4 font-medium">Quality</th>
-              <th className="px-5 py-4 font-medium">Search keyword</th>
-              <th className="px-5 py-4 font-medium">Link</th>
+              <th className="hidden px-5 py-4 font-medium lg:table-cell">
+                Search keyword
+              </th>
+              <th className="px-5 py-4 text-right font-medium">Link</th>
             </tr>
           </thead>
           <tbody>
@@ -86,22 +126,22 @@ function SupplierTable({
                 key={s.name}
                 className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/40"
               >
-                <td className="px-5 py-5 font-medium text-foreground">
+                <td className="px-5 py-5 align-top font-medium text-foreground">
                   {s.name}
                   <span className="mt-0.5 block text-xs text-muted-foreground">
                     {s.category} · MOQ {s.moq}
                   </span>
                 </td>
-                <td className="px-5 py-5 text-muted-foreground">
+                <td className="px-5 py-5 align-top text-muted-foreground">
                   {s.platform}
                 </td>
-                <td className="px-5 py-5">
+                <td className="px-5 py-5 align-top">
                   <QualityStars rating={s.quality} />
                 </td>
-                <td className="px-5 py-5 font-mono text-xs text-muted-foreground">
+                <td className="hidden px-5 py-5 align-top font-mono text-xs text-muted-foreground lg:table-cell">
                   {s.searchKeyword}
                 </td>
-                <td className="px-5 py-5">
+                <td className="px-5 py-5 text-right align-top">
                   <a
                     href={s.link}
                     target="_blank"

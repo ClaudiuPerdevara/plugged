@@ -36,7 +36,7 @@ export function OldMoneyVault() {
           </div>
           <div className="p-5">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[560px] border-collapse text-left text-sm">
+              <table className="vault-table w-full min-w-[560px] border-collapse text-left text-sm">
                 <thead>
                   <tr className="border-b border-border text-xs uppercase tracking-[0.15em] text-muted-foreground">
                     <th className="px-3 py-3 font-medium">Package</th>
