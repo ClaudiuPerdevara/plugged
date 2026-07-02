@@ -5,10 +5,13 @@ import { toast } from "sonner"
 import { useCart } from "@/components/cart-provider"
 
 /**
- * Client hook that hands the basket (and optional voucher) to the Stripe
- * checkout API route. On success the backend returns a hosted checkout URL
- * — or, for a 100%-off voucher, a direct redirect to /success after the
+ * Client hook that hands the basket (and optional voucher / guest email) to the
+ * Stripe checkout API route. On success the backend returns a hosted checkout
+ * URL — or, for a 100%-off voucher, a direct redirect to /success after the
  * bundles were granted server-side.
+ *
+ * Guest checkout: pass `opts.email` when the buyer isn't signed in. The backend
+ * finds-or-creates their account and attaches the purchase to it.
  */
 export function useCheckout() {
   const { items } = useCart()
@@ -16,7 +19,7 @@ export function useCheckout() {
 
   async function checkout(
     override?: { id: string }[],
-    opts?: { voucherCode?: string | null },
+    opts?: { voucherCode?: string | null; email?: string | null },
   ) {
     // Guard: only honour `override` when it's a real array of items. This
     // prevents a crash if a click handler accidentally passes the DOM event
@@ -36,6 +39,7 @@ export function useCheckout() {
         body: JSON.stringify({
           items: ids,
           ...(opts?.voucherCode ? { voucherCode: opts.voucherCode } : {}),
+          ...(opts?.email ? { email: opts.email } : {}),
         }),
       })
       const data = (await res.json()) as {
@@ -43,7 +47,8 @@ export function useCheckout() {
         error?: string
         mode?: string
       }
-      if (res.status === 401) {
+      // Only bounce to /login if we had no guest email to fall back on.
+      if (res.status === 401 && !opts?.email) {
         window.location.href = `/login?next=${encodeURIComponent("/cart")}`
         return
       }

@@ -1,24 +1,38 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { toast } from "sonner"
 import {
   ArrowLeft,
   Loader2,
   Lock,
+  Mail,
   ShieldCheck,
   ShoppingBag,
   Trash2,
 } from "lucide-react"
 import { useCart } from "./cart-provider"
 import { useCheckout } from "@/lib/use-checkout"
+import { useAuth } from "@/lib/use-auth"
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export function CartView() {
   const { items, total, count, removeItem, clear } = useCart()
   const { checkout, pending } = useCheckout()
+  const { isAuthenticated, ready } = useAuth()
+  const [email, setEmail] = useState("")
+  const isGuest = ready && !isAuthenticated
 
   function handleCheckout() {
-    void checkout()
+    if (isGuest && !EMAIL_RE.test(email.trim())) {
+      toast.error("Enter your email to continue")
+      document.getElementById("guest-email-cart")?.focus()
+      return
+    }
+    void checkout(undefined, { email: isGuest ? email.trim() : undefined })
   }
 
   return (
@@ -145,6 +159,43 @@ export function CartView() {
               <p className="mt-5 border-t border-border pt-5 text-xs leading-relaxed text-muted-foreground">
                 Got a discount code? Add it on the next (secure Stripe) step.
               </p>
+
+              {isGuest ? (
+                <div className="mt-5 flex flex-col gap-2 border-t border-border pt-5">
+                  <label
+                    htmlFor="guest-email-cart"
+                    className="text-xs uppercase tracking-[0.15em] text-muted-foreground"
+                  >
+                    Email for instant access
+                  </label>
+                  <div className="relative">
+                    <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                      <Mail className="size-4" />
+                    </span>
+                    <input
+                      id="guest-email-cart"
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@email.com"
+                      data-testid="guest-email-cart"
+                      className="w-full rounded-xl border border-border bg-background/60 py-3 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-colors duration-300 focus:border-accent/60 focus-visible:ring-2 focus-visible:ring-ring/40"
+                    />
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    No account needed — we&apos;ll email your vault access link.{" "}
+                    <Link
+                      href="/login?next=/cart"
+                      className="text-accent hover:text-foreground"
+                    >
+                      Sign in
+                    </Link>
+                    .
+                  </p>
+                </div>
+              ) : null}
 
               <button
                 type="button"

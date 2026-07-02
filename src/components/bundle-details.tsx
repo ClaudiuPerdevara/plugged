@@ -3,11 +3,13 @@
 import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { toast } from "sonner"
 import {
   ArrowLeft,
   AlertTriangle,
   Check,
   Loader2,
+  Mail,
   Plus,
   ShieldCheck,
   ShoppingBag,
@@ -16,6 +18,10 @@ import {
 import type { Product } from "@/lib/products"
 import { useCart } from "./cart-provider"
 import { useCheckout } from "@/lib/use-checkout"
+import { useAuth } from "@/lib/use-auth"
+import { VaultPreview } from "./vault-preview"
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export function BundleDetails({
   product,
@@ -25,14 +31,24 @@ export function BundleDetails({
   owned?: boolean
 }) {
   const [active, setActive] = useState(0)
+  const [email, setEmail] = useState("")
   const { addItem, has } = useCart()
   const { checkout, pending } = useCheckout()
+  const { isAuthenticated, ready } = useAuth()
+  const isGuest = ready && !isAuthenticated
   const inCart = has(product.id)
   const gallery =
     product.gallery.length > 0 ? product.gallery : [product.image]
 
   function handleBuyNow() {
-    void checkout([{ id: product.id }])
+    if (isGuest && !EMAIL_RE.test(email.trim())) {
+      toast.error("Enter your email to continue")
+      document.getElementById("guest-email-bundle")?.focus()
+      return
+    }
+    void checkout([{ id: product.id }], {
+      email: isGuest ? email.trim() : undefined,
+    })
   }
 
   return (
@@ -92,6 +108,7 @@ export function BundleDetails({
 
         {/* Right — details */}
         <motion.div
+          id="buy"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
@@ -214,44 +231,83 @@ export function BundleDetails({
               </Link>
             </div>
           ) : (
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={() => addItem(product)}
-                data-testid="bundle-add-to-cart"
-                className="group flex flex-1 items-center justify-center gap-2.5 rounded-2xl border border-border bg-background/60 px-6 py-4 text-base font-semibold text-foreground transition-all duration-300 hover:border-accent/60 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              >
-                {inCart ? (
-                  <>
-                    <Check className="size-5 text-accent" />
-                    In Basket
-                  </>
-                ) : (
-                  <>
-                    <Plus className="size-5" />
-                    Add to Cart
-                  </>
-                )}
-              </button>
-              <button
-                type="button"
-                onClick={handleBuyNow}
-                disabled={pending}
-                data-testid="bundle-buy-now"
-                className="group flex flex-1 items-center justify-center gap-2.5 rounded-2xl bg-accent px-6 py-4 text-base font-semibold text-accent-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-70 disabled:hover:scale-100"
-              >
-                {pending ? (
-                  <>
-                    <Loader2 className="size-5 animate-spin" />
-                    Processing…
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="size-5" />
-                    Buy Now — €{product.price}
-                  </>
-                )}
-              </button>
+            <div className="mt-9 flex flex-col gap-3">
+              {isGuest ? (
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="guest-email-bundle"
+                    className="text-xs uppercase tracking-[0.15em] text-muted-foreground"
+                  >
+                    Email for instant access
+                  </label>
+                  <div className="relative">
+                    <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                      <Mail className="size-4" />
+                    </span>
+                    <input
+                      id="guest-email-bundle"
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@email.com"
+                      data-testid="guest-email-bundle"
+                      className="w-full rounded-xl border border-border bg-background/60 py-3 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-colors duration-300 focus:border-accent/60 focus-visible:ring-2 focus-visible:ring-ring/40"
+                    />
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    No account needed — we create your vault and email your
+                    access link. Already have one?{" "}
+                    <Link
+                      href={`/login?next=/bundle/${product.id}`}
+                      className="text-accent hover:text-foreground"
+                    >
+                      Sign in
+                    </Link>
+                    .
+                  </p>
+                </div>
+              ) : null}
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={() => addItem(product)}
+                  data-testid="bundle-add-to-cart"
+                  className="group flex flex-1 items-center justify-center gap-2.5 rounded-2xl border border-border bg-background/60 px-6 py-4 text-base font-semibold text-foreground transition-all duration-300 hover:border-accent/60 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  {inCart ? (
+                    <>
+                      <Check className="size-5 text-accent" />
+                      In Basket
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="size-5" />
+                      Add to Cart
+                    </>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleBuyNow}
+                  disabled={pending}
+                  data-testid="bundle-buy-now"
+                  className="group flex flex-1 items-center justify-center gap-2.5 rounded-2xl bg-accent px-6 py-4 text-base font-semibold text-accent-foreground transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-70 disabled:hover:scale-100"
+                >
+                  {pending ? (
+                    <>
+                      <Loader2 className="size-5 animate-spin" />
+                      Processing…
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag className="size-5" />
+                      Buy Now — €{product.price}
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           )}
 
@@ -261,6 +317,17 @@ export function BundleDetails({
           </p>
         </motion.div>
       </div>
+
+      {!product.comingSoon ? (
+        <VaultPreview
+          product={product}
+          onUnlock={() =>
+            document
+              .getElementById("buy")
+              ?.scrollIntoView({ behavior: "smooth", block: "center" })
+          }
+        />
+      ) : null}
     </section>
   )
 }

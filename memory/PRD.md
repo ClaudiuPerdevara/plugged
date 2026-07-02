@@ -91,3 +91,11 @@ Done:
 - Added `allowedDevOrigins` to `next.config.mjs` (dev-only).
 
 Backlog / not done (user declined for now): trust badges, testimonials, social-proof counter, purchase-notification popups, announcement bar, guarantee badge; Meta/TikTok pixel. Promotion = advice only (TikTok/Reels, Discord, referral, retargeting, SEO).
+
+## Update — 2026-07-02 (conversion features)
+- **Guest checkout (#1)**: `/api/checkout` now accepts optional `email`. No session → find user by email (graceful 503 if DB down) or create via `auth.api.signUpEmail` (Better Auth), auto-login new accounts (forward Set-Cookie), and send a set-password link via `requestPasswordReset`. Purchase attaches to that userId; webhook unchanged. UI: guest email field on `bundle-details.tsx` + `cart-view.tsx` (shown when `useAuth` not authenticated); `use-checkout.ts` passes email and only redirects to /login when no email.
+- **Apple/Google Pay (#5)**: NO code change needed — hosted Stripe Checkout doesn't restrict `payment_method_types`, so wallets appear automatically. User enabled them in Stripe Dashboard + registered getplugged.store in Payment Method Domains.
+- **Vault preview (#2)**: new `vault-preview.tsx` on bundle page — stylized supplier table (names blurred, real platforms/quality/count) with lock overlay + "Unlock — €{price}" CTA that scrolls to buy panel.
+- NOTE: guest checkout + wallets CANNOT be fully e2e-tested in this sandbox (no Postgres/Stripe locally) — verified build, UI render, validation & graceful DB-failure (503). Must be validated on Vercel (Neon + live Stripe).
+
+Backlog: lead magnet + email funnel (#3), "All Access" bundle discount (#4), real social proof (#6).
