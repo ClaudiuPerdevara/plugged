@@ -27,6 +27,15 @@ export const metadata: Metadata = {
   description:
     'Vetted supplier bundles for young fashion resellers — Opium, Y2K, racing, Carhartt workwear, vintage sportswear and more aesthetics. Lifetime access from €7.',
   generator: 'v0.app',
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon-light-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-icon.png' }],
+    shortcut: ['/icon.svg'],
+  },
   keywords: [
     'streetwear suppliers',
     'opium fashion',

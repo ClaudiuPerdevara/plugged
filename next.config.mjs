@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  allowedDevOrigins: [
+    '*.preview.emergentagent.com',
+    '*.preview.emergentcf.cloud',
+    '*.emergentagent.com',
+  ],
   typescript: {
     ignoreBuildErrors: true,
   },
