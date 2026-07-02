@@ -56,6 +56,13 @@ export function SiteHeader() {
     return () => document.removeEventListener("mousedown", onClick)
   }, [])
 
+  // Close both menus whenever the route changes — fixes the mobile menu
+  // staying open (and overlapping) after tapping a link/profile item.
+  useEffect(() => {
+    setMenuOpen(false)
+    setMobileNavOpen(false)
+  }, [pathname])
+
   useEffect(() => {
     document.body.style.overflow = mobileNavOpen ? "hidden" : ""
     return () => {
@@ -118,7 +125,10 @@ export function SiteHeader() {
           <div className="relative" ref={menuRef}>
             <button
               type="button"
-              onClick={() => setMenuOpen((v) => !v)}
+              onClick={() => {
+                setMenuOpen((v) => !v)
+                setMobileNavOpen(false)
+              }}
               aria-label="Account menu"
               aria-expanded={menuOpen}
               className="flex size-10 items-center justify-center rounded-full border border-border bg-card/60 text-foreground backdrop-blur-sm transition-colors hover:border-accent/60 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -172,7 +182,10 @@ export function SiteHeader() {
 
           <button
             type="button"
-            onClick={() => setMobileNavOpen((v) => !v)}
+            onClick={() => {
+              setMobileNavOpen((v) => !v)
+              setMenuOpen(false)
+            }}
             aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileNavOpen}
             className="flex size-10 items-center justify-center rounded-full border border-border bg-card/60 text-foreground backdrop-blur-sm transition-colors hover:border-accent/60 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:hidden"

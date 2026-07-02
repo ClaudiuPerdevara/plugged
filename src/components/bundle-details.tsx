@@ -53,7 +53,7 @@ export function BundleDetails({
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-5 pb-28 pt-28 md:px-8 md:pt-36">
+    <section className="mx-auto w-full min-w-0 max-w-7xl px-5 pb-28 pt-28 md:px-8 md:pt-36">
       {/* Breadcrumb / back */}
       <Link
         href="/drops"
@@ -63,9 +63,10 @@ export function BundleDetails({
         All Drops
       </Link>
 
-      <div className="mt-8 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+      <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
         {/* Left — visuals */}
         <motion.div
+          className="min-w-0"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -113,7 +114,7 @@ export function BundleDetails({
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="lg:sticky lg:top-28 lg:self-start"
+          className="min-w-0 lg:sticky lg:top-28 lg:self-start"
         >
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
             {product.miniBundle ? "Limited Mini Bundle" : "Supplier Bundle"}

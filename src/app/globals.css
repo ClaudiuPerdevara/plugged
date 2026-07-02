@@ -158,6 +158,9 @@
   html {
     @apply font-sans;
     scroll-behavior: smooth;
+    /* Never allow horizontal page scroll on any route. `clip` (unlike `hidden`)
+       does NOT create a scroll container, so position: sticky keeps working. */
+    overflow-x: clip;
   }
 }
 
