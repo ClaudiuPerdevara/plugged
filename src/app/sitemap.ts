@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 import { PRODUCTS } from "@/lib/products"
 
 const BASE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://plugged.market"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://getplugged.store"
 ).replace(/\/$/, "")
 
 export default function sitemap(): MetadataRoute.Sitemap {

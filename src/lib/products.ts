@@ -81,7 +81,7 @@ function suppliers(
     return {
       name,
       category,
-      link: `https://plugged.market/s/${slug}-${name.toLowerCase().replace(/\s+/g, "-").slice(0, 24)}`,
+      link: `https://getplugged.store/s/${slug}-${name.toLowerCase().replace(/\s+/g, "-").slice(0, 24)}`,
       moq,
       quality,
       platform: pickPlatform(route, index),
