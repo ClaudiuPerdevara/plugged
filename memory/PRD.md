@@ -141,3 +141,10 @@ No Postgres + `/api/*` → 502 via ingress in preview. So tasks 7 & 9 are code-c
 - Hero button copy Title-Cased: "Browse All Reseller Bundles".
 - Homepage section order changed in page.tsx: Hero -> HowItWorks -> FaqPreview -> ProductsSection (bundles now last).
 - Global mobile compactness: hero title text-3xl->text-[1.75rem]; section vertical padding py-16/20/32 -> py-14 md:py-24/28; section headings text-4xl -> text-3xl on mobile; tighter margins. Verified real 390x844 + 1440 screenshots: hero clean on mobile & desktop.
+
+### Iteration 3 — hero bar, swipe hint, 3 bundle rows (2026-07-04)
+- Swipe hint redesigned: discreet grey <<  >> chevrons at the left/right edges, fade after ~1.6s (was a centered SWIPE pill for 4.2s). data-testid hero-swipe-hint.
+- Top bar redesigned as a FULL-WIDTH edge-to-edge announcement bar with CYCLING text (every 4.5s) via AnimatePresence: [1] Start Your Resell Business Today, [2] Vetted suppliers . Instant vault access . Lifetime updates, [3] professionally-worded dead-link guarantee. initial={false} so first msg shows instantly. data-testid hero-main-headline.
+- Removed the eyebrow category word (RACING etc.) above each hero title.
+- Bundles section (products-section.tsx) fully rewritten from one big autoplay carousel into THREE compact horizontal swipe rows (~half card height, aspect-[4/3], w-168px mobile / 220px desktop, add-to-cart button): Most Popular [jeans, vintage-windbreakers, old-money, carhartt, y2k, sportswear, opium, football-tshirts], Coming Soon [designer, sneakers-footwear], Mini Bundles [racing + a €5 "Complete Resell Guide" COMING-SOON teaser card that previews task 8]. Desktop rows have arrow scroll buttons; testids bundle-row-* and bundle-card-*.
+- Verified: build passes, served HTML contains all 3 rows + all cards. NOTE: automation screenshot tools cannot scroll the 100svh-hero homepage, so the rows were verified via HTML, not screenshot.

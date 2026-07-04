@@ -1,74 +1,184 @@
 "use client"
 
-import { useCallback, useEffect, useRef } from "react"
+import { useRef } from "react"
 import { motion } from "framer-motion"
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react"
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Check, Plus } from "lucide-react"
 import Link from "next/link"
-import { ProductCard } from "./product-card"
-import { FEATURED_PRODUCTS } from "@/lib/products"
+import { PRODUCTS, getProduct, type Product } from "@/lib/products"
+import { useCart } from "./cart-provider"
 
-const AUTOPLAY_MS = 5000
+// The owner-curated "Most Popular" order.
+const POPULAR_IDS = [
+  "jeans",
+  "vintage-windbreakers",
+  "old-money",
+  "carhartt",
+  "y2k",
+  "sportswear",
+  "opium",
+  "football-tshirts",
+]
 
-export function ProductsSection() {
-  const scrollerRef = useRef<HTMLDivElement>(null)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const pausedRef = useRef(false)
-  const scrollEndRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+function CompactCard({ product }: { product: Product }) {
+  const { addItem, has } = useCart()
+  const inCart = has(product.id)
+  const href = `/bundle/${product.id}`
 
-  const advance = useCallback((dir: "left" | "right" = "right") => {
-    const el = scrollerRef.current
+  return (
+    <article
+      data-card
+      data-testid={`bundle-card-${product.id}`}
+      className="group relative w-[168px] shrink-0 snap-start overflow-hidden rounded-xl border border-border bg-card/40 transition-colors duration-300 hover:border-accent/50 sm:w-[220px]"
+    >
+      <Link href={href} className="absolute inset-0 z-10" aria-label={`View ${product.name}`} />
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
+        <span className="absolute left-2.5 top-2.5 rounded-full border border-white/10 bg-background/60 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.15em] text-foreground backdrop-blur-md">
+          {product.tag}
+        </span>
+        {product.comingSoon ? (
+          <span className="absolute right-2.5 top-2.5 rounded-full border border-amber-400/30 bg-amber-400/15 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.15em] text-amber-300 backdrop-blur-md">
+            Soon
+          </span>
+        ) : product.limited || product.miniBundle ? (
+          <span className="absolute right-2.5 top-2.5 rounded-full border border-red-500/50 bg-red-500/20 px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-red-400 backdrop-blur-md">
+            Mini
+          </span>
+        ) : null}
+      </div>
+
+      <div className="flex flex-col gap-1.5 p-3">
+        <h3 className="line-clamp-1 font-heading text-sm font-bold leading-tight tracking-tight text-foreground">
+          {product.name}
+        </h3>
+        <p className="line-clamp-2 text-[11px] leading-relaxed text-muted-foreground">
+          {product.description}
+        </p>
+        <div className="mt-1 flex items-center justify-between gap-2">
+          {product.comingSoon ? (
+            <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">
+              Dropping soon
+            </span>
+          ) : (
+            <>
+              <span className="font-heading text-base font-bold text-foreground">
+                €{product.price}
+              </span>
+              <button
+                type="button"
+                onClick={() => addItem(product)}
+                aria-label={inCart ? `${product.name} in cart` : `Add ${product.name} to cart`}
+                className={`relative z-20 grid size-8 place-items-center rounded-full border transition-colors duration-300 ${
+                  inCart
+                    ? "border-accent/60 bg-accent/15 text-accent"
+                    : "border-border bg-background/60 text-foreground hover:border-accent/60 hover:text-accent"
+                }`}
+              >
+                {inCart ? <Check className="size-3.5" /> : <Plus className="size-3.5" />}
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function GuideTeaserCard() {
+  return (
+    <article
+      data-testid="bundle-card-guide-teaser"
+      className="relative flex w-[168px] shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-dashed border-accent/40 bg-card/30 sm:w-[220px]"
+    >
+      <div className="relative grid aspect-[4/3] place-items-center bg-secondary/30">
+        <BookOpen className="size-8 text-accent/70" />
+        <span className="absolute right-2.5 top-2.5 rounded-full border border-amber-400/30 bg-amber-400/15 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.15em] text-amber-300">
+          Soon
+        </span>
+      </div>
+      <div className="flex flex-col gap-1.5 p-3">
+        <h3 className="line-clamp-1 font-heading text-sm font-bold leading-tight tracking-tight text-foreground">
+          Complete Resell Guide
+        </h3>
+        <p className="line-clamp-2 text-[11px] leading-relaxed text-muted-foreground">
+          How Vinted works + a step-by-step reselling playbook. Dropping soon.
+        </p>
+        <span className="mt-1 font-heading text-base font-bold text-foreground">€5</span>
+      </div>
+    </article>
+  )
+}
+
+function Row({
+  label,
+  products,
+  extra,
+}: {
+  label: string
+  products: Product[]
+  extra?: React.ReactNode
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  if (products.length === 0 && !extra) return null
+
+  const scroll = (dir: number) => {
+    const el = ref.current
     if (!el) return
-    const card = el.querySelector<HTMLElement>("[data-card]")
-    const amount = card ? card.offsetWidth + 24 : el.clientWidth * 0.8
-    const atStart = el.scrollLeft <= 8
-    const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 8
-    // Arrows / autoplay always work and cycle: past the end loops back to the
-    // start and before the start loops to the end.
-    if (dir === "right") {
-      if (atEnd) el.scrollTo({ left: 0, behavior: "smooth" })
-      else el.scrollBy({ left: amount, behavior: "smooth" })
-    } else {
-      if (atStart) el.scrollTo({ left: el.scrollWidth, behavior: "smooth" })
-      else el.scrollBy({ left: -amount, behavior: "smooth" })
-    }
-  }, [])
-
-  // (Re)start the 5s autoplay countdown from zero. Called on mount and after
-  // any manual interaction (arrow click, swipe, scroll) so the timer resets.
-  const startAutoplay = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current)
-    timerRef.current = setInterval(() => {
-      if (!pausedRef.current) advance("right")
-    }, AUTOPLAY_MS)
-  }, [advance])
-
-  useEffect(() => {
-    startAutoplay()
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current)
-      if (scrollEndRef.current) clearTimeout(scrollEndRef.current)
-    }
-  }, [startAutoplay])
-
-  // Manual arrow: move + reset the countdown to zero.
-  const handleArrow = (dir: "left" | "right") => {
-    advance(dir)
-    startAutoplay()
-  }
-
-  // While the user is actively scrolling/swiping, pause autoplay. Once they
-  // stop, reset the countdown to zero and resume.
-  const handleScroll = () => {
-    pausedRef.current = true
-    if (scrollEndRef.current) clearTimeout(scrollEndRef.current)
-    scrollEndRef.current = setTimeout(() => {
-      pausedRef.current = false
-      startAutoplay()
-    }, 200)
+    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" })
   }
 
   return (
-    <section id="products" className="relative bg-background py-14 md:py-28">
+    <div data-testid={`bundle-row-${label.toLowerCase().replace(/\s+/g, "-")}`}>
+      <div className="mb-3 flex items-center justify-between gap-4">
+        <h3 className="font-heading text-lg font-bold tracking-tight text-foreground md:text-xl">
+          {label}
+        </h3>
+        <div className="hidden gap-2 md:flex">
+          <button
+            type="button"
+            onClick={() => scroll(-1)}
+            aria-label={`Scroll ${label} left`}
+            className="grid size-8 place-items-center rounded-full border border-border text-foreground transition-colors hover:border-accent hover:text-accent"
+          >
+            <ArrowLeft className="size-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scroll(1)}
+            aria-label={`Scroll ${label} right`}
+            className="grid size-8 place-items-center rounded-full border border-border text-foreground transition-colors hover:border-accent hover:text-accent"
+          >
+            <ArrowRight className="size-4" />
+          </button>
+        </div>
+      </div>
+      <div
+        ref={ref}
+        className="flex snap-x gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {products.map((p) => (
+          <CompactCard key={p.id} product={p} />
+        ))}
+        {extra}
+      </div>
+    </div>
+  )
+}
+
+export function ProductsSection() {
+  const popular = POPULAR_IDS.map((id) => getProduct(id)).filter(
+    (p): p is Product => Boolean(p),
+  )
+  const comingSoon = PRODUCTS.filter((p) => p.comingSoon)
+  const mini = PRODUCTS.filter((p) => p.miniBundle)
+
+  return (
+    <section id="products" className="relative bg-background py-14 md:py-24">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -78,69 +188,21 @@ export function ProductsSection() {
           className="max-w-2xl"
         >
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            Trending Styles
+            The Vault
           </span>
           <h2 className="mt-3 text-balance font-heading text-3xl font-bold leading-[1] tracking-tight text-foreground md:mt-4 md:text-5xl">
-            The scenes everyone&apos;s flipping.
+            Browse every reseller bundle.
           </h2>
           <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground md:mt-5 md:text-lg">
-            Opium, Y2K, racing, vintage sportswear and more — vetted supplier
-            links, instant vault access, lifetime updates.
+            Vetted supplier links, instant vault access and lifetime updates —
+            one low price per bundle.
           </p>
         </motion.div>
 
-        {/* Auto-advancing horizontal carousel. Cards are sized so the next one
-            always peeks in on mobile — it never feels like a single bundle
-            floating in empty space. */}
-        <div
-          className="relative mt-10 md:mt-14"
-          onMouseEnter={() => {
-            pausedRef.current = true
-          }}
-          onMouseLeave={() => {
-            pausedRef.current = false
-            startAutoplay()
-          }}
-        >
-          {/* Left arrow */}
-          <button
-            type="button"
-            onClick={() => handleArrow("left")}
-            aria-label="Previous bundles"
-            data-testid="carousel-prev"
-            className="absolute left-0 top-1/2 z-20 hidden size-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/70 text-foreground shadow-xl shadow-black/30 backdrop-blur-md transition-all duration-300 hover:border-accent/60 hover:bg-background/90 hover:text-accent md:flex"
-          >
-            <ArrowLeft className="size-5" />
-          </button>
-          {/* Right arrow */}
-          <button
-            type="button"
-            onClick={() => handleArrow("right")}
-            aria-label="Next bundles"
-            data-testid="carousel-next"
-            className="absolute right-0 top-1/2 z-20 hidden size-12 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border border-border bg-background/70 text-foreground shadow-xl shadow-black/30 backdrop-blur-md transition-all duration-300 hover:border-accent/60 hover:bg-background/90 hover:text-accent md:flex"
-          >
-            <ArrowRight className="size-5" />
-          </button>
-
-          <div
-            ref={scrollerRef}
-            onScroll={handleScroll}
-            onPointerDown={() => {
-              pausedRef.current = true
-            }}
-            className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            {FEATURED_PRODUCTS.map((product) => (
-              <div
-                key={product.id}
-                data-card
-                className="w-[76vw] max-w-[320px] shrink-0 snap-start sm:w-[340px] sm:max-w-none"
-              >
-                <ProductCard product={product} animated={false} />
-              </div>
-            ))}
-          </div>
+        <div className="mt-10 flex flex-col gap-10 md:mt-12 md:gap-12">
+          <Row label="Most Popular" products={popular} />
+          <Row label="Coming Soon" products={comingSoon} />
+          <Row label="Mini Bundles" products={mini} extra={<GuideTeaserCard />} />
         </div>
 
         <div className="mt-12 flex justify-center">

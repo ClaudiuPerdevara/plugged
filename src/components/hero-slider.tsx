@@ -7,7 +7,7 @@ import {
   type PanInfo,
   useReducedMotion,
 } from "framer-motion"
-import { ArrowDown, ArrowLeft, ArrowRight } from "lucide-react"
+import { ArrowDown, ArrowLeft, ArrowRight, ChevronsLeft, ChevronsRight } from "lucide-react"
 import Link from "next/link"
 import { PRODUCTS, CATALOG_IMAGES } from "@/lib/products"
 
@@ -37,6 +37,13 @@ const HERO_TITLES: Record<string, string> = {
   sportswear: "Vintage Sportswear",
 }
 
+// Rotating messages for the full-width top bar.
+const BAR_MESSAGES = [
+  "Start Your Resell Business Today",
+  "Vetted suppliers · Instant vault access · Lifetime updates",
+  "If a supplier link ever goes down, we send you a working replacement within 24h — guaranteed, for the life of your bundle.",
+]
+
 const SLIDES = HERO_BUNDLE_IDS.map((id) => {
   const p = PRODUCTS.find((prod) => prod.id === id)!
   return {
@@ -63,7 +70,17 @@ export function HeroSlider() {
   const [[index, direction], setState] = useState<[number, number]>([0, 0])
   const [paused, setPaused] = useState(false)
   const [showHint, setShowHint] = useState(false)
+  const [msgIndex, setMsgIndex] = useState(0)
   const reduceMotion = useReducedMotion()
+
+  // Cycle the top-bar message every 4.5s.
+  useEffect(() => {
+    const t = setInterval(
+      () => setMsgIndex((i) => (i + 1) % BAR_MESSAGES.length),
+      4500,
+    )
+    return () => clearInterval(t)
+  }, [])
 
   const paginate = useCallback((dir: number) => {
     setState(([prev]) => [(prev + dir + SLIDES.length) % SLIDES.length, dir])
@@ -98,7 +115,7 @@ export function HeroSlider() {
     try {
       localStorage.setItem("plugged-swipe-hint", "1")
     } catch {}
-    const t = setTimeout(() => setShowHint(false), 4200)
+    const t = setTimeout(() => setShowHint(false), 1600)
     return () => clearTimeout(t)
   }, [])
 
@@ -127,16 +144,25 @@ export function HeroSlider() {
       {/* Preload the first hero image (LCP) as early as possible. */}
       <link rel="preload" as="image" href={SLIDES[0].image} fetchPriority="high" />
 
-      {/* Slim promise bar — pinned near the top, doesn't dominate the slide. */}
+      {/* Full-width cycling announcement bar — spans edge to edge. */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-[64px] z-10 mx-auto max-w-7xl px-5 md:top-24 md:px-8"
+        className="pointer-events-none absolute inset-x-0 top-[60px] z-10 border-y border-accent/20 bg-background/70 backdrop-blur-md md:top-[68px]"
         data-testid="hero-main-headline"
       >
-        <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-background/50 px-3.5 py-1.5 backdrop-blur-md">
+        <div className="flex min-h-[38px] items-center justify-center gap-2.5 px-5 py-2 md:px-8">
           <span className="size-1.5 shrink-0 rounded-full bg-accent" />
-          <span className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-foreground md:text-xs">
-            Start Your Resell Business Today
-          </span>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={msgIndex}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.4 }}
+              className="text-center text-[10.5px] font-medium tracking-wide text-foreground/90 md:text-xs"
+            >
+              {BAR_MESSAGES[msgIndex]}
+            </motion.span>
+          </AnimatePresence>
         </div>
       </div>
 
@@ -172,10 +198,7 @@ export function HeroSlider() {
 
           <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-end px-5 pb-16 md:px-8 md:pb-28">
             <div className="max-w-2xl">
-              <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent md:text-xs">
-                {slide.tag}
-              </span>
-              <h1 className="mt-2 text-balance font-heading text-[1.75rem] font-bold leading-[1.05] tracking-tight text-foreground text-glow sm:text-4xl md:mt-4 md:text-7xl md:leading-[0.95]">
+              <h1 className="text-balance font-heading text-[1.75rem] font-bold leading-[1.05] tracking-tight text-foreground text-glow sm:text-4xl md:text-7xl md:leading-[0.95]">
                 {slide.title}
               </h1>
               <p className="mt-2 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground md:mt-4 md:text-lg">
@@ -260,32 +283,35 @@ export function HeroSlider() {
         </button>
       </div>
 
-      {/* Mobile-only one-time swipe hint */}
+      {/* Mobile-only one-time swipe hint — discreet grey chevrons at the edges */}
       <AnimatePresence>
         {showHint && !reduceMotion && (
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: 0.4 }}
-            data-testid="hero-swipe-hint"
-            className="pointer-events-none absolute left-1/2 top-[38%] z-30 -translate-x-1/2 md:hidden"
-          >
-            <div className="flex items-center gap-2 rounded-full border border-accent/40 bg-background/60 px-4 py-2.5 backdrop-blur-md">
-              <ArrowLeft className="size-3.5 text-accent" />
-              <motion.span
-                animate={{ x: [-7, 7, -7] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="grid size-6 place-items-center rounded-full bg-accent/20"
-              >
-                <span className="size-2 rounded-full bg-accent" />
-              </motion.span>
-              <ArrowRight className="size-3.5 text-accent" />
-              <span className="ml-1 text-xs font-medium uppercase tracking-[0.15em] text-foreground">
-                Swipe
-              </span>
-            </div>
-          </motion.div>
+          <div data-testid="hero-swipe-hint" className="md:hidden">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.55, x: [0, -4, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{
+                opacity: { duration: 0.3 },
+                x: { duration: 1, repeat: Infinity, ease: "easeInOut" },
+              }}
+              className="pointer-events-none absolute left-2 top-1/2 z-30 -translate-y-1/2 text-muted-foreground"
+            >
+              <ChevronsLeft className="size-7" />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.55, x: [0, 4, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{
+                opacity: { duration: 0.3 },
+                x: { duration: 1, repeat: Infinity, ease: "easeInOut" },
+              }}
+              className="pointer-events-none absolute right-2 top-1/2 z-30 -translate-y-1/2 text-muted-foreground"
+            >
+              <ChevronsRight className="size-7" />
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
