@@ -12,10 +12,12 @@ import Link from "next/link"
 import { PRODUCTS, CATALOG_IMAGES } from "@/lib/products"
 
 const HERO_BUNDLE_IDS = [
+  "racing",
   "opium",
   "y2k",
   "vintage-windbreakers",
   "jeans",
+  "sportswear",
 ] as const
 
 // Short, mobile-first hero copy — one punchy line per slide instead of the
@@ -29,12 +31,18 @@ const HERO_TAGLINES: Record<string, string> = {
   sportswear: "Retro Nike & Adidas — easy Vinted flips.",
 }
 
-const SLIDES = HERO_BUNDLE_IDS.map((id, i) => {
+// Short, clean hero titles (override the long product names on the slider).
+const HERO_TITLES: Record<string, string> = {
+  racing: "Racing Jackets",
+  sportswear: "Vintage Sportswear",
+}
+
+const SLIDES = HERO_BUNDLE_IDS.map((id) => {
   const p = PRODUCTS.find((prod) => prod.id === id)!
   return {
     id: p.id,
-    tag: `${String(i + 1).padStart(2, "0")} — ${p.tag}`,
-    title: p.name.replace(" Bundle", "").replace(" & ", " · "),
+    tag: p.tag,
+    title: HERO_TITLES[p.id] ?? p.name.replace(" Bundle", "").replace(" & ", " · "),
     subtitle: HERO_TAGLINES[p.id] ?? p.description,
     image: CATALOG_IMAGES[p.id as keyof typeof CATALOG_IMAGES]?.hero ?? p.image,
     href: `/bundle/${p.id}`,
