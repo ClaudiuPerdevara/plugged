@@ -17,7 +17,7 @@ const HOME_FAQS = FAQS.slice(0, 5)
 
 export function FaqPreview() {
   return (
-    <section id="faq" className="relative bg-background py-20 md:py-32">
+    <section id="faq" className="relative bg-background py-14 md:py-24">
       <div className="mx-auto max-w-3xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -29,10 +29,10 @@ export function FaqPreview() {
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
             FAQ
           </span>
-          <h2 className="mt-4 text-balance font-heading text-4xl font-bold leading-[1] tracking-tight text-foreground md:text-5xl">
+          <h2 className="mt-3 text-balance font-heading text-3xl font-bold leading-[1] tracking-tight text-foreground md:mt-4 md:text-5xl">
             Everything you need to know.
           </h2>
-          <p className="mt-5 text-pretty leading-relaxed text-muted-foreground">
+          <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground md:mt-5 md:text-base">
             Straight answers on access, payment and reselling — so you can buy
             with confidence.
           </p>
@@ -42,7 +42,7 @@ export function FaqPreview() {
           type="single"
           collapsible
           defaultValue="item-0"
-          className="mt-12 flex flex-col gap-3"
+          className="mt-8 flex flex-col gap-3 md:mt-12"
         >
           {HOME_FAQS.map((faq, i) => (
             <AccordionItem

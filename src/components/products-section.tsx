@@ -68,7 +68,7 @@ export function ProductsSection() {
   }
 
   return (
-    <section id="products" className="relative bg-background py-16 md:py-32">
+    <section id="products" className="relative bg-background py-14 md:py-28">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -80,10 +80,10 @@ export function ProductsSection() {
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
             Trending Styles
           </span>
-          <h2 className="mt-4 text-balance font-heading text-4xl font-bold leading-[1] tracking-tight text-foreground md:text-5xl">
+          <h2 className="mt-3 text-balance font-heading text-3xl font-bold leading-[1] tracking-tight text-foreground md:mt-4 md:text-5xl">
             The scenes everyone&apos;s flipping.
           </h2>
-          <p className="mt-5 text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
+          <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground md:mt-5 md:text-lg">
             Opium, Y2K, racing, vintage sportswear and more — vetted supplier
             links, instant vault access, lifetime updates.
           </p>
@@ -137,7 +137,7 @@ export function ProductsSection() {
                 data-card
                 className="w-[76vw] max-w-[320px] shrink-0 snap-start sm:w-[340px] sm:max-w-none"
               >
-                <ProductCard product={product} animated={false} compact />
+                <ProductCard product={product} animated={false} />
               </div>
             ))}
           </div>

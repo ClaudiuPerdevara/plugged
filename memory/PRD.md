@@ -132,3 +132,12 @@ No Postgres + `/api/*` → 502 via ingress in preview. So tasks 7 & 9 are code-c
 
 ### Follow-up — mobile hero polish (2026-07-04)
 - User clarified task 1 = the HERO text was too big on PHONE. Made all hero typography responsive in `hero-slider.tsx`: persistent headline text-4xl→text-3xl on mobile; per-slide title text-5xl→text-3xl (sm:text-4xl, md:text-7xl unchanged); tighter margins (mt-2/mt-5) and smaller buttons (px-5 py-2.5 text-xs) on mobile so the two CTAs + trust badges now sit on single rows and everything fits one viewport. Verified with real 390x844 headless-Chrome screenshots (/, /drops, /bundle/y2k) — all clean, desktop unchanged.
+
+### Iteration 2 — mobile compactness + hero bar redesign (2026-07-04)
+- Top headline REPLACED with a slim glass pill "bar" (● START YOUR RESELL BUSINESS TODAY) near the top of the hero (user disliked the big overlay text). data-testid hero-main-headline kept.
+- Removed the ✓ Vetted Links / ✓ Instant Vault Access badges (user disliked). Removed unused Check import from hero-slider.
+- Reverted product-card compact: homepage carousel cards show their DESCRIPTIONS + perks again (user wanted descriptions back).
+- Hero slider now only shows 4 short-title bundles: opium, y2k, vintage-windbreakers, jeans (removed racing + sportswear — long titles looked bad on phone). HERO_BUNDLE_IDS.
+- Hero button copy Title-Cased: "Browse All Reseller Bundles".
+- Homepage section order changed in page.tsx: Hero -> HowItWorks -> FaqPreview -> ProductsSection (bundles now last).
+- Global mobile compactness: hero title text-3xl->text-[1.75rem]; section vertical padding py-16/20/32 -> py-14 md:py-24/28; section headings text-4xl -> text-3xl on mobile; tighter margins. Verified real 390x844 + 1440 screenshots: hero clean on mobile & desktop.

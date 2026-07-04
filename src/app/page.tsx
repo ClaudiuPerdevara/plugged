@@ -10,9 +10,9 @@ export default function Page() {
     <main className="relative flex min-h-screen flex-col bg-background text-foreground">
       <SiteHeader />
       <HeroSlider />
-      <ProductsSection />
       <HowItWorks />
       <FaqPreview />
+      <ProductsSection />
       <SiteFooter />
     </main>
   )

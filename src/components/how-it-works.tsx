@@ -31,7 +31,7 @@ export function HowItWorks() {
   return (
     <section
       id="how"
-      className="relative border-y border-border bg-background py-20 md:py-32"
+      className="relative border-y border-border bg-background py-14 md:py-24"
     >
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <motion.div
@@ -44,10 +44,10 @@ export function HowItWorks() {
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
             How It Works
           </span>
-          <h2 className="mt-4 text-balance font-heading text-4xl font-bold leading-[1] tracking-tight text-foreground md:text-5xl">
+          <h2 className="mt-3 text-balance font-heading text-3xl font-bold leading-[1] tracking-tight text-foreground md:mt-4 md:text-5xl">
             Plugged in three steps.
           </h2>
-          <p className="mt-5 max-w-md text-pretty leading-relaxed text-muted-foreground">
+          <p className="mt-4 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground md:mt-5 md:text-base">
             We did the digging so you don&apos;t have to. No dead links, no scam
             suppliers — just clean, working plugs, instantly.
           </p>
@@ -58,7 +58,7 @@ export function HowItWorks() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.25 }}
           transition={{ staggerChildren: 0.16 }}
-          className="mt-14 grid gap-5 md:grid-cols-3 md:gap-6"
+          className="mt-10 grid gap-4 md:mt-14 md:grid-cols-3 md:gap-6"
         >
           {STEPS.map((step, i) => (
             <motion.li
