@@ -109,3 +109,23 @@ Backlog: lead magnet + email funnel (#3), "All Access" bundle discount (#4), rea
 - Complaint: vault tables showed one column on phones with left/right scroll (min-w tables inside overflow-x-auto).
 - Fix: VaultPreview (teaser) & VaultBundle generic SupplierTable rewritten as responsive — stacked cards on mobile (<md), full table on md+. The 9 bespoke owner vaults (opium/y2k/jeans/old-money/carhartt/sportswear/racing/football-tshirts/vintage-windbreakers, 13 tables) tagged with a shared `.vault-table` class; globals.css `@media (max-width:767px)` collapses their rows into stacked cards (thead hidden, td block, min-width:0). Desktop tables unchanged.
 - Verified teaser cards render with 0 page overflow at 390px. NOTE: owner bespoke vaults use CSS pattern (couldn't be e2e-tested locally without a DB purchase) — validate on Vercel.
+
+## Update — 2026-07-04 (conversion pass: hero, copy, reviews)
+User (RO) reported 91% bounce rate; asked for a batch of UX/conversion + trust changes. Done & tested (frontend 7/7 pass on public preview):
+1. **Homepage bundle cards shorter (task 1):** added a `compact` prop to `product-card.tsx` (smaller title, 1-line description, perks hidden); passed `compact` only in `products-section.tsx` (homepage carousel). `/drops` grid unchanged (still default variant).
+2. **Persistent hero headline (task 2):** `hero-slider.tsx` now renders a fixed value-prop headline **"Start Your Resell Business Today"** (data-testid `hero-main-headline`) as a sibling OUTSIDE `AnimatePresence`, so it stays visible across all slides. Small subline under it.
+3. **Hero CTA relabel (task 3):** primary hero button "Browse All Styles" → **"Browse all reseller bundles"** (data-testid `hero-browse-bundles`, → /drops).
+4. **Trust badges (task 4):** under the hero buttons — ✓ Vetted Links · ✓ Instant Vault Access (data-testid `hero-trust-badges`).
+5. **Bank-safe copy (task 5):** removed ALL "reps/rep links/replica/REPS" wording site-wide → "1:1 Chinese suppliers" / "1:1 pieces" phrasing. Files: products.ts (opium), hero-slider.tsx, opium-vault.tsx, vault-bundle.tsx, bundle-details.tsx, sportswear.ts, sourcing-guide.tsx. (The internal testid `opium-reps-warning` kept — not user-visible.)
+6. **Working-links guarantee (task 6):** explicit 24h-replacement commitment added on every bundle page near the buy button (`bundle-details.tsx`, data-testid `dead-link-guarantee`) and strengthened the in-vault callout (`vault-bundle.tsx`).
+7. **Review → €2 reward (task 7)** + **Per-bundle supplier reviews, owner-gated (task 9):** UNIFIED. New Prisma `Review` model (unique userId+bundleId) + `Voucher.discountAmountCents Int?` (fixed-amount vouchers). New `src/lib/reviews.ts`, `src/app/api/reviews/route.ts` (GET+POST, ownership-checked against Purchase), `createReviewRewardVoucher()` in vouchers.ts, and `/api/checkout` now creates a Stripe `amount_off` (EUR) coupon for amount vouchers. UI: `src/components/bundle-reviews.tsx` embedded in `vault-bundle.tsx` (shows only inside the owner's vault). Posting a review grants a one-time €2 voucher (shown in-app + emailed via Resend).
+
+### ⚠️ DEPLOYMENT ACTION REQUIRED (Vercel/Neon)
+The Prisma schema changed (new `Review` table + `Voucher.discountAmountCents` column). The build script is only `prisma generate && next build`, so **the DB must be migrated separately**: run `yarn db:push` (or add a migration) against Neon after deploy, otherwise the reviews board and €2 reward will error at runtime.
+
+### Preview limitation (unchanged)
+No Postgres + `/api/*` → 502 via ingress in preview. So tasks 7 & 9 are code-complete and build-verified (route returns correct 401 when unauthenticated) but were NOT e2e-tested here — they must be validated on Vercel/Neon (login → buy a bundle → open vault → post a review → get €2 code → apply at checkout).
+
+### Deferred
+- Task 8 (€5 complete resell/Vinted guide bundle) — user chose to do it next session.
+
