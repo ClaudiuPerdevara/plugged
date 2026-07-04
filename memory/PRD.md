@@ -129,3 +129,6 @@ No Postgres + `/api/*` → 502 via ingress in preview. So tasks 7 & 9 are code-c
 ### Deferred
 - Task 8 (€5 complete resell/Vinted guide bundle) — user chose to do it next session.
 
+
+### Follow-up — mobile hero polish (2026-07-04)
+- User clarified task 1 = the HERO text was too big on PHONE. Made all hero typography responsive in `hero-slider.tsx`: persistent headline text-4xl→text-3xl on mobile; per-slide title text-5xl→text-3xl (sm:text-4xl, md:text-7xl unchanged); tighter margins (mt-2/mt-5) and smaller buttons (px-5 py-2.5 text-xs) on mobile so the two CTAs + trust badges now sit on single rows and everything fits one viewport. Verified with real 390x844 headless-Chrome screenshots (/, /drops, /bundle/y2k) — all clean, desktop unchanged.

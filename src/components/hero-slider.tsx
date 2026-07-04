@@ -123,13 +123,13 @@ export function HeroSlider() {
 
       {/* Persistent value-prop headline — stays fixed over every slide. */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-10 mx-auto flex max-w-7xl flex-col px-5 pt-28 md:px-8 md:pt-32"
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 mx-auto flex max-w-7xl flex-col px-5 pt-24 md:px-8 md:pt-32"
         data-testid="hero-main-headline"
       >
-        <h2 className="max-w-3xl text-balance font-heading text-4xl font-bold leading-[1.02] tracking-tight text-foreground text-glow sm:text-5xl md:text-6xl">
+        <h2 className="max-w-3xl text-balance font-heading text-3xl font-bold leading-[1.05] tracking-tight text-foreground text-glow sm:text-5xl md:text-6xl">
           Start Your Resell Business Today
         </h2>
-        <p className="mt-3 max-w-sm text-pretty text-sm text-muted-foreground md:text-base">
+        <p className="mt-2 max-w-sm text-pretty text-xs text-muted-foreground md:mt-3 md:text-base">
           Vetted supplier bundles — instant access, lifetime updates.
         </p>
       </div>
@@ -164,40 +164,40 @@ export function HeroSlider() {
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/10" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-transparent" />
 
-          <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-end px-5 pb-24 md:px-8 md:pb-28">
+          <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-end px-5 pb-20 md:px-8 md:pb-28">
             <div className="max-w-2xl">
-              <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
+              <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent md:text-xs">
                 {slide.tag}
               </span>
-              <h1 className="mt-4 text-balance font-heading text-5xl font-bold leading-[0.95] tracking-tight text-foreground text-glow md:text-7xl">
+              <h1 className="mt-2 text-balance font-heading text-3xl font-bold leading-[1.05] tracking-tight text-foreground text-glow sm:text-4xl md:mt-4 md:text-7xl md:leading-[0.95]">
                 {slide.title}
               </h1>
-              <p className="mt-4 max-w-md text-pretty text-base leading-relaxed text-muted-foreground md:mt-5 md:text-lg">
+              <p className="mt-2 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground md:mt-5 md:text-lg">
                 {slide.subtitle}
               </p>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
+              <div className="mt-5 flex flex-wrap items-center gap-3 md:mt-8 md:gap-4">
                 <Link
                   href="/drops"
                   data-testid="hero-browse-bundles"
-                  className="rounded-full bg-foreground px-7 py-3 text-sm font-semibold text-background transition-transform duration-300 hover:scale-[1.03]"
+                  className="rounded-full bg-foreground px-5 py-2.5 text-xs font-semibold text-background transition-transform duration-300 hover:scale-[1.03] sm:px-7 sm:py-3 sm:text-sm"
                 >
                   Browse all reseller bundles
                 </Link>
                 <Link
                   href={slide.href}
-                  className="rounded-full border border-border px-7 py-3 text-sm font-semibold text-foreground transition-colors hover:border-accent/60 hover:text-accent"
+                  className="rounded-full border border-border px-5 py-2.5 text-xs font-semibold text-foreground transition-colors hover:border-accent/60 hover:text-accent sm:px-7 sm:py-3 sm:text-sm"
                 >
                   View This Bundle
                 </Link>
               </div>
               <div
-                className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2"
+                className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 md:mt-5 md:gap-x-5"
                 data-testid="hero-trust-badges"
               >
-                <span className="flex items-center gap-2 text-sm font-medium text-foreground/85">
+                <span className="flex items-center gap-1.5 text-xs font-medium text-foreground/85 md:gap-2 md:text-sm">
                   <Check className="size-4 text-accent" /> Vetted Links
                 </span>
-                <span className="flex items-center gap-2 text-sm font-medium text-foreground/85">
+                <span className="flex items-center gap-1.5 text-xs font-medium text-foreground/85 md:gap-2 md:text-sm">
                   <Check className="size-4 text-accent" /> Instant Vault Access
                 </span>
               </div>
