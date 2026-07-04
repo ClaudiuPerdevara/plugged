@@ -151,6 +151,7 @@ export async function POST(req: Request) {
   // 4. Re-validate voucher server-side (the client check is just UX).
   let voucherId: string | null = null
   let voucherPercent: number | null = null
+  let voucherAmountCents: number | null = null
   if (parsed.data.voucherCode) {
     const info = await lookupVoucher(parsed.data.voucherCode)
     if (info.status !== "valid" || !info.voucher) {
@@ -161,6 +162,7 @@ export async function POST(req: Request) {
     }
     voucherId = info.voucher.id
     voucherPercent = info.voucher.discountPercent
+    voucherAmountCents = info.voucher.discountAmountCents
   }
 
   // 5. 100%-off voucher → bypass Stripe entirely.
@@ -192,9 +194,19 @@ export async function POST(req: Request) {
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
-    // 6a. Optional dynamic Stripe coupon for partial-discount vouchers.
+    // 6a. Optional dynamic Stripe coupon for discount vouchers (percent OR
+    // fixed amount, e.g. the €2 review-reward voucher).
     const discounts: { coupon: string }[] = []
-    if (voucherId && voucherPercent !== null && voucherPercent < 100) {
+    if (voucherId && voucherAmountCents && voucherAmountCents > 0) {
+      const coupon = await stripe.coupons.create({
+        amount_off: voucherAmountCents,
+        currency: "eur",
+        duration: "once",
+        name: `PLUGGED voucher €${(voucherAmountCents / 100).toFixed(2)}`,
+        max_redemptions: 1,
+      })
+      discounts.push({ coupon: coupon.id })
+    } else if (voucherId && voucherPercent !== null && voucherPercent < 100) {
       const coupon = await stripe.coupons.create({
         percent_off: voucherPercent,
         duration: "once",

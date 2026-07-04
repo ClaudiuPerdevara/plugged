@@ -14,6 +14,7 @@ import { OldMoneyVault } from "./old-money-vault"
 import { CarharttVault } from "./carhartt-vault"
 import { SportswearVault } from "./sportswear-vault"
 import { RacingVault } from "./racing-vault"
+import { BundleReviews } from "./bundle-reviews"
 
 function QualityStars({ rating }: { rating: number }) {
   return (
@@ -44,7 +45,7 @@ const ROUTE_META: Record<
   vintage: {
     title: "Vintage Wholesale & Bulk Bales",
     description:
-      "Authentic second-hand bulk — graded bales, by-weight lots, zero replica risk on Vinted.",
+      "Authentic second-hand bulk — graded bales, by-weight lots, genuine pieces with no authenticity questions on Vinted.",
   },
 }
 
@@ -188,7 +189,7 @@ export function VaultBundle({ product }: { product: Product }) {
             {product.id === "vintage-windbreakers"
               ? "11 wholesale packages · 8 suppliers · image search tools"
               : product.id === "opium"
-                ? "2,400+ sources archive · 15 rep links · image search"
+                ? "2,400+ sources archive · 15 1:1 supplier links · image search"
                 : product.id === "y2k"
                   ? "12 wholesale packages · 7 suppliers · image search tools"
                   : product.id === "football-tshirts"
@@ -236,11 +237,16 @@ export function VaultBundle({ product }: { product: Product }) {
                 </span>
                 <p className="text-xs leading-relaxed text-muted-foreground">
                   <span className="font-semibold text-foreground">
-                    Link not working?
+                    Working-links guarantee.
                   </span>{" "}
-                  Every plug opens in a new tab — if it doesn&apos;t load, refresh
-                  and retry it once. Still down? Use the image-search keyword to
-                  find a live equivalent, or{" "}
+                  Suppliers rotate stock, so a link can occasionally go down —
+                  and when it does, that&apos;s on us to fix.{" "}
+                  <span className="text-foreground/90">
+                    We commit to sending you a fresh, working replacement (or an
+                    extra supplier for the same item) within 24h
+                  </span>{" "}
+                  — free, for the lifetime of your bundle. Meanwhile, use the
+                  image-search keyword to find a live equivalent instantly, or{" "}
                   <Link
                     href="/support"
                     target="_blank"
@@ -248,8 +254,8 @@ export function VaultBundle({ product }: { product: Product }) {
                     className="font-medium text-accent underline-offset-2 hover:underline"
                   >
                     message Support
-                  </Link>{" "}
-                  and we&apos;ll send a working replacement within 24h.
+                  </Link>
+                  .
                 </p>
               </div>
               {product.id === "vintage-windbreakers" ? (
@@ -284,6 +290,12 @@ export function VaultBundle({ product }: { product: Product }) {
                   />
                 </>
               )}
+              <BundleReviews
+                bundleId={product.id}
+                suppliers={Array.from(
+                  new Set(product.suppliers.map((s) => s.name)),
+                )}
+              />
             </div>
           </motion.div>
         )}

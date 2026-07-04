@@ -137,7 +137,7 @@ export function ProductsSection() {
                 data-card
                 className="w-[76vw] max-w-[320px] shrink-0 snap-start sm:w-[340px] sm:max-w-none"
               >
-                <ProductCard product={product} animated={false} />
+                <ProductCard product={product} animated={false} compact />
               </div>
             ))}
           </div>

@@ -52,7 +52,7 @@ const VINTAGE_STEPS = [
   {
     icon: Package,
     title: "Receive & sort",
-    body: "Bales arrive mixed. Sort, photograph, price and list. Margins come from volume and your eye, not from 1:1 replicas.",
+    body: "Bales arrive mixed. Sort, photograph, price and list. Margins come from volume and your eye, not from 1:1 sourcing.",
   },
   {
     icon: ShieldCheck,
@@ -64,7 +64,7 @@ const VINTAGE_STEPS = [
 const STEALTH_TIPS = [
   "Shoot casual photos — hanger, bed, mirror selfie. Never studio lighting or stock-style flat lays.",
   "Hide or crop QR codes, batch tags and factory labels before listing.",
-  "Avoid trigger words in titles: replica, 1:1, dupe, inspired — describe fit, colour and condition only.",
+  "Avoid obvious trigger words in your titles — describe fit, colour and condition only, never the brand-copy angle.",
   "Don't reuse the same supplier photos across accounts — Vinted flags duplicate image hashes.",
   "Keep descriptions human. Short, casual, no copy-paste blocks from agent listings.",
 ]
@@ -158,7 +158,7 @@ export function SourcingGuide() {
 
         <p className="mt-6 max-w-3xl text-pretty leading-relaxed text-muted-foreground">
           You&apos;re not buying from Nike — you&apos;re buying from factories
-          or sellers on Weidian/Taobao that produce unbranded or replica-tier
+          or sellers on Weidian/Taobao that produce unbranded or 1:1-tier
           goods. An agent (Sugargoo, Joyabuy, CNFans, etc.) acts as your
           buyer and warehouse in China. You pay product cost + domestic China
           shipping to agent + international shipping to your door.
@@ -232,7 +232,7 @@ export function SourcingGuide() {
               Route B — Vintage Wholesale B2B
             </h2>
             <p className="text-sm text-muted-foreground">
-              Concept: authentic second-hand clothing in bulk — not 1:1 reps.
+              Concept: authentic second-hand clothing in bulk — not 1:1 sourcing.
             </p>
           </div>
         </div>

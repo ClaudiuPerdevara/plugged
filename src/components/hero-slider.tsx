@@ -7,7 +7,7 @@ import {
   type PanInfo,
   useReducedMotion,
 } from "framer-motion"
-import { ArrowDown, ArrowLeft, ArrowRight } from "lucide-react"
+import { ArrowDown, ArrowLeft, ArrowRight, Check } from "lucide-react"
 import Link from "next/link"
 import { PRODUCTS, CATALOG_IMAGES } from "@/lib/products"
 
@@ -24,7 +24,7 @@ const HERO_BUNDLE_IDS = [
 // long product description, so it never overflows on a phone.
 const HERO_TAGLINES: Record<string, string> = {
   racing: "Rare racing jackets — €100–€300 flips.",
-  opium: "Rick Owens & Chrome Hearts reps + 2,400 sources.",
+  opium: "Rick Owens & Chrome Hearts 1:1 pieces + 2,400 sources.",
   y2k: "Low-rise denim, baby tees & Harley graphics.",
   "vintage-windbreakers": "90s color-block & branded track jackets.",
   jeans: "Vintage Levi's & baggy Y2K denim.",
@@ -121,6 +121,20 @@ export function HeroSlider() {
       {/* Preload the first hero image (LCP) as early as possible. */}
       <link rel="preload" as="image" href={SLIDES[0].image} fetchPriority="high" />
 
+      {/* Persistent value-prop headline — stays fixed over every slide. */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 mx-auto flex max-w-7xl flex-col px-5 pt-28 md:px-8 md:pt-32"
+        data-testid="hero-main-headline"
+      >
+        <h2 className="max-w-3xl text-balance font-heading text-4xl font-bold leading-[1.02] tracking-tight text-foreground text-glow sm:text-5xl md:text-6xl">
+          Start Your Resell Business Today
+        </h2>
+        <p className="mt-3 max-w-sm text-pretty text-sm text-muted-foreground md:text-base">
+          Vetted supplier bundles — instant access, lifetime updates.
+        </p>
+      </div>
+
+
       <AnimatePresence custom={direction} initial={false}>
         <motion.div
           key={slide.id}
@@ -164,9 +178,10 @@ export function HeroSlider() {
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
                   href="/drops"
+                  data-testid="hero-browse-bundles"
                   className="rounded-full bg-foreground px-7 py-3 text-sm font-semibold text-background transition-transform duration-300 hover:scale-[1.03]"
                 >
-                  Browse All Styles
+                  Browse all reseller bundles
                 </Link>
                 <Link
                   href={slide.href}
@@ -174,6 +189,17 @@ export function HeroSlider() {
                 >
                   View This Bundle
                 </Link>
+              </div>
+              <div
+                className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2"
+                data-testid="hero-trust-badges"
+              >
+                <span className="flex items-center gap-2 text-sm font-medium text-foreground/85">
+                  <Check className="size-4 text-accent" /> Vetted Links
+                </span>
+                <span className="flex items-center gap-2 text-sm font-medium text-foreground/85">
+                  <Check className="size-4 text-accent" /> Instant Vault Access
+                </span>
               </div>
             </div>
           </div>

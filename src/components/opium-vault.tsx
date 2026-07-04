@@ -85,7 +85,7 @@ export function OpiumVault() {
       <Section
         icon={Package}
         title="Curated Product Links"
-        description="15 hand-picked rep links via Joyagoo — Rick Owens, Balenciaga, Chrome Hearts, Vetements & co."
+        description="15 hand-picked 1:1 supplier links via Joyagoo — Rick Owens, Balenciaga, Chrome Hearts, Vetements & co."
       >
         <div className="overflow-x-auto">
           <table className="vault-table w-full min-w-[680px] border-collapse text-left text-sm">
@@ -165,7 +165,7 @@ export function OpiumVault() {
       <Section
         icon={ImageIcon}
         title="Image Search — Find Dead Links Again"
-        description="The primary sourcing method: upload the model/product photo to find visually similar reps from Chinese sellers."
+        description="The primary sourcing method: upload the model/product photo to find visually similar pieces from 1:1 Chinese suppliers."
       >
         <div className="grid gap-3 md:grid-cols-3">
           {OPIUM_IMAGE_SEARCH.map((platform) => (
@@ -190,7 +190,7 @@ export function OpiumVault() {
         </div>
         <p className="mt-4 rounded-lg border border-border/60 bg-secondary/30 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
           Upload a picture of the Opium item (Rick Owens, Balenciaga, etc.) → the
-          platform finds visually similar reps → you receive seller links → order
+          platform finds visually similar pieces → you receive supplier links → order
           through the agent.
         </p>
       </Section>

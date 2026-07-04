@@ -39,6 +39,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   purchases     Purchase[]
+  reviews       Review[]
 }
 
 model Session {
@@ -123,7 +124,11 @@ model Voucher {
   /// Case-insensitive code the user types in at checkout. Stored uppercase.
   code            String              @unique
   /// Whole-number percentage off, 1–100. 100 = full bypass / free unlock.
+  /// May be 0 when the discount is a fixed amount (see discountAmountCents).
   discountPercent Int
+  /// Optional fixed amount off in EUR cents (e.g. 200 = €2). Used by the
+  /// "leave a review, get €2 off" reward. Null = percentage voucher.
+  discountAmountCents Int?
   /// Optional cap on total uses across all users. Null = unlimited.
   maxUses         Int?
   /// How many times this voucher has been redeemed.
@@ -151,5 +156,30 @@ model VoucherRedemption {
   createdAt DateTime @default(now())
 
   @@index([voucherId])
+  @@index([userId])
+}
+
+/// Internal supplier / batch reviews left by buyers inside their vault.
+/// Gated: a user can only read or write reviews for a bundle they OWN
+/// (enforced in the API against the `Purchase` table). One review per user
+/// per bundle. Leaving a review grants a one-time €2-off reward voucher.
+model Review {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bundleId   String
+  /// Optional supplier this review is about (from the bundle's supplier list).
+  supplier   String?
+  /// 1–5 star rating for the batch / supplier quality.
+  rating     Int
+  comment    String
+  /// Display name snapshot at time of writing.
+  authorName String
+  /// The reward voucher code granted for this review (null if none granted).
+  rewardCode String?
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, bundleId])
+  @@index([bundleId])
   @@index([userId])
 }

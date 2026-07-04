@@ -31,6 +31,7 @@ export type VoucherInfo = {
     id: string
     code: string
     discountPercent: number
+    discountAmountCents: number | null
     expiresAt: Date | null
     remainingUses: number | null
   }
@@ -81,14 +82,44 @@ export async function lookupVoucher(rawCode: string): Promise<VoucherInfo> {
       id: voucher.id,
       code: voucher.code,
       discountPercent: voucher.discountPercent,
+      discountAmountCents: voucher.discountAmountCents,
       expiresAt: voucher.expiresAt,
       remainingUses,
     },
     message:
-      voucher.discountPercent === 100
-        ? "Full unlock — no payment needed."
-        : `${voucher.discountPercent}% off applied at checkout.`,
+      voucher.discountAmountCents && voucher.discountAmountCents > 0
+        ? `€${(voucher.discountAmountCents / 100).toFixed(2)} off applied at checkout.`
+        : voucher.discountPercent === 100
+          ? "Full unlock — no payment needed."
+          : `${voucher.discountPercent}% off applied at checkout.`,
   }
+}
+
+/**
+ * Generate a one-time €2-off reward voucher (the "leave a review" reward).
+ * Returns the human-readable code. Single use, expires in 90 days.
+ */
+export async function createReviewRewardVoucher(opts: {
+  userId: string
+  amountCents?: number
+}): Promise<string> {
+  const amountCents = opts.amountCents ?? 200
+  const rand = Math.random().toString(36).slice(2, 8).toUpperCase()
+  const code = `THANKS-${rand}`
+  const expiresAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
+
+  await db.voucher.create({
+    data: {
+      code,
+      discountPercent: 0,
+      discountAmountCents: amountCents,
+      maxUses: 1,
+      expiresAt,
+      note: `Review reward for user ${opts.userId}`,
+    },
+  })
+
+  return code
 }
 
 /**

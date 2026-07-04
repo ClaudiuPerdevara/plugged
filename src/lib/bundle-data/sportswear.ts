@@ -79,7 +79,7 @@ export const SPORTSWEAR_IMAGE_SEARCH: ImageSearchPlatform[] = [
   {
     name: "KakoBuy",
     link: "https://www.kakobuy.com/search",
-    note: "Heavily used for reps and unbranded pieces. Photo search finds any pair of trackpants from Chinese factories.",
+    note: "Heavily used for 1:1 and unbranded pieces. Photo search finds any pair of trackpants from Chinese factories.",
   },
   {
     name: "Superbuy",

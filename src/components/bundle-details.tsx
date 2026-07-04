@@ -8,6 +8,7 @@ import {
   ArrowLeft,
   AlertTriangle,
   Check,
+  LifeBuoy,
   Loader2,
   Mail,
   Plus,
@@ -156,7 +157,7 @@ export function BundleDetails({
               <AlertTriangle className="mt-0.5 size-5 shrink-0 text-amber-400" />
               <p className="text-xs leading-relaxed text-amber-100/90">
                 <span className="font-bold text-amber-300">
-                  Heads up: these are Chinese REPS (replicas), not authentic
+                  Heads up: these are 1:1 Chinese-sourced pieces, not authentic
                   originals.
                 </span>{" "}
                 Every source is an individual Chinese seller/factory on Taobao,
@@ -316,6 +317,19 @@ export function BundleDetails({
           <p className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground">
             <ShieldCheck className="size-4 text-accent" />
             One-time payment · Instant access · Lifetime updates
+          </p>
+          <p
+            className="mt-3 flex items-start justify-center gap-2 text-center text-xs leading-relaxed text-muted-foreground"
+            data-testid="dead-link-guarantee"
+          >
+            <LifeBuoy className="mt-0.5 size-4 shrink-0 text-accent" />
+            <span>
+              <span className="font-semibold text-foreground">
+                Working-links guarantee:
+              </span>{" "}
+              if a supplier link ever stops working, we send you a fresh
+              replacement or an extra supplier within 24h — free, for life.
+            </span>
           </p>
         </motion.div>
       </div>

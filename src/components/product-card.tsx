@@ -13,12 +13,15 @@ export function ProductCard({
   ctaLabel = "View Bundle",
   animated = true,
   variant = "default",
+  compact = false,
 }: {
   product: Product
   ctaLabel?: string
   animated?: boolean
   /** Compact tile for category picker on /drops */
   variant?: "default" | "tile"
+  /** Smaller title + shorter copy for the homepage carousel */
+  compact?: boolean
 }) {
   const href = `/bundle/${product.id}`
   const { addItem, has } = useCart()
@@ -109,28 +112,38 @@ export function ProductCard({
           </span>
         ) : null}
         <div className="absolute inset-x-0 bottom-0 p-5">
-          <h3 className="font-heading text-xl font-bold tracking-tight text-foreground md:text-2xl">
+          <h3
+            className={`font-heading font-bold tracking-tight text-foreground ${
+              compact ? "text-lg" : "text-xl md:text-2xl"
+            }`}
+          >
             {product.name}
           </h3>
         </div>
       </div>
 
       <div className="flex flex-1 flex-col gap-4 p-5 pt-4">
-        <p className="text-sm leading-relaxed text-muted-foreground line-clamp-2">
+        <p
+          className={`leading-relaxed text-muted-foreground ${
+            compact ? "text-xs line-clamp-1" : "text-sm line-clamp-2"
+          }`}
+        >
           {product.description}
         </p>
 
-        <ul className="flex flex-col gap-1.5">
-          {product.perks.slice(0, 2).map((perk) => (
-            <li
-              key={perk}
-              className="flex items-center gap-2 text-xs text-foreground/80"
-            >
-              <Check className="size-3.5 shrink-0 text-accent" />
-              {perk}
-            </li>
-          ))}
-        </ul>
+        {compact ? null : (
+          <ul className="flex flex-col gap-1.5">
+            {product.perks.slice(0, 2).map((perk) => (
+              <li
+                key={perk}
+                className="flex items-center gap-2 text-xs text-foreground/80"
+              >
+                <Check className="size-3.5 shrink-0 text-accent" />
+                {perk}
+              </li>
+            ))}
+          </ul>
+        )}
 
         <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4">
           {product.comingSoon ? (
