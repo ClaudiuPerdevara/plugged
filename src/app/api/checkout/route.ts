@@ -153,7 +153,7 @@ export async function POST(req: Request) {
   let voucherPercent: number | null = null
   let voucherAmountCents: number | null = null
   if (parsed.data.voucherCode) {
-    const info = await lookupVoucher(parsed.data.voucherCode)
+    const info = await lookupVoucher(parsed.data.voucherCode, userId)
     if (info.status !== "valid" || !info.voucher) {
       return NextResponse.json(
         { error: info.message || "This voucher can't be used." },
@@ -194,26 +194,40 @@ export async function POST(req: Request) {
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
-    // 6a. Optional dynamic Stripe coupon for discount vouchers (percent OR
-    // fixed amount, e.g. the €2 review-reward voucher).
-    const discounts: { coupon: string }[] = []
-    if (voucherId && voucherAmountCents && voucherAmountCents > 0) {
-      const coupon = await stripe.coupons.create({
-        amount_off: voucherAmountCents,
-        currency: "eur",
-        duration: "once",
-        name: `PLUGGED voucher €${(voucherAmountCents / 100).toFixed(2)}`,
-        max_redemptions: 1,
-      })
-      discounts.push({ coupon: coupon.id })
-    } else if (voucherId && voucherPercent !== null && voucherPercent < 100) {
-      const coupon = await stripe.coupons.create({
-        percent_off: voucherPercent,
-        duration: "once",
-        name: `PLUGGED voucher ${voucherPercent}%`,
-        max_redemptions: 1,
-      })
-      discounts.push({ coupon: coupon.id })
+    // 6a. Discounts are applied by REDUCING the line-item amounts directly
+    // (NOT via Stripe coupons, which this account doesn't support). We compute
+    // the total discount in cents and spread it across the line items so the
+    // Stripe Checkout total already reflects the voucher.
+    const lineCents = buyable.map((p) => Math.round(p.price * 100))
+    const totalCents = lineCents.reduce((sum, c) => sum + c, 0)
+
+    let discountCents = 0
+    if (voucherId) {
+      if (voucherAmountCents && voucherAmountCents > 0) {
+        discountCents = voucherAmountCents
+      } else if (
+        voucherPercent !== null &&
+        voucherPercent > 0 &&
+        voucherPercent < 100
+      ) {
+        discountCents = Math.round((totalCents * voucherPercent) / 100)
+      }
+      // Never take the order below Stripe's €0.50 minimum.
+      discountCents = Math.max(0, Math.min(discountCents, totalCents - 50))
+    }
+
+    const adjusted = [...lineCents]
+    if (discountCents > 0) {
+      let remaining = discountCents
+      for (let i = 0; i < adjusted.length; i++) {
+        const isLast = i === adjusted.length - 1
+        const share = isLast
+          ? remaining
+          : Math.round((discountCents * lineCents[i]) / totalCents)
+        const take = Math.min(share, adjusted[i], remaining)
+        adjusted[i] -= take
+        remaining -= take
+      }
     }
 
     const checkout = await stripe.checkout.sessions.create({
@@ -221,14 +235,12 @@ export async function POST(req: Request) {
       // No `payment_method_types` → Stripe auto-enables every method the buyer
       // can use (card + Apple Pay + Google Pay + any others enabled in the
       // Dashboard). Restricting to ["card"] would hide the wallets.
-      ...(discounts.length === 0
-        ? { allow_promotion_codes: true }
-        : { discounts }),
-      line_items: buyable.map((p) => ({
+      allow_promotion_codes: true,
+      line_items: buyable.map((p, idx) => ({
         quantity: 1,
         price_data: {
           currency: "eur",
-          unit_amount: Math.round(p.price * 100),
+          unit_amount: adjusted[idx],
           product_data: {
             name: p.name,
             description: p.description,

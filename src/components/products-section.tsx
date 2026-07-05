@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
-import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Check, Plus } from "lucide-react"
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Check, Eye, Plus } from "lucide-react"
 import Link from "next/link"
 import { PRODUCTS, getProduct, type Product } from "@/lib/products"
 import { useCart } from "./cart-provider"
+import { useOwnedBundles } from "@/lib/use-owned"
 
 // The owner-curated "Most Popular" order.
 const POPULAR_IDS = [
@@ -22,6 +23,7 @@ const POPULAR_IDS = [
 function CompactCard({ product }: { product: Product }) {
   const { addItem, has } = useCart()
   const inCart = has(product.id)
+  const owned = useOwnedBundles().includes(product.id)
   const href = `/bundle/${product.id}`
 
   return (
@@ -69,18 +71,29 @@ function CompactCard({ product }: { product: Product }) {
               <span className="font-heading text-base font-bold text-foreground">
                 €{product.price}
               </span>
-              <button
-                type="button"
-                onClick={() => addItem(product)}
-                aria-label={inCart ? `${product.name} in cart` : `Add ${product.name} to cart`}
-                className={`relative z-20 grid size-8 place-items-center rounded-full border transition-colors duration-300 ${
-                  inCart
-                    ? "border-accent/60 bg-accent/15 text-accent"
-                    : "border-border bg-background/60 text-foreground hover:border-accent/60 hover:text-accent"
-                }`}
-              >
-                {inCart ? <Check className="size-3.5" /> : <Plus className="size-3.5" />}
-              </button>
+              {owned ? (
+                <Link
+                  href={href}
+                  aria-label={`View ${product.name} in your vault`}
+                  data-testid={`bundle-owned-view-${product.id}`}
+                  className="relative z-20 grid size-8 place-items-center rounded-full border border-accent/60 bg-accent/15 text-accent transition-colors duration-300 hover:bg-accent/25"
+                >
+                  <Eye className="size-3.5" />
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => addItem(product)}
+                  aria-label={inCart ? `${product.name} in cart` : `Add ${product.name} to cart`}
+                  className={`relative z-20 grid size-8 place-items-center rounded-full border transition-colors duration-300 ${
+                    inCart
+                      ? "border-accent/60 bg-accent/15 text-accent"
+                      : "border-border bg-background/60 text-foreground hover:border-accent/60 hover:text-accent"
+                  }`}
+                >
+                  {inCart ? <Check className="size-3.5" /> : <Plus className="size-3.5" />}
+                </button>
+              )}
             </>
           )}
         </div>

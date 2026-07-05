@@ -137,6 +137,10 @@ model Voucher {
   expiresAt       DateTime?
   /// Optional human-friendly note (audit / admin).
   note            String?
+  /// When set, this voucher is NOMINAL — only this user may redeem it
+  /// (e.g. the "leave a review, get €2 off" reward is tied to the reviewer).
+  /// Null = usable by anyone who has the code.
+  userId          String?
   createdAt       DateTime            @default(now())
   redemptions     VoucherRedemption[]
 

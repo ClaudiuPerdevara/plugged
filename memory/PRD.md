@@ -165,3 +165,15 @@ No Postgres + `/api/*` → 502 via ingress in preview. So tasks 7 & 9 are code-c
 - Vault tables mobile: JS enhancer in vault-bundle injects each column header as data-label on the cells; globals.css renders a 2-col labelled card layout (label above value) so columns are clear + compact.
 - Reviews: DELETE endpoint (author OR store owner via ADMIN_EMAILS env can delete); GET returns canDelete; UI has trash button + public-reviews wording + more spacing. Client uses safeJson (JSON error fixed earlier).
 - DB MIGRATION still required on Neon (Review table + Voucher.discountAmountCents). ADMIN_EMAILS env must be set for owner moderation.
+
+### Session 2026-07-05 — voucher rework, owned eye-icon, desktop tables, copy
+Batch of user (RO) feedback. Build passes; DB-backed flows need Vercel/Neon (preview `/api` 502).
+1. **Vouchers uncoupled from Stripe coupons** (user's Stripe rejects coupons). Discount is now BAKED INTO Stripe line-item amounts in `/api/checkout` (total discount cents spread across line items, floor at €0.50). Removed `stripe.coupons.create`; `allow_promotion_codes: true` always.
+2. **Nominal + single-use**: added `Voucher.userId String?` (nullable). `createReviewRewardVoucher` stores reviewer `userId`; `lookupVoucher(code, forUserId?)` rejects codes linked to another account. Single-use via `maxUses:1`+`usedCount`. Webhook now records redemption for ANY voucherId (was percent>0 only → €2 amount vouchers weren't marked used).
+3. **In-cart voucher UI** (`cart-view.tsx`): input + Apply → new `POST /api/vouchers/validate` (auth+nominal). Shows discount row + adjusted Total + remove (X). testids: cart-voucher-input/apply/applied/remove, cart-discount-row, cart-total. Deleted old unused `GET /api/voucher/validate`.
+4. **Owned bundles → eye icon** (no "+"): new `GET /api/me/owned` + shared `useOwnedBundles()` (`src/lib/use-owned.ts`). `product-card.tsx` + `products-section.tsx` CompactCard swap Add(+) for an Eye link when owned; CTA "View Bundle". testids: product-owned-view-*, bundle-owned-view-*.
+5. **Desktop tables fit (no h-scroll)**: globals.css `@media (min-width:768px)` `.vault-table` → min-width:0, table-layout:auto, padding 0.7rem, white-space:normal + word-break. Hides scrollbars on `div:has(> table.vault-table)`.
+6. **Copy**: sportswear image-search "Screenshot the Nike pants you want" → "Screenshot the clothing item you want".
+
+### ⚠️ DEPLOY ACTION (Vercel/Neon): run `yarn db:push` — schema added nullable `Voucher.userId`. Nominal vouchers + review reward error at runtime until pushed.
+### Google login non-admins: NOT a code bug — Google Cloud Console OAuth consent screen is in "Testing" (only test users can log in). Owner must Publish App (Console → APIs & Services → OAuth consent screen → Publish App).

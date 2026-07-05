@@ -48,7 +48,10 @@ export function normalizeCode(input: string): string {
  * Validate a voucher code and return its current state.
  * Does NOT mutate the DB.
  */
-export async function lookupVoucher(rawCode: string): Promise<VoucherInfo> {
+export async function lookupVoucher(
+  rawCode: string,
+  forUserId?: string | null,
+): Promise<VoucherInfo> {
   const code = normalizeCode(rawCode)
   if (!CODE_RE.test(code)) {
     return {
@@ -60,6 +63,14 @@ export async function lookupVoucher(rawCode: string): Promise<VoucherInfo> {
   const voucher = await db.voucher.findUnique({ where: { code } })
   if (!voucher) {
     return { status: "not_found", message: "We don't recognise that code." }
+  }
+
+  // Nominal vouchers (tied to a specific user) can only be used by that user.
+  if (voucher.userId && voucher.userId !== forUserId) {
+    return {
+      status: "not_found",
+      message: "This code is linked to another account.",
+    }
   }
 
   if (voucher.expiresAt && voucher.expiresAt.getTime() < Date.now()) {
@@ -115,6 +126,7 @@ export async function createReviewRewardVoucher(opts: {
       discountAmountCents: amountCents,
       maxUses: 1,
       expiresAt,
+      userId: opts.userId,
       note: `Review reward for user ${opts.userId}`,
     },
   })

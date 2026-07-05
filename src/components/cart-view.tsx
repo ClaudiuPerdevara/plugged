@@ -11,13 +11,21 @@ import {
   Mail,
   ShieldCheck,
   ShoppingBag,
+  Ticket,
   Trash2,
+  X,
 } from "lucide-react"
 import { useCart } from "./cart-provider"
 import { useCheckout } from "@/lib/use-checkout"
 import { useAuth } from "@/lib/use-auth"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+type AppliedVoucher = {
+  code: string
+  discountAmountCents: number | null
+  discountPercent: number
+}
 
 export function CartView() {
   const { items, total, count, removeItem, clear } = useCart()
@@ -26,13 +34,70 @@ export function CartView() {
   const [email, setEmail] = useState("")
   const isGuest = ready && !isAuthenticated
 
+  const [code, setCode] = useState("")
+  const [applying, setApplying] = useState(false)
+  const [applied, setApplied] = useState<AppliedVoucher | null>(null)
+
+  const discount = applied
+    ? applied.discountAmountCents && applied.discountAmountCents > 0
+      ? Math.min(applied.discountAmountCents / 100, total)
+      : Math.min((total * applied.discountPercent) / 100, total)
+    : 0
+  const payable = Math.max(total - discount, 0)
+
+  async function applyVoucher() {
+    const trimmed = code.trim()
+    if (!trimmed) {
+      toast.error("Enter a voucher code")
+      return
+    }
+    setApplying(true)
+    try {
+      const res = await fetch("/api/vouchers/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ code: trimmed }),
+      })
+      const data = (await res.json()) as {
+        valid?: boolean
+        code?: string
+        discountAmountCents?: number | null
+        discountPercent?: number
+        message?: string
+      }
+      if (!data.valid) {
+        throw new Error(data.message || "That voucher can't be used.")
+      }
+      setApplied({
+        code: data.code ?? trimmed.toUpperCase(),
+        discountAmountCents: data.discountAmountCents ?? null,
+        discountPercent: data.discountPercent ?? 0,
+      })
+      toast.success(data.message || "Voucher applied!")
+    } catch (e) {
+      setApplied(null)
+      toast.error(e instanceof Error ? e.message : "Could not apply voucher.")
+    } finally {
+      setApplying(false)
+    }
+  }
+
+  function removeVoucher() {
+    setApplied(null)
+    setCode("")
+  }
+
   function handleCheckout() {
     if (isGuest && !EMAIL_RE.test(email.trim())) {
       toast.error("Enter your email to continue")
       document.getElementById("guest-email-cart")?.focus()
       return
     }
-    void checkout(undefined, { email: isGuest ? email.trim() : undefined })
+    void checkout(undefined, {
+      email: isGuest ? email.trim() : undefined,
+      voucherCode: applied?.code ?? undefined,
+    })
   }
 
   return (
@@ -142,23 +207,100 @@ export function CartView() {
                   <dt className="text-muted-foreground">Processing</dt>
                   <dd className="text-accent">Free</dd>
                 </div>
+                {applied ? (
+                  <div
+                    className="flex items-center justify-between"
+                    data-testid="cart-discount-row"
+                  >
+                    <dt className="text-muted-foreground">
+                      Voucher{" "}
+                      <span className="font-mono text-accent">
+                        {applied.code}
+                      </span>
+                    </dt>
+                    <dd className="text-accent">−€{discount.toFixed(2)}</dd>
+                  </div>
+                ) : null}
 
                 <div className="my-2 h-px bg-border" />
                 <div className="flex items-center justify-between">
                   <dt className="font-heading text-base font-bold text-foreground">
                     Total
                   </dt>
-                  <dd className="font-heading text-2xl font-bold text-foreground">
-                    €{total}
+                  <dd
+                    className="font-heading text-2xl font-bold text-foreground"
+                    data-testid="cart-total"
+                  >
+                    €{payable.toFixed(2)}
                   </dd>
                 </div>
               </dl>
 
-              {/* Promo / discount codes are entered on the secure Stripe
-                  checkout page via "Add promotion code" — not here. */}
-              <p className="mt-5 border-t border-border pt-5 text-xs leading-relaxed text-muted-foreground">
-                Got a discount code? Add it on the next (secure Stripe) step.
-              </p>
+              {/* Voucher / discount code — applied here (nominal + single-use),
+                  the discount is baked into the checkout total. */}
+              <div className="mt-5 border-t border-border pt-5">
+                {applied ? (
+                  <div
+                    className="flex items-center justify-between gap-3 rounded-xl border border-accent/40 bg-accent/10 px-4 py-3"
+                    data-testid="cart-voucher-applied"
+                  >
+                    <span className="flex items-center gap-2 text-xs text-foreground">
+                      <Ticket className="size-4 text-accent" />
+                      <span className="font-mono font-semibold text-accent">
+                        {applied.code}
+                      </span>{" "}
+                      applied
+                    </span>
+                    <button
+                      type="button"
+                      onClick={removeVoucher}
+                      aria-label="Remove voucher"
+                      data-testid="cart-voucher-remove"
+                      className="grid size-6 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:border-destructive/50 hover:text-destructive"
+                    >
+                      <X className="size-3.5" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="cart-voucher-input"
+                      className="text-xs uppercase tracking-[0.15em] text-muted-foreground"
+                    >
+                      Voucher code
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        id="cart-voucher-input"
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") void applyVoucher()
+                        }}
+                        placeholder="THANKS-XXXXXX"
+                        data-testid="cart-voucher-input"
+                        className="w-full rounded-xl border border-border bg-background/60 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-colors duration-300 focus:border-accent/60 focus-visible:ring-2 focus-visible:ring-ring/40"
+                      />
+                      <button
+                        type="button"
+                        onClick={applyVoucher}
+                        disabled={applying}
+                        data-testid="cart-voucher-apply"
+                        className="shrink-0 rounded-xl border border-accent/50 bg-accent/10 px-4 text-sm font-semibold text-accent transition-colors hover:bg-accent/20 disabled:opacity-60"
+                      >
+                        {applying ? (
+                          <Loader2 className="size-4 animate-spin" />
+                        ) : (
+                          "Apply"
+                        )}
+                      </button>
+                    </div>
+                    <p className="text-[11px] leading-relaxed text-muted-foreground">
+                      Left a review? Use your €2-off code here.
+                    </p>
+                  </div>
+                )}
+              </div>
 
               {isGuest ? (
                 <div className="mt-5 flex flex-col gap-2 border-t border-border pt-5">

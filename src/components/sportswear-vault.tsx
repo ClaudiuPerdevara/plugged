@@ -131,9 +131,9 @@ export function SportswearVault() {
           ))}
         </div>
         <p className="mt-4 rounded-lg border border-border/60 bg-secondary/30 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
-          Screenshot the Nike pants you want → upload it on Joyagoo / KakoBuy →
-          receive links from Chinese sellers → order through the agent and they
-          ship it to your door in Europe.
+          Screenshot the clothing item you want → upload it on Joyagoo /
+          KakoBuy → receive links from Chinese sellers → order through the agent
+          and they ship it to your door in Europe.
         </p>
       </Section>
 

@@ -91,16 +91,18 @@ export async function POST(req: Request) {
           }),
         )
 
-        // Record voucher redemption (partial-discount path). 100%-off
-        // vouchers bypass Stripe so they're already recorded in /api/checkout.
+        // Record voucher redemption (discount path). 100%-off vouchers bypass
+        // Stripe entirely so they're already recorded in /api/checkout. Any
+        // other voucher (percent OR fixed-amount, e.g. the €2 review reward) is
+        // recorded here so its single-use cap is enforced.
         const voucherId = session.metadata?.voucherId
-        const voucherPercent = Number(session.metadata?.voucherPercent ?? "")
-        if (voucherId && Number.isFinite(voucherPercent) && voucherPercent > 0) {
+        const voucherPercent = Number(session.metadata?.voucherPercent ?? "0")
+        if (voucherId) {
           await recordRedemption({
             voucherId,
             userId,
             bundleIds,
-            percent: voucherPercent,
+            percent: Number.isFinite(voucherPercent) ? voucherPercent : 0,
           }).catch((err) => {
             console.error("[webhook] recordRedemption failed:", err)
           })

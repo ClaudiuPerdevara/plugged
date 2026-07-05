@@ -172,6 +172,40 @@
   }
 }
 
+/* Desktop: keep supplier tables inside their container so nothing needs a
+   horizontal scroll to reach the "Link" column. Drop the forced min-width,
+   tighten padding and allow long cells (shipping notes) to wrap. */
+@media (min-width: 768px) {
+  table.vault-table {
+    width: 100%;
+    min-width: 0 !important;
+    table-layout: auto;
+  }
+  table.vault-table th,
+  table.vault-table td {
+    padding-left: 0.7rem !important;
+    padding-right: 0.7rem !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    white-space: normal !important;
+    word-break: break-word;
+  }
+  table.vault-table th:first-child,
+  table.vault-table td:first-child {
+    padding-left: 1rem !important;
+  }
+}
+
+/* Hide the horizontal scrollbar on any wrapper that holds a supplier table
+   (the wrapper still scrolls if ever needed, just without a visible bar). */
+div:has(> table.vault-table) {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+div:has(> table.vault-table)::-webkit-scrollbar {
+  display: none;
+}
+
 /* Responsive vault tables: on phones, collapse each row into a compact labelled
    card (label above each value) so users never scroll a table sideways and can
    always tell what each value means. Desktop keeps the full table. */

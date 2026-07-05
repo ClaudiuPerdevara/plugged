@@ -1,10 +1,11 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowUpRight, Check, Plus } from "lucide-react"
+import { ArrowUpRight, Check, Eye, Plus } from "lucide-react"
 import Link from "next/link"
 import type { Product } from "@/lib/products"
 import { useCart } from "./cart-provider"
+import { useOwnedBundles } from "@/lib/use-owned"
 
 export type { Product }
 
@@ -23,6 +24,7 @@ export function ProductCard({
   const href = `/bundle/${product.id}`
   const { addItem, has } = useCart()
   const inCart = has(product.id)
+  const owned = useOwnedBundles().includes(product.id)
 
   // Direct entrance animation (not variant-inheritance) so cards reliably
   // become visible on mount across SSR/hydration, without depending on a
@@ -153,31 +155,42 @@ export function ProductCard({
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => addItem(product)}
-                  aria-label={
-                    inCart
-                      ? `${product.name} in cart`
-                      : `Add ${product.name} to cart`
-                  }
-                  className={`relative z-20 grid size-10 place-items-center rounded-full border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-                    inCart
-                      ? "border-accent/60 bg-accent/15 text-accent"
-                      : "border-border bg-background/60 text-foreground hover:border-accent/60 hover:text-accent"
-                  }`}
-                >
-                  {inCart ? (
-                    <Check className="size-4" />
-                  ) : (
-                    <Plus className="size-4" />
-                  )}
-                </button>
+                {owned ? (
+                  <Link
+                    href={href}
+                    aria-label={`View ${product.name} in your vault`}
+                    data-testid={`product-owned-view-${product.id}`}
+                    className="relative z-20 grid size-10 place-items-center rounded-full border border-accent/60 bg-accent/15 text-accent transition-all duration-300 hover:bg-accent/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  >
+                    <Eye className="size-4" />
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => addItem(product)}
+                    aria-label={
+                      inCart
+                        ? `${product.name} in cart`
+                        : `Add ${product.name} to cart`
+                    }
+                    className={`relative z-20 grid size-10 place-items-center rounded-full border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                      inCart
+                        ? "border-accent/60 bg-accent/15 text-accent"
+                        : "border-border bg-background/60 text-foreground hover:border-accent/60 hover:text-accent"
+                    }`}
+                  >
+                    {inCart ? (
+                      <Check className="size-4" />
+                    ) : (
+                      <Plus className="size-4" />
+                    )}
+                  </button>
+                )}
                 <Link
                   href={href}
                   className="relative z-20 flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition-all duration-300 hover:bg-accent hover:text-accent-foreground"
                 >
-                  {ctaLabel}
+                  {owned ? "View Bundle" : ctaLabel}
                   <ArrowUpRight className="size-4" />
                 </Link>
               </div>
