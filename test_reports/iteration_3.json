@@ -1,0 +1,36 @@
+{
+  "summary": "Verified the €2 review-reward voucher bug fix end-to-end on localhost:3000 (Next.js production build). All 5 requested behaviours PASS: (1) posting a review as other@test.com on /bundle/opium returns a reward code inside [data-testid=review-reward-banner] (captured THANKS-EWA8YT); (2) that code applied on /cart added a cart-discount-row of −€2.00 and cart-total dropped from €12.00 → €10.00 with a cart-voucher-applied chip; (3) the SAME code applied by reviewer@test.com (a different account) is rejected with the exact toast 'This code is linked to another account.' — no discount row, no chip, total unchanged; (4) an owned bundle (opium) on /drops renders [data-testid=product-owned-view-opium] (Eye link) and contains NO Plus/add-to-cart button; (5) a signed-out (guest) POST to /api/vouchers/validate returns 401 with body {\"valid\":false,\"message\":\"Sign in to use a voucher code.\"} and the cart UI surfaces that exact toast copy. Backend Prisma queries against the Voucher table run without column errors (no 500 traces in the browser network response and reward creation persists — validate route successfully looks it up on the follow-up). Fix (schema-column removal + nominal encoded in `note`) is working.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Global header (SiteHeader)", "issues": ["Header still shows the public 'Get Access' CTA even AFTER a successful login (verified while other@test.com was signed in — /api/me/owned returned ['opium'], /dashboard rendered as signed-in, but the top nav still shows 'Get Access' instead of the account/avatar affordance). Not blocking any of the 5 requested behaviours, but it is misleading UX for signed-in users. Likely the SiteHeader is server-rendered without the session or client-hydrates without reading the auth state. Worth a follow-up."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "(Optional/UX) SiteHeader should reflect signed-in state and swap 'Get Access' for the account menu once the Better Auth session is active. Currently even /dashboard shows 'Get Access' in the top-right which is confusing.",
+    "(Cleanup) The two 404s in the browser console for /_vercel/speed-insights/script.js and /_vercel/insights/script.js are harmless preview noise (Vercel Analytics not resolvable locally) — same as iteration 2. Gate <Analytics /> / <SpeedInsights /> on process.env.VERCEL if you want a clean console."
+  ],
+  "critical_code_review_comments": [
+    "src/lib/vouchers.ts: nominal encoding via the existing `note` column ('Review reward · nominal:<userId>') is a clean, migration-free fix. The regex /nominal:(\\S+)/ is safe as-is because \\S excludes whitespace and the note format has a single 'nominal:' token. Good.",
+    "src/lib/vouchers.ts: lookupVoucher returns status:'not_found' with the 'linked to another account' message. Semantically that's slightly misleading (the code IS found, it's just not for this user) — a dedicated 'nominal_mismatch' status would improve observability, but functionally it works and the user-visible toast is correct.",
+    "src/app/api/reviews/route.ts: voucher creation is wrapped in its own try/catch so a voucher failure does not block review persistence — good defensive design. The review row still stores rewardCode:null in that case, which the UI handles.",
+    "src/components/cart-view.tsx: discount is clamped with Math.min(...total) so a €2 voucher against a €1 cart cannot go negative. Nice.",
+    "src/components/cart-view.tsx: the voucher is only sent to Stripe via checkout({ voucherCode }) — meaning the discount is re-validated server-side at checkout time (not just trusted client-side). Correct.",
+    "src/components/product-card.tsx: the owned Eye branch is inside the price/action row conditional; product.comingSoon paths still show only 'Coming Soon' (no Eye), which is correct behaviour.",
+    "src/app/bundle/[id]/page.tsx uses generateStaticParams but the page function itself calls getSession() at request time, which correctly opts the page into dynamic rendering — verified because 'vault-owned' testid only appears when signed-in as an owner."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (verified via UI + one direct /api/vouchers/validate guest call → 401)", "frontend": "100% (5/5 scenarios)"},
+  "test_credentials": "Used the two credentials in /app/memory/test_credentials.md — other@test.com / Test1234! and reviewer@test.com / Test1234!.",
+  "seed_data_creation": "Test posted one real review as other@test.com on bundle 'opium' and created one real Voucher row (code THANKS-EWA8YT, nominal:<other's userId>, €2 off, single-use, 90-day expiry). This voucher is now consumed-in-flight (single-use, not yet redeemed at checkout). If the main agent re-runs the review→reward test as other@test.com on opium, it will hit the 409 'already reviewed' path — either delete this review row from Postgres or use a fresh account.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Test against http://localhost:3000 ONLY — the preview URL returns 502 for /api/* (per test_credentials.md). Better Auth login: POST username/password to the /login page form (no direct /api/auth/login curl route). Vault reviews section is inside VaultBundle which is behind an 'Access Plugs' toggle button — you MUST click it before [data-testid=bundle-reviews] renders. Reward banner testid is [data-testid=review-reward-banner]; its text starts with 'Thanks! Here's €2 off ...' and contains the THANKS-XXXXXX code inline. Cart testids used: cart-voucher-input, cart-voucher-apply, cart-voucher-applied, cart-voucher-remove, cart-discount-row, cart-total. Nominal reject toast copy verified: 'This code is linked to another account.' Guest reject toast copy verified: 'Sign in to use a voucher code.'",
+  "rca of the issue": "Original bug — a previous change added Voucher.userId to the Prisma schema without a matching migration on the live DB, breaking every Voucher query. Current fix in src/lib/vouchers.ts drops that column entirely and stores per-user binding inside the existing `note` column as 'nominal:<userId>', decoded with a regex in lookupVoucher. Verified working: (a) createReviewRewardVoucher writes a row with that note; (b) lookupVoucher matches correctly for the owner and rejects mismatched users. No schema drift errors observed."
+}

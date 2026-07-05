@@ -1,13 +1,17 @@
-# Test Credentials
+# Test Credentials — PLUGGED
 
-This project (PLUGGED — Next.js) currently has **no test account required** for the
-features under test. All verified flows are public, client-side UI behaviors
-(home hero slider, logo scroll, drops catalog, FAQ, Terms).
+## IMPORTANT: test against http://localhost:3000
+The Emergent preview ingress routes `/api/*` to a dead legacy backend (502), so
+the Next.js API routes are ONLY reachable on `http://localhost:3000` inside the
+container. A **local Postgres** (installed for testing) backs the app; the real
+production DB is Neon (Vercel).
 
-## Known preview-environment limitation
-- The Emergent preview ingress routes `/api/*` to a legacy backend on port 8001,
-  which is not used by this project. As a result, `/api/auth/*`, `/api/checkout`,
-  and `/api/webhook` return 502 **in the preview only**. Authentication, Stripe
-  checkout and the user dashboard therefore cannot be exercised in the preview.
-  On the real (Vercel) deployment these API routes run on the same Next server
-  and work normally. Auth/checkout/dashboard are OUT OF SCOPE for preview testing.
+Local Postgres: `postgresql://postgres:pass@localhost:5432/plugged`
+
+## Test accounts (email / password)
+- **UI review→€2 flow**: `other@test.com` / `Test1234!`
+  - Owns bundle `opium` (seeded). Has NOT reviewed yet → can post a review and
+    receive the €2 reward, then apply it in the cart on a different bundle.
+- **Already-used reviewer**: `reviewer@test.com` / `Test1234!`
+  - Owns `y2k`; already posted a review; its reward code `THANKS-6W2PM5` is a
+    single-use, nominal voucher (only this account can redeem it).

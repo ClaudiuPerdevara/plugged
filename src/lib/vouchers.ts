@@ -65,8 +65,10 @@ export async function lookupVoucher(
     return { status: "not_found", message: "We don't recognise that code." }
   }
 
-  // Nominal vouchers (tied to a specific user) can only be used by that user.
-  if (voucher.userId && voucher.userId !== forUserId) {
+  // Nominal vouchers are tagged in `note` as `nominal:<userId>` (this avoids a
+  // schema column, so no DB migration is needed). Only that user may redeem it.
+  const nominal = voucher.note?.match(/nominal:(\S+)/)?.[1]
+  if (nominal && nominal !== forUserId) {
     return {
       status: "not_found",
       message: "This code is linked to another account.",
@@ -126,8 +128,7 @@ export async function createReviewRewardVoucher(opts: {
       discountAmountCents: amountCents,
       maxUses: 1,
       expiresAt,
-      userId: opts.userId,
-      note: `Review reward for user ${opts.userId}`,
+      note: `Review reward · nominal:${opts.userId}`,
     },
   })
 
