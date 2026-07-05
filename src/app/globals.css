@@ -172,8 +172,9 @@
   }
 }
 
-/* Responsive vault tables: on phones, collapse each row into a stacked card so
-   users never have to scroll a table left/right. Desktop keeps the full table. */
+/* Responsive vault tables: on phones, collapse each row into a compact labelled
+   card (label above each value) so users never scroll a table sideways and can
+   always tell what each value means. Desktop keeps the full table. */
 @media (max-width: 767px) {
   table.vault-table,
   table.vault-table tbody,
@@ -184,22 +185,43 @@
     min-width: 0 !important;
     max-width: none !important;
   }
+  table.vault-table {
+    min-width: 0 !important;
+  }
   table.vault-table thead {
     display: none;
   }
   table.vault-table tr {
-    padding: 1rem 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem 0.9rem;
+    padding: 0.9rem 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
   table.vault-table tr:last-child {
     border-bottom: 0;
   }
   table.vault-table td {
-    padding: 0.2rem 0 !important;
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0 !important;
     white-space: normal !important;
+    min-width: 0;
   }
+  /* Column name (from the injected data-label) shown above each value. */
+  table.vault-table td[data-label]:not([data-label=""])::before {
+    content: attr(data-label);
+    font-size: 0.6rem;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    opacity: 0.8;
+  }
+  /* First cell (name / #) spans the full width and reads as the card title. */
   table.vault-table td:first-child {
-    margin-bottom: 0.35rem;
+    grid-column: 1 / -1;
     font-size: 0.95rem;
     font-weight: 600;
   }

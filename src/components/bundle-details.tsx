@@ -39,8 +39,9 @@ export function BundleDetails({
   const { isAuthenticated, ready } = useAuth()
   const isGuest = ready && !isAuthenticated
   const inCart = has(product.id)
-  const gallery =
-    product.gallery.length > 0 ? product.gallery : [product.image]
+  const gallery = Array.from(
+    new Set(product.gallery.length > 0 ? product.gallery : [product.image]),
+  )
 
   function handleBuyNow() {
     if (isGuest && !EMAIL_RE.test(email.trim())) {

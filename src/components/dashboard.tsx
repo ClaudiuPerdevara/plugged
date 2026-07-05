@@ -66,9 +66,9 @@ export function Dashboard({
                   }`}
                 >
                   <Icon
-                    className={`size-[18px] ${isActive ? "text-accent" : ""}`}
+                    className={`size-[18px] shrink-0 ${isActive ? "text-accent" : ""}`}
                   />
-                  <span className="hidden sm:inline">{label}</span>
+                  <span>{label}</span>
                 </button>
               )
             })}

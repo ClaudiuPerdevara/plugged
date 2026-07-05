@@ -3,7 +3,7 @@ import { z } from "zod"
 import { getSession } from "@/lib/session"
 import { db } from "@/lib/db"
 import { getProduct } from "@/lib/products"
-import { ownsBundle, getBundleReviews } from "@/lib/reviews"
+import { ownsBundle, getBundleReviews, isAdmin } from "@/lib/reviews"
 import { createReviewRewardVoucher } from "@/lib/vouchers"
 import { sendEmail, siteUrl } from "@/lib/email"
 
@@ -43,7 +43,11 @@ export async function GET(req: Request) {
       )
     }
 
-    const reviews = await getBundleReviews(bundleId, session.user.id)
+    const reviews = await getBundleReviews(
+      bundleId,
+      session.user.id,
+      isAdmin(session.user.email),
+    )
     return NextResponse.json({ ok: true, reviews })
   } catch (err) {
     console.error("[reviews] GET failed:", err)
@@ -156,6 +160,46 @@ export async function POST(req: Request) {
     console.error("[reviews] POST failed:", err)
     return NextResponse.json(
       { error: "Couldn't save your review right now. Please try again shortly." },
+      { status: 500 },
+    )
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const session = await getSession()
+    if (!session) {
+      return NextResponse.json({ error: "Not signed in." }, { status: 401 })
+    }
+
+    const id = (new URL(req.url).searchParams.get("id") ?? "").trim()
+    if (!id) {
+      return NextResponse.json({ error: "Missing review id." }, { status: 400 })
+    }
+
+    const review = await db.review.findUnique({
+      where: { id },
+      select: { userId: true },
+    })
+    if (!review) {
+      return NextResponse.json({ error: "Review not found." }, { status: 404 })
+    }
+
+    const allowed =
+      review.userId === session.user.id || isAdmin(session.user.email)
+    if (!allowed) {
+      return NextResponse.json(
+        { error: "You can't delete this review." },
+        { status: 403 },
+      )
+    }
+
+    await db.review.delete({ where: { id } })
+    return NextResponse.json({ ok: true })
+  } catch (err) {
+    console.error("[reviews] DELETE failed:", err)
+    return NextResponse.json(
+      { error: "Couldn't delete the review right now." },
       { status: 500 },
     )
   }

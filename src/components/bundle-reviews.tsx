@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
-import { Loader2, MessageSquareText, Star, Ticket } from "lucide-react"
+import { Loader2, MessageSquareText, Star, Ticket, Trash2 } from "lucide-react"
 
 type PublicReview = {
   id: string
@@ -12,6 +12,7 @@ type PublicReview = {
   supplier: string | null
   createdAt: string
   mine: boolean
+  canDelete: boolean
 }
 
 // Never throws on non-JSON responses (e.g. an HTML error page / gateway error).
@@ -156,6 +157,24 @@ export function BundleReviews({
     }
   }
 
+  async function remove(id: string) {
+    if (typeof window !== "undefined" && !window.confirm("Delete this review?"))
+      return
+    try {
+      const res = await fetch(`/api/reviews?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      })
+      const data = await safeJson(res)
+      if (!res.ok || !data) {
+        throw new Error((data?.error as string) || "Could not delete review.")
+      }
+      toast.success("Review deleted.")
+      await load()
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not delete review.")
+    }
+  }
+
   return (
     <div
       className="rounded-xl border border-border bg-background/40"
@@ -173,9 +192,11 @@ export function BundleReviews({
 
       <div className="flex flex-col gap-5 p-5">
         <p className="text-xs leading-relaxed text-muted-foreground">
-          Chinese factories change batch quality month to month. Warn other
-          owners about a bad drop, or flag a supplier that&apos;s shipping fast
-          right now. Only people who own this bundle can read or post here.
+          Every review here is{" "}
+          <span className="text-foreground/90">public to other owners</span> of
+          this bundle — real buyers rating supplier &amp; batch quality (which
+          shifts month to month). Read them before you order, then add yours to
+          help the next reseller.
         </p>
 
         {/* Reward banner after a successful submit */}
@@ -278,9 +299,9 @@ export function BundleReviews({
         ) : (
           <ul className="flex flex-col divide-y divide-border/60">
             {reviews.map((r) => (
-              <li key={r.id} className="py-4 first:pt-0 last:pb-0">
+              <li key={r.id} className="py-5 first:pt-0 last:pb-0">
                 <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                     <span className="text-sm font-medium text-foreground">
                       {r.authorName}
                       {r.mine ? (
@@ -291,12 +312,25 @@ export function BundleReviews({
                     </span>
                     <Stars value={r.rating} />
                   </div>
-                  <span className="text-[11px] text-muted-foreground">
-                    {new Date(r.createdAt).toLocaleDateString()}
-                  </span>
+                  <div className="flex shrink-0 items-center gap-3">
+                    <span className="text-[11px] text-muted-foreground">
+                      {new Date(r.createdAt).toLocaleDateString()}
+                    </span>
+                    {r.canDelete ? (
+                      <button
+                        type="button"
+                        onClick={() => remove(r.id)}
+                        aria-label="Delete review"
+                        data-testid={`review-delete-${r.id}`}
+                        className="grid size-7 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:border-red-500/50 hover:text-red-400"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    ) : null}
+                  </div>
                 </div>
                 {r.supplier ? (
-                  <span className="mt-1.5 inline-block rounded-full border border-border bg-secondary/40 px-2.5 py-0.5 text-[11px] text-muted-foreground">
+                  <span className="mt-2 inline-block rounded-full border border-border bg-secondary/40 px-2.5 py-0.5 text-[11px] text-muted-foreground">
                     {r.supplier}
                   </span>
                 ) : null}

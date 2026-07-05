@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Check, Plus } from "lucide-react"
 import Link from "next/link"
@@ -125,12 +125,56 @@ function Row({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false })
+  const wrapTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Only loop/duplicate when the row actually overflows (so short rows don't
+  // show a duplicate copy on wide screens).
+  const [looped, setLooped] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const check = () => {
+      const single = looped ? el.scrollWidth / 2 : el.scrollWidth
+      setLooped(single > el.clientWidth + 8)
+    }
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [looped])
+
   if (products.length === 0 && !extra) return null
 
+  // Render the set twice (only when it overflows) so it loops seamlessly.
+  const items: { key: string; node: React.ReactNode }[] = [
+    ...products.map((p) => ({ key: p.id, node: <CompactCard product={p} /> })),
+    ...(extra ? [{ key: "__extra", node: extra }] : []),
+  ]
+  const loopItems = looped ? [...items, ...items] : items
+
+  const step = () => {
+    const el = ref.current
+    const first = el?.firstElementChild as HTMLElement | null
+    return first ? first.offsetWidth + 12 : 200
+  }
   const scroll = (dir: number) => {
     const el = ref.current
     if (!el) return
-    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" })
+    const cw = el.scrollWidth / 2
+    // pre-wrap so the left edge can loop too
+    if (dir < 0 && cw > 0 && el.scrollLeft <= 0) el.scrollLeft += cw
+    el.scrollBy({ left: dir * step(), behavior: "smooth" })
+  }
+  // Seamless loop, debounced so it never interrupts a smooth/momentum scroll.
+  const onScroll = () => {
+    if (!looped) return
+    if (wrapTimer.current) clearTimeout(wrapTimer.current)
+    wrapTimer.current = setTimeout(() => {
+      const el = ref.current
+      if (!el) return
+      const cw = el.scrollWidth / 2
+      if (cw <= 0) return
+      if (el.scrollLeft >= cw) el.scrollLeft -= cw
+      else if (el.scrollLeft <= 0) el.scrollLeft += cw
+    }, 120)
   }
 
   const onDown = (e: React.MouseEvent) => {
@@ -153,7 +197,6 @@ function Row({
   const endDrag = () => {
     drag.current.down = false
   }
-  // Swallow the click that follows a drag so cards don't navigate mid-swipe.
   const onClickCapture = (e: React.MouseEvent) => {
     if (drag.current.moved) {
       e.preventDefault()
@@ -162,7 +205,7 @@ function Row({
   }
 
   const arrowBase =
-    "absolute top-1/2 z-20 hidden size-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/90 text-foreground shadow-lg backdrop-blur transition-colors hover:border-accent hover:text-accent md:grid"
+    "absolute top-1/2 z-20 grid size-8 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/85 text-foreground shadow-lg backdrop-blur transition-colors hover:border-accent hover:text-accent md:size-9"
 
   return (
     <div data-testid={`bundle-row-${label.toLowerCase().replace(/\s+/g, "-")}`}>
@@ -170,35 +213,41 @@ function Row({
         {label}
       </h3>
       <div className="relative">
-        <button
-          type="button"
-          onClick={() => scroll(-1)}
-          aria-label={`Scroll ${label} left`}
-          className={`${arrowBase} left-1`}
-        >
-          <ArrowLeft className="size-4" />
-        </button>
-        <button
-          type="button"
-          onClick={() => scroll(1)}
-          aria-label={`Scroll ${label} right`}
-          className={`${arrowBase} right-1`}
-        >
-          <ArrowRight className="size-4" />
-        </button>
+        {looped ? (
+          <>
+            <button
+              type="button"
+              onClick={() => scroll(-1)}
+              aria-label={`Scroll ${label} left`}
+              className={`${arrowBase} left-1`}
+            >
+              <ArrowLeft className="size-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scroll(1)}
+              aria-label={`Scroll ${label} right`}
+              className={`${arrowBase} right-1`}
+            >
+              <ArrowRight className="size-4" />
+            </button>
+          </>
+        ) : null}
         <div
           ref={ref}
+          onScroll={onScroll}
           onMouseDown={onDown}
           onMouseMove={onMove}
           onMouseUp={endDrag}
           onMouseLeave={endDrag}
           onClickCapture={onClickCapture}
-          className="flex snap-x select-none gap-3 overflow-x-auto pb-2 md:cursor-grab md:active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x select-none gap-3 overflow-x-auto px-1 pb-2 md:cursor-grab md:active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {products.map((p) => (
-            <CompactCard key={p.id} product={p} />
+          {loopItems.map((it, idx) => (
+            <div key={`${idx < items.length ? "a" : "b"}-${it.key}`} className="shrink-0">
+              {it.node}
+            </div>
           ))}
-          {extra}
         </div>
       </div>
     </div>

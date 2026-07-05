@@ -155,3 +155,13 @@ No Postgres + `/api/*` → 502 via ingress in preview. So tasks 7 & 9 are code-c
 - Hero top bar messages shortened so they never wrap to 3 lines on phone: "Start Your Resell Business Today" / "Vetted links . Instant access . Lifetime updates" / "Dead link? Free working replacement, guaranteed."
 - REVIEWS JSON ERROR FIXED: /api/reviews GET+POST now wrapped in try/catch returning JSON on every path (was crashing to an HTML 500 -> client "Unexpected token < in JSON"). Client (bundle-reviews.tsx) now uses safeJson() to parse text safely. NOTE: reviews still require the Neon DB to have the Review table + Voucher.discountAmountCents column — run `yarn db:push` on the deploy.
 - Plugs tables on mobile: all bespoke vault <table> already carry class "vault-table", which the global CSS collapses into stacked cards under 768px (no fix needed; verify visually as owner).
+
+### Iteration 5 (2026-07-04)
+- Rows: arrows moved to LEFT/RIGHT edges, visible on mobile too; mouse drag-to-scroll; INFINITE loop (duplicate set) enabled ONLY when the row overflows (measured client-side) so short rows (Coming Soon, Mini) show no duplicate/arrows on wide screens. Removed green dashed border on guide teaser.
+- /drops cards shorter on mobile (aspect [4/3] mobile, [3/4] desktop).
+- Hero bar messages shortened (no 3-line wrap on phone).
+- Dashboard tab buttons now show their text label on mobile (were icon-only = the 2 blank buttons).
+- Jeans gallery: dedupe cover image (Array.from(new Set())) so it no longer repeats.
+- Vault tables mobile: JS enhancer in vault-bundle injects each column header as data-label on the cells; globals.css renders a 2-col labelled card layout (label above value) so columns are clear + compact.
+- Reviews: DELETE endpoint (author OR store owner via ADMIN_EMAILS env can delete); GET returns canDelete; UI has trash button + public-reviews wording + more spacing. Client uses safeJson (JSON error fixed earlier).
+- DB MIGRATION still required on Neon (Review table + Voucher.discountAmountCents). ADMIN_EMAILS env must be set for owner moderation.

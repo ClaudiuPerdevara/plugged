@@ -24,6 +24,19 @@ export async function ownsBundle(
   return Boolean(row)
 }
 
+/**
+ * Store owner(s) who can moderate (delete) any review. Set ADMIN_EMAILS in the
+ * environment (comma-separated) to your account email(s).
+ */
+export function isAdmin(email?: string | null): boolean {
+  if (!email) return false
+  const admins = (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean)
+  return admins.includes(email.toLowerCase())
+}
+
 export type PublicReview = {
   id: string
   authorName: string
@@ -33,11 +46,14 @@ export type PublicReview = {
   createdAt: string
   /** True when this review belongs to the requesting user. */
   mine: boolean
+  /** True when the requester may delete this review (author or store owner). */
+  canDelete: boolean
 }
 
 export async function getBundleReviews(
   bundleId: string,
   currentUserId: string,
+  canModerate = false,
 ): Promise<PublicReview[]> {
   const rows = await db.review.findMany({
     where: { bundleId },
@@ -60,6 +76,7 @@ export async function getBundleReviews(
     supplier: r.supplier,
     createdAt: r.createdAt.toISOString(),
     mine: r.userId === currentUserId,
+    canDelete: r.userId === currentUserId || canModerate,
   }))
 }
 

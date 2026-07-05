@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { ExternalLink, KeyRound, LifeBuoy, Star } from "lucide-react"
@@ -164,8 +164,33 @@ function SupplierTable({
 
 export function VaultBundle({ product }: { product: Product }) {
   const [open, setOpen] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
   const agentSuppliers = product.suppliers.filter((s) => s.route === "agent")
   const vintageSuppliers = product.suppliers.filter((s) => s.route === "vintage")
+
+  // On mobile, inject each column's header as a data-label on its cell so the
+  // collapsed table cards show what every value means.
+  useEffect(() => {
+    if (!open) return
+    const id = setTimeout(() => {
+      const root = contentRef.current
+      if (!root) return
+      root
+        .querySelectorAll<HTMLTableElement>("table.vault-table")
+        .forEach((table) => {
+          const headers = Array.from(table.querySelectorAll("thead th")).map(
+            (th) => (th.textContent || "").trim(),
+          )
+          table.querySelectorAll("tbody tr").forEach((tr) => {
+            Array.from(tr.children).forEach((td, i) => {
+              const label = headers[i] || ""
+              if (label && label !== "#") td.setAttribute("data-label", label)
+            })
+          })
+        })
+    }, 60)
+    return () => clearTimeout(id)
+  }, [open])
 
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-card/60 backdrop-blur-sm">
@@ -227,7 +252,7 @@ export function VaultBundle({ product }: { product: Product }) {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="border-t border-border"
           >
-            <div className="flex flex-col gap-5 p-6 md:p-7">
+            <div ref={contentRef} className="flex flex-col gap-6 p-6 md:gap-7 md:p-7">
               <div
                 className="flex items-start gap-3 rounded-xl border border-border bg-background/40 px-4 py-3.5"
                 data-testid="broken-link-help"
