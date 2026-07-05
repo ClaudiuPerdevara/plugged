@@ -68,7 +68,6 @@ const slideVariants = {
 
 export function HeroSlider() {
   const [[index, direction], setState] = useState<[number, number]>([0, 0])
-  const [paused, setPaused] = useState(false)
   const [showHint, setShowHint] = useState(false)
   const [msgIndex, setMsgIndex] = useState(0)
   const reduceMotion = useReducedMotion()
@@ -92,11 +91,13 @@ export function HeroSlider() {
 
   // Auto-advance every 5s. Depending on `index` means the timer is fully reset
   // to 0 whenever the slide changes — including manual swipes / arrows / dots.
+  // (No pause-on-hover: the hero fills the whole viewport, so hovering would
+  // otherwise keep it permanently paused on desktop.)
   useEffect(() => {
-    if (paused || reduceMotion) return
+    if (reduceMotion) return
     const timer = setTimeout(() => paginate(1), AUTOPLAY_MS)
     return () => clearTimeout(timer)
-  }, [index, paginate, paused, reduceMotion])
+  }, [index, paginate, reduceMotion])
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
     setShowHint(false)
@@ -136,8 +137,6 @@ export function HeroSlider() {
     <section
       id="top"
       className="relative h-[100svh] w-full overflow-hidden bg-background"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
       aria-label="Featured fashion styles"
     >
