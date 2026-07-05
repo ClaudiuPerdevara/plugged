@@ -177,3 +177,11 @@ Batch of user (RO) feedback. Build passes; DB-backed flows need Vercel/Neon (pre
 
 ### ⚠️ DEPLOY ACTION (Vercel/Neon): run `yarn db:push` — schema added nullable `Voucher.userId`. Nominal vouchers + review reward error at runtime until pushed.
 ### Google login non-admins: NOT a code bug — Google Cloud Console OAuth consent screen is in "Testing" (only test users can log in). Owner must Publish App (Console → APIs & Services → OAuth consent screen → Publish App).
+
+### Session 2026-07-05 (b) — €2 reward BUGFIX (verified 5/5)
+User (RO): "€2 nu mai merge — am dat review de pe cont nou și n-am primit nimic."
+ROOT CAUSE: session (a) added `Voucher.userId` to the Prisma schema but the live Neon DB had no such column → every Voucher query threw → reward creation silently failed (caught) → no code returned.
+FIX (migration-free): REVERTED the `Voucher.userId` schema column. Nominal binding now lives in the existing `note` column as `Review reward · nominal:<userId>`; `lookupVoucher(code, forUserId)` decodes it via `/nominal:(\S+)/` and rejects mismatched users. So NO `db:push` needed — a normal redeploy of the corrected code fixes it.
+VERIFIED end-to-end on localhost:3000 with local Postgres + seeded users (testing_agent iteration_3, 5/5 PASS): review→€2 code, cart apply shows −€2 / total drops, nominal lock rejects other account, owned bundle shows Eye icon (no +), guest 401.
+Test setup: installed local Postgres (postgres:pass@localhost:5432/plugged), pointed `.env.local` at it, `yarn db:push`. Preview `/api/*` still 502 via ingress — test only via localhost:3000. Accounts in test_credentials.md.
+Follow-up (out of scope, noted by tester): SiteHeader still shows "Get Access" when signed in — swap for account menu when session active.
