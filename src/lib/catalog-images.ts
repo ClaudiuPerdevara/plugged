@@ -33,6 +33,7 @@ export const CATALOG_IMAGES = {
   sportswear: bundleAssets("sportswear"),
   racing: bundleAssets("racing"),
   "vintage-windbreakers": bundleAssets("vintage-windbreakers"),
+  "ralph-lauren": bundleAssets("ralph-lauren"),
 } as const
 
 export type CatalogImageKey = keyof typeof CATALOG_IMAGES

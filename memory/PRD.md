@@ -185,3 +185,11 @@ FIX (migration-free): REVERTED the `Voucher.userId` schema column. Nominal bindi
 VERIFIED end-to-end on localhost:3000 with local Postgres + seeded users (testing_agent iteration_3, 5/5 PASS): review→€2 code, cart apply shows −€2 / total drops, nominal lock rejects other account, owned bundle shows Eye icon (no +), guest 401.
 Test setup: installed local Postgres (postgres:pass@localhost:5432/plugged), pointed `.env.local` at it, `yarn db:push`. Preview `/api/*` still 502 via ingress — test only via localhost:3000. Accounts in test_credentials.md.
 Follow-up (out of scope, noted by tester): SiteHeader still shows "Get Access" when signed in — swap for account menu when session active.
+
+### Session 2026-07-05 (c) — gallery/image fixes + Ralph Lauren bundle
+- Mobile hero CTAs (`hero-slider.tsx`): pb-16 → pb-28 so "Browse All Reseller Bundles" / "View This Bundle" no longer overlap the bottom arrows/dots.
+- Racing gallery (`products.ts`): removed the misplaced jeans/pants photo (racing/gallery-2); gallery now [box.webp (new racing-tees box, user photo), cover.webp NASCAR, gallery-1.webp Ferrari].
+- Jeans gallery: removed duplicate cover (was gallery[0]=cover === main image) and any non-jeans photo; gallery now [flatlay, look-1, look-2] (all denim). Cover (jeans grid) stays as card image.
+- Designer "Bags, Belts & Tech Accessories" (comingSoon): replaced cover+hero with a new full-bleed AI image (no white borders) at /catalog/designer/.
+- NEW bundle "ralph-lauren" (tag "Ralph Lauren", name "Ralph Lauren Bundle"): miniBundle:true + comingSoon:true so it shows in BOTH the Coming Soon and Mini Bundles homepage rows. Image = user's Polo Ralph Lauren photo at /catalog/ralph-lauren/. Added "ralph-lauren" to CATALOG_IMAGES. Bundle count 11 → 12.
+- Verified via screenshots (designer card full-bleed, mobile hero spacing) + HTML curl (racing/jeans/ralph image refs, ralph in both rows). Content/visual changes — no testing_agent run.

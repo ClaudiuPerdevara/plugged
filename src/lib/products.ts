@@ -334,7 +334,6 @@ export const PRODUCTS: Product[] = [
     {
       price: 12,
       gallery: [
-        "/catalog/jeans/cover.webp",
         "/catalog/jeans/flatlay.webp",
         "/catalog/jeans/look-1.webp",
         "/catalog/jeans/look-2.webp",
@@ -470,11 +469,31 @@ export const PRODUCTS: Product[] = [
       limited: true,
       price: 7,
       gallery: [
+        "/catalog/racing/box.webp",
         "/catalog/racing/cover.webp",
         "/catalog/racing/gallery-1.webp",
-        "/catalog/racing/gallery-2.webp",
       ],
     },
+  ),
+  bundle(
+    "ralph-lauren",
+    "Ralph Lauren",
+    "Ralph Lauren Bundle",
+    "Coming soon — a mini bundle of vetted Polo Ralph Lauren wholesale sources: cable-knit jumpers, polos & shirts for easy old-money flips.",
+    "A focused mini drop dedicated to Polo Ralph Lauren — cable-knit jumpers, classic polos and oxford shirts from vetted wholesale sources, with grades, shipping notes and reseller tips. Dropping soon.",
+    ["Mini bundle · Polo Ralph Lauren", "Cable-knit, polos & shirts", "Old-money flips"],
+    [
+      "Vetted Polo Ralph Lauren wholesale sources",
+      "Cable-knit jumpers, polos & oxford shirts",
+      "Grades & EU/UK shipping notes",
+      "Old-money reseller tips",
+      "Lifetime updates",
+    ],
+    [
+      ["Polo Wholesale EU", "Knitwear", "10 units", 5],
+      ["Heritage Polo Supply", "Polos", "12 units", 4],
+    ],
+    { miniBundle: true, comingSoon: true, price: 12 },
   ),
 ]
 

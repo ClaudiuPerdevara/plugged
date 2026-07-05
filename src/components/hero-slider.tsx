@@ -195,7 +195,7 @@ export function HeroSlider() {
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/10" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-transparent" />
 
-          <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-end px-5 pb-16 md:px-8 md:pb-28">
+          <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-end px-5 pb-28 md:px-8 md:pb-28">
             <div className="max-w-2xl">
               <h1 className="text-balance font-heading text-[1.75rem] font-bold leading-[1.05] tracking-tight text-foreground text-glow sm:text-4xl md:text-7xl md:leading-[0.95]">
                 {slide.title}
