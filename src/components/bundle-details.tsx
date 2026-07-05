@@ -119,16 +119,8 @@ export function BundleDetails({
           className="min-w-0 lg:sticky lg:top-28 lg:self-start"
         >
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            {product.miniBundle ? "Limited Mini Bundle" : "Supplier Bundle"}
+            {product.miniBundle ? "Mini Bundle" : "Supplier Bundle"}
           </span>
-          {product.limited ? (
-            <span
-              className="ml-3 inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 align-middle font-mono text-[10px] uppercase tracking-[0.2em] text-accent"
-              data-testid="bundle-limited-tag"
-            >
-              ⏳ Limited time
-            </span>
-          ) : null}
           <h1 className="mt-3 text-balance font-heading text-4xl font-bold leading-[1.05] tracking-tight text-foreground md:text-5xl">
             {product.name}
           </h1>
