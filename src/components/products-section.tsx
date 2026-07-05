@@ -93,7 +93,7 @@ function GuideTeaserCard() {
   return (
     <article
       data-testid="bundle-card-guide-teaser"
-      className="relative flex w-[168px] shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-dashed border-accent/40 bg-card/30 sm:w-[220px]"
+      className="relative flex w-[168px] shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-border bg-card/40 sm:w-[220px]"
     >
       <div className="relative grid aspect-[4/3] place-items-center bg-secondary/30">
         <BookOpen className="size-8 text-accent/70" />
@@ -124,6 +124,7 @@ function Row({
   extra?: React.ReactNode
 }) {
   const ref = useRef<HTMLDivElement>(null)
+  const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false })
   if (products.length === 0 && !extra) return null
 
   const scroll = (dir: number) => {
@@ -132,39 +133,73 @@ function Row({
     el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: "smooth" })
   }
 
+  const onDown = (e: React.MouseEvent) => {
+    const el = ref.current
+    if (!el) return
+    drag.current = {
+      down: true,
+      startX: e.pageX,
+      startScroll: el.scrollLeft,
+      moved: false,
+    }
+  }
+  const onMove = (e: React.MouseEvent) => {
+    const el = ref.current
+    if (!el || !drag.current.down) return
+    const dx = e.pageX - drag.current.startX
+    if (Math.abs(dx) > 4) drag.current.moved = true
+    el.scrollLeft = drag.current.startScroll - dx
+  }
+  const endDrag = () => {
+    drag.current.down = false
+  }
+  // Swallow the click that follows a drag so cards don't navigate mid-swipe.
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (drag.current.moved) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+  }
+
+  const arrowBase =
+    "absolute top-1/2 z-20 hidden size-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-background/90 text-foreground shadow-lg backdrop-blur transition-colors hover:border-accent hover:text-accent md:grid"
+
   return (
     <div data-testid={`bundle-row-${label.toLowerCase().replace(/\s+/g, "-")}`}>
-      <div className="mb-3 flex items-center justify-between gap-4">
-        <h3 className="font-heading text-lg font-bold tracking-tight text-foreground md:text-xl">
-          {label}
-        </h3>
-        <div className="hidden gap-2 md:flex">
-          <button
-            type="button"
-            onClick={() => scroll(-1)}
-            aria-label={`Scroll ${label} left`}
-            className="grid size-8 place-items-center rounded-full border border-border text-foreground transition-colors hover:border-accent hover:text-accent"
-          >
-            <ArrowLeft className="size-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scroll(1)}
-            aria-label={`Scroll ${label} right`}
-            className="grid size-8 place-items-center rounded-full border border-border text-foreground transition-colors hover:border-accent hover:text-accent"
-          >
-            <ArrowRight className="size-4" />
-          </button>
+      <h3 className="mb-3 font-heading text-lg font-bold tracking-tight text-foreground md:text-xl">
+        {label}
+      </h3>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => scroll(-1)}
+          aria-label={`Scroll ${label} left`}
+          className={`${arrowBase} left-1`}
+        >
+          <ArrowLeft className="size-4" />
+        </button>
+        <button
+          type="button"
+          onClick={() => scroll(1)}
+          aria-label={`Scroll ${label} right`}
+          className={`${arrowBase} right-1`}
+        >
+          <ArrowRight className="size-4" />
+        </button>
+        <div
+          ref={ref}
+          onMouseDown={onDown}
+          onMouseMove={onMove}
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}
+          onClickCapture={onClickCapture}
+          className="flex snap-x select-none gap-3 overflow-x-auto pb-2 md:cursor-grab md:active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {products.map((p) => (
+            <CompactCard key={p.id} product={p} />
+          ))}
+          {extra}
         </div>
-      </div>
-      <div
-        ref={ref}
-        className="flex snap-x gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {products.map((p) => (
-          <CompactCard key={p.id} product={p} />
-        ))}
-        {extra}
       </div>
     </div>
   )

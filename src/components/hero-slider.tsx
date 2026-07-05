@@ -40,8 +40,8 @@ const HERO_TITLES: Record<string, string> = {
 // Rotating messages for the full-width top bar.
 const BAR_MESSAGES = [
   "Start Your Resell Business Today",
-  "Vetted suppliers · Instant vault access · Lifetime updates",
-  "If a supplier link ever goes down, we send you a working replacement within 24h — guaranteed, for the life of your bundle.",
+  "Vetted links · Instant access · Lifetime updates",
+  "Dead link? Free working replacement, guaranteed.",
 ]
 
 const SLIDES = HERO_BUNDLE_IDS.map((id) => {

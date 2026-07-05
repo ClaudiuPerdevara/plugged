@@ -89,7 +89,7 @@ export function ProductCard({
         aria-label={`View ${product.name}`}
       />
 
-      <div className="relative aspect-[3/4] overflow-hidden">
+      <div className="relative aspect-[4/3] overflow-hidden sm:aspect-[3/4]">
         <img
           src={product.image}
           alt={product.name}

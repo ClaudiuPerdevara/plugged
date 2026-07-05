@@ -14,6 +14,16 @@ type PublicReview = {
   mine: boolean
 }
 
+// Never throws on non-JSON responses (e.g. an HTML error page / gateway error).
+async function safeJson(res: Response): Promise<Record<string, unknown> | null> {
+  try {
+    const text = await res.text()
+    return text ? (JSON.parse(text) as Record<string, unknown>) : {}
+  } catch {
+    return null
+  }
+}
+
 function Stars({
   value,
   onChange,
@@ -84,9 +94,13 @@ export function BundleReviews({
         `/api/reviews?bundleId=${encodeURIComponent(bundleId)}`,
         { cache: "no-store" },
       )
-      const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || "Could not load reviews.")
-      setReviews(data.reviews ?? [])
+      const data = await safeJson(res)
+      if (!res.ok || !data) {
+        throw new Error(
+          (data?.error as string) || "Could not load reviews right now.",
+        )
+      }
+      setReviews((data.reviews as PublicReview[]) ?? [])
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not load reviews.")
     } finally {
@@ -119,10 +133,14 @@ export function BundleReviews({
           supplier: supplier || undefined,
         }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || "Could not submit review.")
+      const data = await safeJson(res)
+      if (!res.ok || !data) {
+        throw new Error(
+          (data?.error as string) || "Could not submit review right now.",
+        )
+      }
       if (data.rewardCode) {
-        setRewardCode(data.rewardCode)
+        setRewardCode(data.rewardCode as string)
         toast.success("Review posted — €2 off unlocked!")
       } else {
         toast.success("Review posted. Thanks!")
