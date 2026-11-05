@@ -93,7 +93,7 @@ export default async function SuccessPage({
   return (
     <main className="relative flex min-h-screen flex-col bg-background text-foreground">
       <SiteHeader />
-      <SuccessView bundleNames={bundleNames} />
+      <SuccessView bundleIds={bundleIds} bundleNames={bundleNames} />
       <SiteFooter />
     </main>
   )
