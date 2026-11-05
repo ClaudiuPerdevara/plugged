@@ -12,9 +12,9 @@ export default function Page() {
       <SiteHeader />
       <HeroSlider />
       <HowItWorks />
+      <ProductsSection />
       <Testimonials />
       <FaqPreview />
-      <ProductsSection />
       <SiteFooter />
     </main>
   )

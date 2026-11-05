@@ -195,7 +195,7 @@ export const PRODUCTS: Product[] = [
     {
       featured: true,
       price: 10,
-      updatedAt: "2026-10-28",
+      updatedAt: "2026-11-02",
       gallery: [
         "/catalog/opium/cover.webp",
         "/catalog/opium/look-1.webp",
@@ -258,7 +258,7 @@ export const PRODUCTS: Product[] = [
     {
       featured: true,
       price: 15,
-      updatedAt: "2026-10-15",
+      updatedAt: "2026-11-01",
       gallery: [
         "/catalog/old-money/cover.webp",
         "/catalog/old-money/gallery-1.webp",
@@ -288,7 +288,7 @@ export const PRODUCTS: Product[] = [
     FOOTBALL_TSHIRTS_SUPPLIERS,
     {
       price: 10,
-      updatedAt: "2026-09-20",
+      updatedAt: "2026-11-01",
       gallery: [
         "/catalog/football-tshirts/cover.webp",
         "/catalog/football-tshirts/tshirts.webp",
@@ -320,7 +320,7 @@ export const PRODUCTS: Product[] = [
     {
       featured: true,
       price: 12,
-      updatedAt: "2026-10-05",
+      updatedAt: "2026-11-02",
       gallery: [
         "/catalog/carhartt/cover.webp",
         "/catalog/carhartt/gallery-2.webp",
@@ -350,7 +350,7 @@ export const PRODUCTS: Product[] = [
     JEANS_SUPPLIERS,
     {
       price: 12,
-      updatedAt: "2026-10-22",
+      updatedAt: "2026-11-03",
       gallery: [
         "/catalog/jeans/flatlay.webp",
         "/catalog/jeans/look-1.webp",
@@ -423,7 +423,7 @@ export const PRODUCTS: Product[] = [
     {
       featured: true,
       price: 12,
-      updatedAt: "2026-10-30",
+      updatedAt: "2026-11-04",
       gallery: [
         "/catalog/vintage-windbreakers/cover.webp",
         "/catalog/vintage-windbreakers/gallery-1.webp",

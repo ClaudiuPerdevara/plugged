@@ -6,6 +6,11 @@ import { Search } from "lucide-react"
 import { ProductCard } from "./product-card"
 import { PRODUCTS, type Category } from "@/lib/products"
 
+function isRecent(isoDate: string | undefined, days = 30): boolean {
+  if (!isoDate) return false
+  return new Date(isoDate).getTime() >= Date.now() - days * 24 * 60 * 60 * 1000
+}
+
 // Only show filter tags for bundles that are actually purchasable right now.
 const ACTIVE_CATEGORIES: Category[] = [
   "All",
@@ -32,11 +37,14 @@ export function DropsCatalog() {
         p.tag.toLowerCase().includes(q)
       return matchesCategory && matchesQuery
     }).sort((a, b) => {
-      // Coming-soon bundles always sink to the bottom; everything else keeps
-      // its catalog order.
-      const aSoon = a.comingSoon ? 1 : 0
-      const bSoon = b.comingSoon ? 1 : 0
-      return aSoon - bSoon
+      // 1. Coming-soon always sinks to bottom.
+      const aSoon = a.comingSoon ? 2 : 0
+      const bSoon = b.comingSoon ? 2 : 0
+      if (aSoon !== bSoon) return aSoon - bSoon
+      // 2. Recently-updated bundles float to top (within active / comingSoon groups).
+      const aRecent = isRecent(a.updatedAt) ? -1 : 0
+      const bRecent = isRecent(b.updatedAt) ? -1 : 0
+      return aRecent - bRecent
     })
   }, [query, active])
 

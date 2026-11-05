@@ -12,6 +12,7 @@ import {
   Loader2,
   Mail,
   Plus,
+  RefreshCw,
   ShieldCheck,
   ShoppingBag,
   Star,
@@ -125,7 +126,7 @@ export function BundleDetails({
             {product.name}
           </h1>
 
-          <div className="mt-5 flex items-center gap-4">
+          <div className="mt-5 flex flex-wrap items-center gap-3">
             <div className="flex items-baseline gap-1">
               <span className="font-heading text-3xl font-bold text-foreground">
                 €{product.price}
@@ -136,6 +137,18 @@ export function BundleDetails({
               <Star className="size-3.5 fill-accent text-accent" />
               {product.suppliers.length} vetted plugs
             </span>
+            {product.updatedAt && (() => {
+              const d = new Date(product.updatedAt)
+              const isRecent = d.getTime() >= Date.now() - 30 * 24 * 60 * 60 * 1000
+              if (!isRecent) return null
+              const label = d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
+              return (
+                <span className="flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/15 px-3 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+                  <RefreshCw className="size-3" />
+                  Updated {label}
+                </span>
+              )
+            })()}
           </div>
 
           <p className="mt-6 text-pretty leading-relaxed text-muted-foreground">
