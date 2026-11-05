@@ -1,11 +1,19 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowUpRight, Check, Eye, Plus } from "lucide-react"
+import { ArrowUpRight, Check, Eye, Plus, RefreshCw } from "lucide-react"
 import Link from "next/link"
 import type { Product } from "@/lib/products"
 import { useCart } from "./cart-provider"
 import { useOwnedBundles } from "@/lib/use-owned"
+
+/** Returns true if the ISO date string is within the last N days */
+function isRecent(isoDate: string | undefined, days = 30): boolean {
+  if (!isoDate) return false
+  const updated = new Date(isoDate).getTime()
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000
+  return updated >= cutoff
+}
 
 export type { Product }
 
@@ -56,15 +64,23 @@ export function ProductCard({
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-        {product.comingSoon ? (
-          <span className="absolute right-3 top-3 z-[1] rounded-full border border-amber-400/30 bg-amber-400/15 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md">
-            Soon
-          </span>
-        ) : product.limited || product.miniBundle ? (
-          <span className="absolute right-3 top-3 z-[1] rounded-full border border-red-500/50 bg-red-500/20 px-2.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-red-400 backdrop-blur-md">
-            Mini
-          </span>
-        ) : null}
+        <div className="absolute right-3 top-3 z-[1] flex flex-col items-end gap-1">
+          {product.comingSoon ? (
+            <span className="rounded-full border border-amber-400/30 bg-amber-400/15 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md">
+              Soon
+            </span>
+          ) : product.limited || product.miniBundle ? (
+            <span className="rounded-full border border-red-500/50 bg-red-500/20 px-2.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-red-400 backdrop-blur-md">
+              Mini
+            </span>
+          ) : null}
+          {isRecent(product.updatedAt) && (
+            <span className="flex items-center gap-1 rounded-full border border-accent/40 bg-accent/15 px-2.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur-md">
+              <RefreshCw className="size-2.5" />
+              Updated
+            </span>
+          )}
+        </div>
         <div className="absolute inset-x-0 bottom-0 z-[1] p-4">
           <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent">
             €{product.price} · lifetime
@@ -101,15 +117,23 @@ export function ProductCard({
         <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-background/50 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground backdrop-blur-md">
           {product.tag}
         </span>
-        {product.comingSoon ? (
-          <span className="absolute right-4 top-4 rounded-full border border-amber-400/30 bg-amber-400/15 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md">
-            Coming Soon
-          </span>
-        ) : product.limited || product.miniBundle ? (
-          <span className="absolute right-4 top-4 rounded-full border border-red-500/50 bg-red-500/20 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-red-400 backdrop-blur-md">
-            Mini
-          </span>
-        ) : null}
+        <div className="absolute right-4 top-4 flex flex-col items-end gap-1.5">
+          {product.comingSoon ? (
+            <span className="rounded-full border border-amber-400/30 bg-amber-400/15 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md">
+              Coming Soon
+            </span>
+          ) : product.limited || product.miniBundle ? (
+            <span className="rounded-full border border-red-500/50 bg-red-500/20 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-red-400 backdrop-blur-md">
+              Mini
+            </span>
+          ) : null}
+          {isRecent(product.updatedAt) && (
+            <span className="flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/15 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-accent backdrop-blur-md">
+              <RefreshCw className="size-3" />
+              Updated
+            </span>
+          )}
+        </div>
         <div className="absolute inset-x-0 bottom-0 p-5">
           <h3 className="font-heading text-xl font-bold tracking-tight text-foreground md:text-2xl">
             {product.name}

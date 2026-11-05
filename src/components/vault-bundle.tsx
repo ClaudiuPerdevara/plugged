@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
-import { ExternalLink, KeyRound, LifeBuoy, Star } from "lucide-react"
+import { ExternalLink, KeyRound, LifeBuoy, RefreshCw, Star } from "lucide-react"
 import type { Product, Supplier, SourcingRoute } from "@/lib/products"
 import { VintageWindbreakersVault } from "./vintage-windbreakers-vault"
 import { FootballTshirtsVault } from "./football-tshirts-vault"
@@ -162,6 +162,18 @@ function SupplierTable({
   )
 }
 
+function isRecent(isoDate: string | undefined, days = 30): boolean {
+  if (!isoDate) return false
+  const updated = new Date(isoDate).getTime()
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000
+  return updated >= cutoff
+}
+
+function formatUpdatedAt(isoDate: string): string {
+  const d = new Date(isoDate)
+  return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
+}
+
 export function VaultBundle({ product }: { product: Product }) {
   const [open, setOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -204,9 +216,17 @@ export function VaultBundle({ product }: { product: Product }) {
         </div>
 
         <div className="flex-1">
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
-            {product.tag}
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
+              {product.tag}
+            </span>
+            {isRecent(product.updatedAt) && (
+              <span className="flex items-center gap-1 rounded-full border border-accent/40 bg-accent/15 px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-accent">
+                <RefreshCw className="size-2.5" />
+                Updated {product.updatedAt ? formatUpdatedAt(product.updatedAt) : ""}
+              </span>
+            )}
+          </div>
           <h3 className="mt-1 font-heading text-lg font-bold tracking-tight text-foreground">
             {product.name}
           </h3>

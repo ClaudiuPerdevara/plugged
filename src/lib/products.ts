@@ -42,6 +42,8 @@ export type Product = {
   limited?: boolean
   /** Not yet purchasable — shows "Coming Soon" and blocks checkout */
   comingSoon?: boolean
+  /** ISO date string of last supplier list update — shows "Updated" badge */
+  updatedAt?: string
 }
 
 const AGENT_PLATFORMS = ["Weidian", "Taobao", "Sugargoo", "Joyabuy"] as const
@@ -145,6 +147,7 @@ function bundleWithSuppliers(
     limited?: boolean
     comingSoon?: boolean
     price?: number
+    updatedAt?: string
   },
 ): Product {
   const imgs = CATALOG_IMAGES[id]
@@ -164,6 +167,7 @@ function bundleWithSuppliers(
     miniBundle: opts?.miniBundle,
     limited: opts?.limited,
     comingSoon: opts?.comingSoon,
+    updatedAt: opts?.updatedAt,
   }
 }
 
@@ -191,6 +195,7 @@ export const PRODUCTS: Product[] = [
     {
       featured: true,
       price: 10,
+      updatedAt: "2026-10-28",
       gallery: [
         "/catalog/opium/cover.webp",
         "/catalog/opium/look-1.webp",
@@ -221,6 +226,7 @@ export const PRODUCTS: Product[] = [
     {
       featured: true,
       price: 12,
+      updatedAt: "2026-11-01",
       gallery: [
         "/catalog/y2k/cover.webp",
         "/catalog/y2k/tshirts.webp",
@@ -252,6 +258,7 @@ export const PRODUCTS: Product[] = [
     {
       featured: true,
       price: 15,
+      updatedAt: "2026-10-15",
       gallery: [
         "/catalog/old-money/cover.webp",
         "/catalog/old-money/gallery-1.webp",
@@ -281,6 +288,7 @@ export const PRODUCTS: Product[] = [
     FOOTBALL_TSHIRTS_SUPPLIERS,
     {
       price: 10,
+      updatedAt: "2026-09-20",
       gallery: [
         "/catalog/football-tshirts/cover.webp",
         "/catalog/football-tshirts/tshirts.webp",
@@ -312,6 +320,7 @@ export const PRODUCTS: Product[] = [
     {
       featured: true,
       price: 12,
+      updatedAt: "2026-10-05",
       gallery: [
         "/catalog/carhartt/cover.webp",
         "/catalog/carhartt/gallery-2.webp",
@@ -341,6 +350,7 @@ export const PRODUCTS: Product[] = [
     JEANS_SUPPLIERS,
     {
       price: 12,
+      updatedAt: "2026-10-22",
       gallery: [
         "/catalog/jeans/flatlay.webp",
         "/catalog/jeans/look-1.webp",
@@ -413,6 +423,7 @@ export const PRODUCTS: Product[] = [
     {
       featured: true,
       price: 12,
+      updatedAt: "2026-10-30",
       gallery: [
         "/catalog/vintage-windbreakers/cover.webp",
         "/catalog/vintage-windbreakers/gallery-1.webp",
@@ -443,6 +454,7 @@ export const PRODUCTS: Product[] = [
     SPORTSWEAR_SUPPLIERS,
     {
       price: 15,
+      updatedAt: "2026-11-03",
       gallery: [
         "/catalog/sportswear/cover.webp",
         "/catalog/sportswear/gallery-1.webp",
@@ -476,6 +488,7 @@ export const PRODUCTS: Product[] = [
       miniBundle: true,
       limited: true,
       price: 7,
+      updatedAt: "2026-11-04",
       gallery: [
         "/catalog/racing/box.webp",
         "/catalog/racing/cover.webp",
