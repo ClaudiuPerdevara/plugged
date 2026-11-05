@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Mail, Shield } from "lucide-react"
 import { FOOTER_SECONDARY, PRIMARY_NAV } from "@/lib/site-nav"
 
 function navLinkClass(highlight?: boolean) {
@@ -21,6 +22,19 @@ export function SiteFooter() {
               Curated supplier links for the underground. Skip the search — get
               the plug and start reselling today.
             </p>
+            <div className="mt-5 flex flex-col gap-2.5">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Shield className="size-4 shrink-0 text-accent" />
+                <span>Dead link? Free replacement within 24h — guaranteed.</span>
+              </div>
+              <a
+                href="mailto:plugged.support@gmail.com"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Mail className="size-4 shrink-0 text-accent" />
+                plugged.support@gmail.com
+              </a>
+            </div>
           </div>
 
           <nav className="flex flex-col gap-4">

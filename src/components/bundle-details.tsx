@@ -307,10 +307,20 @@ export function BundleDetails({
             </div>
           )}
 
-          <p className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-            <ShieldCheck className="size-4 text-accent" />
-            One-time payment · Instant access · Lifetime updates
-          </p>
+          <div className="mt-4 grid grid-cols-3 gap-2 rounded-2xl border border-border bg-card/40 px-4 py-3">
+            <div className="flex flex-col items-center gap-1 text-center">
+              <ShieldCheck className="size-4 text-accent" />
+              <span className="text-[10px] font-medium leading-tight text-muted-foreground">Stripe<br/>secured</span>
+            </div>
+            <div className="flex flex-col items-center gap-1 text-center">
+              <span className="text-base">⚡</span>
+              <span className="text-[10px] font-medium leading-tight text-muted-foreground">Instant<br/>access</span>
+            </div>
+            <div className="flex flex-col items-center gap-1 text-center">
+              <span className="text-base">♾️</span>
+              <span className="text-[10px] font-medium leading-tight text-muted-foreground">Lifetime<br/>updates</span>
+            </div>
+          </div>
           <p
             className="mt-3 flex items-start justify-center gap-2 text-center text-xs leading-relaxed text-muted-foreground"
             data-testid="dead-link-guarantee"

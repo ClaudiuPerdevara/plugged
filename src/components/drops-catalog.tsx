@@ -4,7 +4,13 @@ import { useMemo, useState } from "react"
 import { motion } from "framer-motion"
 import { Search } from "lucide-react"
 import { ProductCard } from "./product-card"
-import { PRODUCTS, CATEGORIES, type Category } from "@/lib/products"
+import { PRODUCTS, type Category } from "@/lib/products"
+
+// Only show filter tags for bundles that are actually purchasable right now.
+const ACTIVE_CATEGORIES: Category[] = [
+  "All",
+  ...PRODUCTS.filter((p) => !p.comingSoon).map((p) => p.tag),
+] as unknown as Category[]
 
 const container = {
   hidden: {},
@@ -77,7 +83,7 @@ export function DropsCatalog() {
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {CATEGORIES.map((cat) => {
+          {ACTIVE_CATEGORIES.map((cat) => {
             const isActive = active === cat
             return (
               <button

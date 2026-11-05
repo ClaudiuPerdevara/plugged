@@ -23,12 +23,12 @@ const HERO_BUNDLE_IDS = [
 // Short, mobile-first hero copy — one punchy line per slide instead of the
 // long product description, so it never overflows on a phone.
 const HERO_TAGLINES: Record<string, string> = {
-  racing: "Rare racing jackets — €100–€300 flips.",
-  opium: "Rick Owens & Chrome Hearts 1:1 pieces + 2,400 sources.",
-  y2k: "Low-rise denim, baby tees & Harley graphics.",
-  "vintage-windbreakers": "90s color-block & branded track jackets.",
-  jeans: "Vintage Levi's & baggy Y2K denim.",
-  sportswear: "Retro Nike & Adidas — easy Vinted flips.",
+  racing: "The plug others charge €300 for. You pay once.",
+  opium: "2,400 dark-core sources. Every piece ever made. Yours forever.",
+  y2k: "The wholesale rolodex every Y2K reseller needs but won't share.",
+  "vintage-windbreakers": "90s colour-block lots · Grade A/B · Direct EU shipping.",
+  jeans: "Levi's, Karl Kani, Ecko — vintage denim wholesale, properly curated.",
+  sportswear: "Nike & Adidas retro lots. Easiest Vinted flips on the market.",
 }
 
 // Short, clean hero titles (override the long product names on the slider).
@@ -39,7 +39,7 @@ const HERO_TITLES: Record<string, string> = {
 
 // Rotating messages for the full-width top bar.
 const BAR_MESSAGES = [
-  "Start Your Resell Business Today",
+  "Limited supplier slots — once a source leaks, we pull it.",
   "Vetted links · Instant access · Lifetime updates",
   "Dead link? Free working replacement, guaranteed.",
 ]
@@ -205,17 +205,17 @@ export function HeroSlider() {
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-3 md:mt-7 md:gap-4">
                 <Link
-                  href="/drops"
+                  href={slide.href}
                   data-testid="hero-browse-bundles"
-                  className="rounded-full bg-foreground px-5 py-2.5 text-xs font-semibold text-background transition-transform duration-300 hover:scale-[1.03] sm:px-7 sm:py-3 sm:text-sm"
+                  className="rounded-full bg-foreground px-5 py-2.5 text-xs font-semibold text-background transition-transform duration-300 hover:scale-[1.03] hover:bg-accent hover:text-accent-foreground sm:px-7 sm:py-3 sm:text-sm"
                 >
-                  Browse All Reseller Bundles
+                  Get This Bundle
                 </Link>
                 <Link
-                  href={slide.href}
-                  className="rounded-full border border-border px-5 py-2.5 text-xs font-semibold text-foreground transition-colors hover:border-accent/60 hover:text-accent sm:px-7 sm:py-3 sm:text-sm"
+                  href="/drops"
+                  className="rounded-full border border-border px-5 py-2.5 text-xs font-semibold text-foreground/70 transition-colors hover:border-accent/60 hover:text-accent sm:px-7 sm:py-3 sm:text-sm"
                 >
-                  View This Bundle
+                  Browse All →
                 </Link>
               </div>
             </div>
