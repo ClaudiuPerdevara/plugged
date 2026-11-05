@@ -120,6 +120,16 @@ export function CartDrawer() {
 
                 {/* Footer */}
                 <div className="border-t border-border px-5 py-5 md:px-6">
+                  {count >= 2 && (
+                    <div className="mb-3 flex items-center justify-between rounded-xl border border-accent/30 bg-accent/10 px-3 py-2.5">
+                      <span className="text-xs font-medium text-accent">
+                        🎉 Stacking {count} bundles
+                      </span>
+                      <span className="font-mono text-xs font-semibold text-accent">
+                        One checkout
+                      </span>
+                    </div>
+                  )}
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">
                       Total

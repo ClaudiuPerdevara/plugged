@@ -179,27 +179,32 @@ export function VaultPreview({
           </tbody>
         </table>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center justify-end gap-4 bg-gradient-to-t from-background via-background/90 to-transparent pb-7 pt-24">
-          <div className="pointer-events-auto flex flex-col items-center gap-4 px-5 text-center">
-            <span className="grid size-12 place-items-center rounded-2xl border border-accent/40 bg-accent/10 text-accent">
-              <Lock className="size-5" />
-            </span>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center justify-end gap-4 bg-gradient-to-t from-background via-background/90 to-transparent pb-7 pt-32">
+          <div className="pointer-events-auto flex flex-col items-center gap-3 px-5 text-center">
+            <div className="flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-4 py-2 backdrop-blur-md">
+              <span className="size-2 animate-pulse rounded-full bg-accent" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                {count} plugs locked
+              </span>
+            </div>
             <p className="max-w-sm text-pretty text-sm leading-relaxed text-muted-foreground">
               <span className="font-semibold text-foreground">
                 {count} direct supplier links
               </span>{" "}
-              — with contact, platform, MOQ, quality, category &amp; image-search
-              keyword. Unlocks instantly after checkout.
+              — platform, MOQ, quality rating &amp; image-search keyword. Instant access after checkout.
             </p>
             <button
               type="button"
               onClick={onUnlock}
               data-testid="vault-unlock-cta"
-              className="flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-semibold text-accent-foreground transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-accent/30"
+              className="flex items-center gap-2.5 rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-accent-foreground shadow-2xl shadow-accent/40 transition-all duration-300 hover:scale-[1.03]"
             >
               <Lock className="size-4" />
-              Unlock the full list — €{product.price}
+              Unlock {count} Plugs — €{product.price}
             </button>
+            <p className="text-[11px] text-muted-foreground">
+              ⚡ Instant vault access · ♾️ Lifetime updates
+            </p>
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
 "use client"
 
+import Link from "next/link"
 import { motion, type Variants } from "framer-motion"
-import { Star, Quote } from "lucide-react"
+import { ArrowUpRight, Star, Quote } from "lucide-react"
 
 const TESTIMONIALS = [
   {
@@ -143,6 +144,23 @@ export function Testimonials() {
             </div>
           </motion.div>
         ))}
+      </motion.div>
+
+      {/* CTA after testimonials */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="mt-10 flex justify-center"
+      >
+        <Link
+          href="/drops"
+          className="group flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-accent-foreground shadow-xl shadow-accent/20 transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-accent/30"
+        >
+          Get Plugged Now
+          <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </Link>
       </motion.div>
 
       {/* Aggregate trust signal */}

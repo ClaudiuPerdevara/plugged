@@ -263,12 +263,22 @@ export function HeroSlider() {
               aria-label={`Go to ${s.tag}`}
               aria-current={i === index}
               data-testid={`hero-dot-${i}`}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
+              className={`relative h-1.5 overflow-hidden rounded-full transition-all duration-500 ${
                 i === index
-                  ? "w-8 bg-accent"
+                  ? "w-8 bg-foreground/20"
                   : "w-2.5 bg-foreground/30 hover:bg-foreground/60"
               }`}
-            />
+            >
+              {i === index && !reduceMotion && (
+                <motion.span
+                  key={index}
+                  className="absolute inset-y-0 left-0 rounded-full bg-accent"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: AUTOPLAY_MS / 1000, ease: "linear" }}
+                />
+              )}
+            </button>
           ))}
         </div>
         <button
@@ -316,13 +326,13 @@ export function HeroSlider() {
 
       <a
         href="#products"
-        className="absolute bottom-7 right-5 z-20 hidden items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground md:flex md:right-20"
+        className="absolute bottom-7 right-5 z-20 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground md:right-20"
       >
-        Scroll
+        <span className="hidden md:inline">Scroll</span>
         <motion.span
           animate={reduceMotion ? undefined : { y: [0, 5, 0] }}
           transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          className="grid size-7 place-items-center rounded-full border border-border"
+          className="grid size-7 place-items-center rounded-full border border-border bg-background/40 backdrop-blur-md"
         >
           <ArrowDown className="size-3.5" />
         </motion.span>

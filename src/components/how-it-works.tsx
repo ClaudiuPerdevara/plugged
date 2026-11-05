@@ -89,16 +89,32 @@ export function HowItWorks() {
           ))}
         </motion.ol>
 
-        <div className="mt-10 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-          <span>New to reselling?</span>
-          <Link
-            href="/sourcing-guide"
-            data-testid="how-sourcing-link"
-            className="inline-flex items-center gap-1.5 font-semibold text-accent transition-colors hover:text-foreground"
-          >
-            Read the free Sourcing Guide
-            <ArrowRight className="size-3.5" />
-          </Link>
+        <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+            <span>New to reselling?</span>
+            <Link
+              href="/sourcing-guide"
+              data-testid="how-sourcing-link"
+              className="inline-flex items-center gap-1.5 font-semibold text-accent transition-colors hover:text-foreground"
+            >
+              Read the free Sourcing Guide
+              <ArrowRight className="size-3.5" />
+            </Link>
+          </div>
+          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-accent" />
+              <span><strong className="text-foreground">60+</strong> vetted suppliers</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-accent" />
+              <span><strong className="text-foreground">9</strong> bundles</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-accent" />
+              <span><strong className="text-foreground">400+</strong> resellers</span>
+            </span>
+          </div>
         </div>
       </div>
     </section>
