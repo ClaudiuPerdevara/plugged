@@ -8,6 +8,9 @@ import { OLD_MONEY_SUPPLIERS } from "@/lib/bundle-data/old-money"
 import { CARHARTT_SUPPLIERS } from "@/lib/bundle-data/carhartt"
 import { SPORTSWEAR_SUPPLIERS } from "@/lib/bundle-data/sportswear"
 import { RACING_SUPPLIERS } from "@/lib/bundle-data/racing"
+import { SNEAKERS_SUPPLIERS } from "@/lib/bundle-data/sneakers"
+import { DESIGNER_SUPPLIERS } from "@/lib/bundle-data/designer"
+import { RALPH_LAUREN_SUPPLIERS } from "@/lib/bundle-data/ralph-lauren"
 
 export type SourcingRoute = "agent" | "vintage"
 
@@ -362,47 +365,57 @@ export const PRODUCTS: Product[] = [
       ],
     },
   ),
-  bundle(
+  bundleWithSuppliers(
     "sneakers-footwear",
     "Sneakers",
     "Sneakers & Footwear",
-    "Heat, runners and everyday soles from tier-rated factories resellers trust.",
-    "From hyped silhouettes to daily movers — footwear sources with size runs, batch QC standards and shipping playbooks included.",
-    ["30+ footwear suppliers", "Batch QC standards", "Lifetime updates"],
+    "12 real wholesale sneaker packages — Nike, Adidas, ASICS, Salomon. Grade A/B lots from EU-based suppliers. Instant access.",
+    "The definitive sneaker resale sourcing bundle — Nike Air Max, classic Adidas, ASICS Gel, Salomon & multi-brand lots from Fleek and EU wholesale platforms. 12 packages with per-piece pricing, grade breakdowns and EU customs notes.",
     [
-      "30+ sneaker & footwear suppliers",
-      "Batch QC photo standards",
-      "Size-run availability sheets",
-      "International shipping playbook",
+      "12 packages — Nike, Adidas, ASICS & more",
+      "EU-based suppliers — no customs surprise",
+      "Per-piece pricing & grade breakdowns",
+    ],
+    [
+      "12 vetted sneaker & footwear packages",
+      "Nike, Adidas, ASICS, Salomon, New Balance & more",
+      "Direct Fleek & wholesale product links",
+      "Grade A/B & ABC breakdowns per lot",
+      "EU vs USA shipping & customs notes",
+      "Reseller tips for Vinted & Depop",
       "Lifetime updates",
     ],
-    [
-      ["Premier Sole House", "Sneakers", "8 units", 5],
-      ["Runner Batch Co.", "Runners", "12 units", 4],
-      ["Daily Tread Mfg.", "Casual", "20 units", 4],
-    ],
-    { comingSoon: true },
+    SNEAKERS_SUPPLIERS,
+    {
+      price: 12,
+      updatedAt: "2026-11-06",
+    },
   ),
-  bundle(
+  bundleWithSuppliers(
     "designer",
     "Designer",
     "Bags, Belts & Tech Accessories",
-    "Monogram bags, leather belts, phone cases and statement accessories at wholesale tier.",
-    "High-tier accessories — bags, belts and tech cases from premium-grade sources with customs guidance and tier ratings.",
-    ["30+ accessory suppliers", "Customs guidance", "Lifetime updates"],
+    "10 wholesale packages of vintage bags, belts & accessories — Coach, MK, Tommy Hilfiger & more. EU-friendly sources.",
+    "Vintage branded accessories — handbags, leather belts, hats, sunglasses & small leather goods from real wholesale platforms. 10 packages from Fleek, Best Vintage, SP Vintage & Thrift Vintage with grade breakdowns, EU customs notes and resale tips.",
     [
-      "30+ designer-accessory suppliers",
-      "International shipping playbook",
-      "Customs & import guidance",
-      "Quality-tier ratings",
+      "10 packages — bags, belts & accessories",
+      "Coach, Michael Kors, Tommy Hilfiger & more",
+      "EU-based sources — no customs surprise",
+    ],
+    [
+      "10 vetted accessories packages",
+      "Bags, belts, hats, sunglasses & wallets",
+      "Direct Fleek & wholesale product links",
+      "Grade & EU/UK/US customs notes per source",
+      "Reseller tips for Vinted & Depop",
+      "Supplier contact directory",
       "Lifetime updates",
     ],
-    [
-      ["Monogram Supply", "Bags", "10 units", 5],
-      ["Heritage Belt Works", "Belts", "15 units", 4],
-      ["Tech Case Factory", "Phone & Tech", "30 units", 4],
-    ],
-    { comingSoon: true },
+    DESIGNER_SUPPLIERS,
+    {
+      price: 10,
+      updatedAt: "2026-11-06",
+    },
   ),
   bundleWithSuppliers(
     "vintage-windbreakers",
@@ -501,25 +514,32 @@ export const PRODUCTS: Product[] = [
       ],
     },
   ),
-  bundle(
+  bundleWithSuppliers(
     "ralph-lauren",
     "Ralph Lauren",
-    "Ralph Lauren Bundle",
-    "Coming soon — a mini bundle of vetted Polo Ralph Lauren wholesale sources: cable-knit jumpers, polos & shirts for easy old-money flips.",
-    "A focused mini drop dedicated to Polo Ralph Lauren — cable-knit jumpers, classic polos and oxford shirts from vetted wholesale sources, with grades, shipping notes and reseller tips. Dropping soon.",
-    ["Mini bundle · Polo Ralph Lauren", "Cable-knit, polos & shirts", "Old-money flips"],
+    "Ralph Lauren — Mini Bundle",
+    "8 vetted Polo Ralph Lauren wholesale sources — cable-knit jumpers, polos & shirts. Old-money flips that go in under a week.",
+    "The focused Polo Ralph Lauren sourcing mini bundle — cable-knit jumpers (the €30–€80 Vinted staple), classic polo shirts and oxford shirts from Fleek, Best Vintage, SP Vintage and Thrift Vintage. 8 packages with grades, EU/UK/US shipping & customs notes, reseller tips and direct links.",
     [
-      "Vetted Polo Ralph Lauren wholesale sources",
-      "Cable-knit jumpers, polos & oxford shirts",
-      "Grades & EU/UK shipping notes",
-      "Old-money reseller tips",
+      "8 sources — cable-knit, polos & shirts",
+      "€30–€80 per-jumper flip on Vinted",
+      "EU-based suppliers — no customs surprise",
+    ],
+    [
+      "8 vetted Polo Ralph Lauren packages",
+      "Cable-knit jumpers · Polo shirts · Oxford shirts · Fleeces",
+      "Direct Fleek, Best Vintage & SP Vintage links",
+      "Grade & EU/UK/US shipping/customs notes per source",
+      "Old-money reseller tips & label guide",
+      "Supplier contact directory",
       "Lifetime updates",
     ],
-    [
-      ["Polo Wholesale EU", "Knitwear", "10 units", 5],
-      ["Heritage Polo Supply", "Polos", "12 units", 4],
-    ],
-    { miniBundle: true, comingSoon: true, price: 12 },
+    RALPH_LAUREN_SUPPLIERS,
+    {
+      miniBundle: true,
+      price: 7,
+      updatedAt: "2026-11-06",
+    },
   ),
 ]
 
