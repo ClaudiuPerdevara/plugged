@@ -43,12 +43,11 @@ export function BundleDetails({
   const isGuest = ready && !isAuthenticated
   const inCart = has(product.id)
 
-  // Track scroll — show sticky bar once the price row scrolls out of view
+  // Track scroll — show sticky bar once user has scrolled ~300px
+  // (the price row is in a sticky panel on desktop, so we can't use its rect)
   const { scrollY } = useScroll()
   useMotionValueEvent(scrollY, "change", (y) => {
-    if (!priceRowRef.current) return
-    const rect = priceRowRef.current.getBoundingClientRect()
-    setStickyVisible(rect.bottom < 0)
+    setStickyVisible(y > 300)
   })
   const gallery = Array.from(
     new Set(product.gallery.length > 0 ? product.gallery : [product.image]),
