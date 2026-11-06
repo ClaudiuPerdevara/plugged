@@ -44,6 +44,8 @@ export type Product = {
   comingSoon?: boolean
   /** ISO date string of last supplier list update — shows "Updated" badge */
   updatedAt?: string
+  /** Mark as HOT — shows pulsing orange badge */
+  hot?: boolean
 }
 
 const AGENT_PLATFORMS = ["Weidian", "Taobao", "Sugargoo", "Joyabuy"] as const
@@ -148,6 +150,7 @@ function bundleWithSuppliers(
     comingSoon?: boolean
     price?: number
     updatedAt?: string
+    hot?: boolean
   },
 ): Product {
   const imgs = CATALOG_IMAGES[id]
@@ -168,6 +171,7 @@ function bundleWithSuppliers(
     limited: opts?.limited,
     comingSoon: opts?.comingSoon,
     updatedAt: opts?.updatedAt,
+    hot: opts?.hot,
   }
 }
 
@@ -487,6 +491,7 @@ export const PRODUCTS: Product[] = [
       featured: true,
       miniBundle: true,
       limited: true,
+      hot: true,
       price: 7,
       updatedAt: "2026-11-04",
       gallery: [

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowUpRight, Check, Eye, Plus, RefreshCw } from "lucide-react"
+import { ArrowUpRight, Check, Eye, Flame, Plus, RefreshCw } from "lucide-react"
 import Link from "next/link"
 import type { Product } from "@/lib/products"
 import { useCart } from "./cart-provider"
@@ -64,6 +64,15 @@ export function ProductCard({
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+        {/* HOT badge — top-left */}
+        {product.hot && (
+          <div className="absolute left-3 top-3 z-[1]">
+            <span className="flex items-center gap-1 rounded-full border border-orange-500/60 bg-orange-500/20 px-2.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-orange-400 backdrop-blur-md">
+              <Flame className="size-2.5 animate-pulse" />
+              HOT
+            </span>
+          </div>
+        )}
         <div className="absolute right-3 top-3 z-[1] flex flex-col items-end gap-1">
           {product.comingSoon ? (
             <span className="rounded-full border border-amber-400/30 bg-amber-400/15 px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md">
@@ -88,6 +97,12 @@ export function ProductCard({
           <h3 className="mt-1 font-heading text-lg font-bold leading-tight tracking-tight text-foreground">
             {product.tag}
           </h3>
+          {/* X-ray: supplier count on hover */}
+          {product.suppliers.length > 0 && (
+            <p className="mt-1 translate-y-1 font-mono text-[9px] uppercase tracking-[0.15em] text-accent/80 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+              ↳ {product.suppliers.length} direct plugs inside
+            </p>
+          )}
         </div>
       </motion.article>
     )
@@ -113,10 +128,21 @@ export function ProductCard({
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
+        {/* Accent ring glow on hover — idea #6 */}
+        <div className="absolute inset-0 rounded-t-2xl ring-0 ring-accent/0 transition-all duration-500 group-hover:ring-2 group-hover:ring-accent/40 group-hover:ring-inset" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent" />
         <span className="absolute left-4 top-4 rounded-full border border-white/10 bg-background/50 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground backdrop-blur-md">
           {product.tag}
         </span>
+        {/* HOT badge — top-left corner below tag */}
+        {product.hot && (
+          <div className="absolute left-4 top-[3.25rem] z-[1]">
+            <span className="flex items-center gap-1.5 rounded-full border border-orange-500/60 bg-orange-500/20 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-orange-400 backdrop-blur-md shadow-lg shadow-orange-500/20">
+              <Flame className="size-3 animate-pulse" />
+              HOT
+            </span>
+          </div>
+        )}
         <div className="absolute right-4 top-4 flex flex-col items-end gap-1.5">
           {product.comingSoon ? (
             <span className="rounded-full border border-amber-400/30 bg-amber-400/15 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md">
@@ -138,6 +164,12 @@ export function ProductCard({
           <h3 className="font-heading text-xl font-bold tracking-tight text-foreground md:text-2xl">
             {product.name}
           </h3>
+          {/* X-ray: supplier count fades in on hover — idea #6 */}
+          {product.suppliers.length > 0 && (
+            <p className="mt-1 translate-y-1 font-mono text-[10px] uppercase tracking-[0.15em] text-accent/80 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+              ↳ {product.suppliers.length} direct plugs inside
+            </p>
+          )}
         </div>
       </div>
 

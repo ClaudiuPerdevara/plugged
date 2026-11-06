@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion"
 import { toast } from "sonner"
 import {
   ArrowLeft,
@@ -35,11 +35,21 @@ export function BundleDetails({
 }) {
   const [active, setActive] = useState(0)
   const [email, setEmail] = useState("")
+  const [stickyVisible, setStickyVisible] = useState(false)
+  const priceRowRef = useRef<HTMLDivElement>(null)
   const { addItem, has } = useCart()
   const { checkout, pending } = useCheckout()
   const { isAuthenticated, ready } = useAuth()
   const isGuest = ready && !isAuthenticated
   const inCart = has(product.id)
+
+  // Track scroll — show sticky bar once the price row scrolls out of view
+  const { scrollY } = useScroll()
+  useMotionValueEvent(scrollY, "change", (y) => {
+    if (!priceRowRef.current) return
+    const rect = priceRowRef.current.getBoundingClientRect()
+    setStickyVisible(rect.bottom < 0)
+  })
   const gallery = Array.from(
     new Set(product.gallery.length > 0 ? product.gallery : [product.image]),
   )
@@ -126,7 +136,7 @@ export function BundleDetails({
             {product.name}
           </h1>
 
-          <div className="mt-5 flex flex-wrap items-center gap-3">
+          <div ref={priceRowRef} className="mt-5 flex flex-wrap items-center gap-3">
             <div className="flex items-baseline gap-1">
               <span className="font-heading text-3xl font-bold text-foreground">
                 €{product.price}
@@ -349,6 +359,76 @@ export function BundleDetails({
           </p>
         </motion.div>
       </div>
+
+      {/* Sticky purchase bar — idea #8 */}
+      {!product.comingSoon && !owned && (
+        <AnimatePresence>
+          {stickyVisible && (
+            <motion.div
+              key="sticky-bar"
+              initial={{ y: "100%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "100%", opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/60 bg-background/90 backdrop-blur-xl"
+            >
+              <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3.5 md:px-8">
+                <div className="min-w-0">
+                  <p className="truncate font-heading text-sm font-bold text-foreground md:text-base">
+                    {product.name}
+                  </p>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    €{product.price} · lifetime access
+                  </p>
+                </div>
+                <div className="flex shrink-0 items-center gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => addItem(product)}
+                    data-testid="sticky-add-to-cart"
+                    className={`hidden items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:flex ${
+                      inCart
+                        ? "border-accent/60 text-accent"
+                        : "border-border text-foreground hover:border-accent/60 hover:text-accent"
+                    }`}
+                  >
+                    {inCart ? (
+                      <>
+                        <Check className="size-4" />
+                        In Cart
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="size-4" />
+                        Add to Cart
+                      </>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleBuyNow}
+                    disabled={pending}
+                    data-testid="sticky-buy-now"
+                    className="flex items-center gap-2 rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-accent-foreground shadow-lg shadow-accent/25 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-accent/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-70 disabled:hover:scale-100"
+                  >
+                    {pending ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" />
+                        Processing…
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag className="size-4" />
+                        Buy Now — €{product.price}
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
 
       {!product.comingSoon ? (
         owned ? (
