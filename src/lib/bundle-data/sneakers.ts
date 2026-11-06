@@ -2,8 +2,9 @@ import type { Supplier } from "@/lib/products"
 
 /**
  * Sneakers & Footwear Bundle.
- * Data collected Nov 2026 from Fleek (joinfleek.com) and supplementary wholesale sources.
- * Per-piece prices converted from USD at ~€0.92/$.
+ * Vintage + retro athletic sneakers wholesale — Nike, Adidas, New Balance,
+ * Reebok, Asics, Salomon. Resell on Vinted/Depop for €30–€120 per pair.
+ * Data collected Nov 2026.
  */
 
 export type SneakersPackage = {
@@ -14,173 +15,129 @@ export type SneakersPackage = {
   grade: string
   shipping: string
   link: string
-  pricePerPiece?: string
-  brands?: string
+  pricePerPc?: string
 }
 
 export const SNEAKERS_PACKAGES: SneakersPackage[] = [
   {
     id: 1,
-    name: "Nike Sneakers Mix",
+    name: "Nike Air Max Sneakers",
     supplier: "Fleek",
-    sellType: "Package (5 pcs)",
-    grade: "Mix ABC",
-    shipping: "Included · 20–27 days (EU customs may apply)",
-    link: "https://www.joinfleek.com/products/9577806921966",
-    pricePerPiece: "~€28/pc",
-    brands: "Nike",
+    sellType: "Package (~10 pcs)",
+    grade: "Grade A/B",
+    shipping: "Included in price · 20–27 days",
+    link: "https://www.joinfleek.com/products/9553611981038",
+    pricePerPc: "$35.16/pc",
   },
   {
     id: 2,
-    name: "Nike Original Shoes — Grade A/B",
+    name: "Adidas Nike Sneakers Mix",
     supplier: "Fleek",
-    sellType: "Package (10 pcs)",
+    sellType: "Package (~5 pcs)",
     grade: "Grade A/B",
-    shipping: "Included · 20–27 days (EU customs may apply)",
-    link: "https://www.joinfleek.com/products/9577503949038",
-    pricePerPiece: "~€23/pc",
-    brands: "Nike",
+    shipping: "Included in price · 20–27 days",
+    link: "https://www.joinfleek.com/products/9624551031022",
+    pricePerPc: "$35.12/pc",
   },
   {
     id: 3,
-    name: "Nike Air Max Sneakers — Grade A/B",
+    name: "New Balance Adidas Athletic Sneakers",
     supplier: "Fleek",
-    sellType: "Package (10 pcs)",
+    sellType: "Package (~15 pcs)",
     grade: "Grade A/B",
-    shipping: "Included · 20–27 days (EU customs may apply)",
-    link: "https://www.joinfleek.com/products/9553611981038",
-    pricePerPiece: "~€32/pc",
-    brands: "Nike Air Max",
+    shipping: "Included in price · 20–27 days",
+    link: "https://www.joinfleek.com/products/9611200725230",
+    pricePerPc: "$31.56/pc",
   },
   {
     id: 4,
-    name: "Nike Trainers Mix",
+    name: "Original Nike & Adidas Shoes — 100% Authentic",
     supplier: "Fleek",
-    sellType: "Package (5 pcs)",
-    grade: "Mix A/B",
-    shipping: "Included · 20–27 days (EU customs may apply)",
-    link: "https://www.joinfleek.com/products/9577814163694",
-    pricePerPiece: "~€25/pc",
-    brands: "Nike",
+    sellType: "Package (~20 pcs)",
+    grade: "Grade A",
+    shipping: "Included in price · 20–27 days",
+    link: "https://www.joinfleek.com/products/9613412860142",
+    pricePerPc: "$24.49/pc",
   },
   {
     id: 5,
-    name: "Old School Adidas Shoes Collection",
+    name: "Asics Athletic Sneakers Lot",
     supplier: "Fleek",
-    sellType: "Package (6 pcs)",
-    grade: "Grade BC",
-    shipping: "Included · 20–27 days (EU customs may apply)",
-    link: "https://www.joinfleek.com/products/9555697205486",
-    pricePerPiece: "~€37/pc",
-    brands: "Adidas",
+    sellType: "Package (~5 pcs)",
+    grade: "Grade A/B",
+    shipping: "Included in price · 20–27 days",
+    link: "https://www.joinfleek.com/products/9587065880814",
+    pricePerPc: "$35.17/pc",
   },
   {
     id: 6,
-    name: "Nike + Adidas + Puma + Reebok Multi-Brand",
+    name: "Adidas Saucony Athletic Sneakers",
     supplier: "Fleek",
-    sellType: "Package (12 pcs)",
+    sellType: "Package (~16 pcs)",
     grade: "Grade A/B",
-    shipping: "Included · 20–27 days (EU customs may apply)",
-    link: "https://www.joinfleek.com/products/9565497229550",
-    pricePerPiece: "~€29/pc",
-    brands: "Nike, Adidas, Puma, Reebok, Under Armour, HOKA, ASICS",
+    shipping: "Included in price · 20–27 days",
+    link: "https://www.joinfleek.com/products/9611237196014",
+    pricePerPc: "$28.59/pc",
   },
   {
     id: 7,
-    name: "Premium Branded Sneakers — Nike / Puma / Lacoste",
+    name: "Nike New Balance Athletic Sneakers",
     supplier: "Fleek",
-    sellType: "Package (9 pcs)",
-    grade: "Grade BC",
-    shipping: "Included · 20–27 days (EU customs may apply)",
-    link: "https://www.joinfleek.com/products/9544656290030",
-    pricePerPiece: "~€25/pc",
-    brands: "Nike, Puma, Lacoste",
+    sellType: "Package (~12 pcs)",
+    grade: "Grade A/B",
+    shipping: "Included in price · 20–27 days",
+    link: "https://www.joinfleek.com/products/9606954549486",
+    pricePerPc: "$30.14/pc",
   },
   {
     id: 8,
-    name: "Nike New Balance ASICS Mixed Lot",
+    name: "Salomon Trail Sneakers",
     supplier: "Fleek",
-    sellType: "Package",
+    sellType: "Package (~10 pcs)",
     grade: "Grade A/B",
-    shipping: "Included · 20–27 days (EU customs may apply)",
-    link: "https://www.joinfleek.com/products/9565444276462",
-    pricePerPiece: "~€32/pc",
-    brands: "Nike, New Balance, ASICS",
+    shipping: "Included in price · 20–27 days",
+    link: "https://www.joinfleek.com/products/9560731943150",
+    pricePerPc: "$31.93/pc",
   },
   {
     id: 9,
-    name: "ASICS Gel & Onitsukas Bundle (5 pcs)",
-    supplier: "Fleek",
-    sellType: "Package (5 pcs)",
+    name: "Vintage Sneakers Mix (Nike, Adidas, Puma)",
+    supplier: "Best Vintage Wholesale",
+    sellType: "Package (10–25 pcs)",
     grade: "Grade A/B",
-    shipping: "Included · 20–27 days (EU customs may apply)",
-    link: "https://www.joinfleek.com/products/9551558050030",
-    pricePerPiece: "~€32/pc",
-    brands: "ASICS, Onitsuka Tiger",
+    shipping: "Ships from NL · no EU customs",
+    link: "https://bestvintagewholesale.com/collections/shoes",
+    pricePerPc: "~$27–35/pc",
   },
   {
     id: 10,
-    name: "Salomon Sneakers",
-    supplier: "Fleek",
-    sellType: "Package",
-    grade: "Mix A/B",
-    shipping: "Included · 20–27 days (EU customs may apply)",
-    link: "https://www.joinfleek.com/products/9560731943150",
-    pricePerPiece: "~€28/pc",
-    brands: "Salomon",
-  },
-  {
-    id: 11,
-    name: "Sneaker Bales — Mixed Branded",
-    supplier: "Best Vintage Wholesale",
-    sellType: "Bale / Package",
-    grade: "Grade A/B",
-    shipping: "Ships from NL · no EU customs",
-    link: "https://bestvintagewholesale.com/collections/all",
-    brands: "Mixed branded (Nike, Adidas, Puma etc.)",
-  },
-  {
-    id: 12,
-    name: "Mixed Vintage Sneakers Bale",
+    name: "Vintage Trainers & Sneakers Wholesale",
     supplier: "Thrift Vintage Fashion",
-    sellType: "Bale",
+    sellType: "Bale / Package",
     grade: "Mix Vintage",
-    shipping: "Ships from USA · EU customs apply",
+    shipping: "Ships from USA · free over $200 (EU customs apply)",
     link: "https://thriftvintagefashion.com/collections/shoes",
-    brands: "Mixed branded vintage",
+    pricePerPc: "~$15–25/pc",
   },
 ]
 
 export const SNEAKERS_TIPS: string[] = [
-  "Best Vinted categories for sneakers: 'Chaussures de sport' (men) and 'Baskets' (women). Titles like 'Nike Air Max vintage' or 'Adidas Samba 90s' outperform generic terms — buyers search models, not 'sneakers'.",
-  "Fleek Grade ABC lots: expect ~30% Grade A (nearly new), 40% Grade B (light wear) and 30% Grade C (visible wear). Price Grade C pairs as 'project' or 'display-only' — still sells on Vinted.",
-  "ASICS, Salomon, Hoka and On Running resell exceptionally well right now — these trail/running brands command €40–€80 on Vinted for worn pairs. Prioritize these over plain Nike/Adidas when you see them in multi-brand lots.",
-  "Shipping from Fleek includes customs for EU buyers at checkout — you are NOT hit with extra duties when the parcel arrives. This is a key advantage over US-based suppliers like Thrift Vintage.",
-  "Photograph sneakers on a plain background (white or black) with a size tag visible in one shot. Buyers need the size immediately — a listing without it is ignored.",
+  "Best ROI: Nike Air Max 90, 95, 97 and Adidas Samba/Gazelle consistently flip for €60–€120 on Vinted — look for these specifically when sorting packages on Fleek.",
+  "Grade A matters for footwear: scratched midsoles and worn-down soles are very visible in listing photos. Grade A sneakers are worth the premium since they photograph better and get higher bids.",
+  "US shipping (Thrift Vintage): a bale of sneakers attracts heavy EU customs (footwear is ~12% duty + VAT). Budget ~25% extra on top of the invoice price for Romanian/EU buyers.",
+  "Best Vintage Wholesale (NL) is the cleanest EU sneaker source — ships within 24hrs, no customs friction for Romanian buyers.",
 ]
 
-export type SneakersContact = {
+export type SupplierContact = {
   supplier: string
   platform: string
   contact: string
 }
 
-export const SNEAKERS_CONTACTS: SneakersContact[] = [
-  {
-    supplier: "Fleek (JoinFleek)",
-    platform: "EU marketplace",
-    contact: "Direct purchase at joinfleek.com/collections/sneakers — no prior contact needed",
-  },
-  {
-    supplier: "Best Vintage Wholesale",
-    platform: "Own website (Netherlands)",
-    contact: "bestvintagewholesale.com/pages/contact",
-  },
-  {
-    supplier: "Thrift Vintage Fashion",
-    platform: "Own website (USA)",
-    contact: "thriftvintagefashion.com/pages/contact-us",
-  },
+export const SNEAKERS_CONTACTS: SupplierContact[] = [
+  { supplier: "JoinFleek (Fleek)", platform: "International marketplace", contact: "Direct chat with sellers via the Fleek messaging system" },
+  { supplier: "Best Vintage Wholesale", platform: "Own website (Netherlands)", contact: "bestvintagewholesale.com/pages/contact" },
+  { supplier: "Thrift Vintage Fashion", platform: "Own website (USA)", contact: "thriftvintagefashion.com/pages/contact-us" },
 ]
 
 export const SNEAKERS_SUPPLIERS: Supplier[] = SNEAKERS_PACKAGES.map((pkg) => ({
@@ -188,8 +145,8 @@ export const SNEAKERS_SUPPLIERS: Supplier[] = SNEAKERS_PACKAGES.map((pkg) => ({
   category: pkg.name,
   link: pkg.link,
   moq: pkg.sellType,
-  quality: /Grade A\/B|A\/B/.test(pkg.grade) ? 5 : /Grade BC|ABC/.test(pkg.grade) ? 3 : 4,
-  platform: pkg.supplier === "Fleek" ? "Fleek" : "Direct",
+  quality: /Grade A[^/]/.test(pkg.grade) ? 5 : 4,
+  platform: pkg.supplier.includes("Fleek") ? "Fleek" : "Direct",
   searchKeyword: pkg.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
   route: "vintage" as const,
 }))
