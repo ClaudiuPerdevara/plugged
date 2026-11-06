@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import {
   AnimatePresence,
   motion,
@@ -10,6 +10,50 @@ import {
 import { ArrowDown, ArrowLeft, ArrowRight, ChevronsLeft, ChevronsRight } from "lucide-react"
 import Link from "next/link"
 import { PRODUCTS, CATALOG_IMAGES } from "@/lib/products"
+
+/** Typewriter component — types out `text` character by character.
+ *  Re-runs the animation whenever `text` changes (new slide). */
+function TypewriterText({
+  text,
+  speed = 28,
+  disabled = false,
+}: {
+  text: string
+  speed?: number
+  disabled?: boolean
+}) {
+  const [displayed, setDisplayed] = useState(disabled ? text : "")
+  const rafRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    if (disabled) {
+      setDisplayed(text)
+      return
+    }
+    setDisplayed("")
+    let i = 0
+    function tick() {
+      i++
+      setDisplayed(text.slice(0, i))
+      if (i < text.length) {
+        rafRef.current = setTimeout(tick, speed)
+      }
+    }
+    rafRef.current = setTimeout(tick, 60) // small initial delay so slide transition finishes first
+    return () => {
+      if (rafRef.current) clearTimeout(rafRef.current)
+    }
+  }, [text, speed, disabled])
+
+  return (
+    <span>
+      {displayed}
+      {!disabled && displayed.length < text.length && (
+        <span className="ml-0.5 inline-block h-[0.85em] w-[2px] translate-y-[0.05em] animate-pulse rounded-sm bg-accent align-middle" />
+      )}
+    </span>
+  )
+}
 
 const HERO_BUNDLE_IDS = [
   "racing",
@@ -198,7 +242,12 @@ export function HeroSlider() {
           <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col justify-end px-5 pb-28 md:px-8 md:pb-28">
             <div className="max-w-2xl">
               <h1 className="text-balance font-heading text-[1.75rem] font-bold leading-[1.05] tracking-tight text-foreground text-glow sm:text-4xl md:text-7xl md:leading-[0.95]">
-                {slide.title}
+                <TypewriterText
+                  key={slide.id}
+                  text={slide.title}
+                  speed={26}
+                  disabled={!!reduceMotion}
+                />
               </h1>
               <p className="mt-2 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground md:mt-4 md:text-lg">
                 {slide.subtitle}

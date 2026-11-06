@@ -162,6 +162,26 @@
        does NOT create a scroll container, so position: sticky keeps working. */
     overflow-x: clip;
   }
+
+  /* ── Idea #2: Film-grain noise overlay ─────────────────────────────────────
+     A fixed pseudo-element with an inline SVG fractalNoise texture sits on top
+     of everything. pointer-events:none means it never blocks clicks. The
+     opacity is intentionally subtle — adds tactile depth without washing colour.
+     @media prefers-reduced-motion keeps it out for accessibility. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body::after { display: none; }
+  }
 }
 
 @layer utilities {
